@@ -1,0 +1,36 @@
+development: &default
+  db: svu_chatbot
+  port: 27017
+
+dev :
+  <<: *default
+  host: localhost
+  readPreference: primary
+  ssl: false
+
+locally:
+  <<: *default
+  host: mongodb
+  password: Psw0rdT
+  username: root
+  authentication_source: admin
+
+test:
+  <<: *default
+  db: svu_chatbot_test
+
+staging: &deployed
+  <<: *default
+  host: 10.10.11.6
+  username: root
+  password: Psw0rdT
+  authentication_source: admin
+
+production:
+  password: MXc3rPh247Mn97uP
+  port: 27017
+  host: 10.0.0.18
+  username: admin
+  authentication_source: admin
+
+
