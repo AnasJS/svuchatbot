@@ -1,6 +1,7 @@
 import os
 import yaml
-path = os.path.join(os.getcwd(), 'svuchatbot_config', 'database.yml')
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+path = os.path.join(ROOT_DIR, 'database.yml')
 db_connection_params = {}
 
 with open(path, 'r') as f:
@@ -8,7 +9,9 @@ with open(path, 'r') as f:
     for x in docs:
         for k, v in x.items():
             db_connection_params[k] = v
-    db_connection_params = db_connection_params['dev']
+    # Todo remove env
+    env = 'dev'
+    db_connection_params = db_connection_params[env]
 
 # print('#############################b_connection_params : {}*****'.format(db_connection_params))
 
@@ -24,7 +27,7 @@ def get_db_uri():
     if db_connection:
         uri += "?"
         for (k, v) in db_connection.items():
-            uri += k + "=" + str(v) + "&"
+            uri += k + "=" + str(v).lower() + "&"
         uri = uri[:-1]
     uri = "mongodb://" + uri
     print(uri)

@@ -1,12 +1,19 @@
 development: &default
-  db: svu_chatbot
+  db: svuchatbot
   port: 27017
+  username: asakhnini256
+  password : 9%3F9$i9%3FnxM
+  host: cluster0.jhvduqb.mongodb.net
+  retryWrites: true
+  w: majority
 
-dev :
-  <<: *default
+dev : &dev
   host: localhost
+  port: 27017
   readPreference: primary
   ssl: false
+  db: svu_chatbot
+
 
 locally:
   <<: *default

@@ -1,0 +1,2 @@
+from test.svuchatbot_helper_test.read_intents_test import read_intents_arabic
+read_intents_arabic()
