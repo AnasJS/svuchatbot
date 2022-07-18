@@ -1,0 +1,88 @@
+Return-Path: <MAILER-DAEMON>
+Delivered-To: rasha_104135@svuonline.org
+Received: by mail.svuonline.org (Postfix)
+	id 9D9C112D5FE; Sun,  5 Jan 2020 14:55:58 +0200 (EET)
+Date: Sun,  5 Jan 2020 14:55:58 +0200 (EET)
+From: MAILER-DAEMON@mail.svuonline.org (Mail Delivery System)
+Subject: Successful Mail Delivery Report
+To: rasha_104135@svuonline.org
+Auto-Submitted: auto-replied
+MIME-Version: 1.0
+Content-Type: multipart/report; report-type=delivery-status;
+	boundary="94D3D12D5F9.1578228958/mail.svuonline.org"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20200105125558.9D9C112D5FE@mail.svuonline.org>
+
+This is a MIME-encapsulated message.
+
+--94D3D12D5F9.1578228958/mail.svuonline.org
+Content-Description: Notification
+Content-Type: text/plain; charset=us-ascii
+
+This is the mail system at host mail.svuonline.org.
+
+Your message was successfully delivered to the destination(s)
+listed below. If the message was delivered to mailbox you will
+receive no further notifications. Otherwise you may still receive
+notifications of mail delivery errors from other systems.
+
+                   The mail system
+
+<aalaa_101123@svuonline.org>: delivery via dovecot: delivered via dovecot
+    service
+
+--94D3D12D5F9.1578228958/mail.svuonline.org
+Content-Description: Delivery report
+Content-Type: message/delivery-status
+
+Reporting-MTA: dns; mail.svuonline.org
+X-Postfix-Queue-ID: 94D3D12D5F9
+X-Postfix-Sender: rfc822; rasha_104135@svuonline.org
+Arrival-Date: Sun,  5 Jan 2020 14:55:58 +0200 (EET)
+
+Final-Recipient: rfc822; aalaa_101123@svuonline.org
+Original-Recipient: rfc822;aalaa_101123@svuonline.org
+Action: relayed
+Status: 2.0.0
+Diagnostic-Code: X-Postfix; delivery via dovecot: delivered via dovecot service
+
+--94D3D12D5F9.1578228958/mail.svuonline.org
+Content-Description: Message Headers
+Content-Type: text/rfc822-headers
+Content-Transfer-Encoding: 8bit
+
+Return-Path: <rasha_104135@svuonline.org>
+Received: from localhost (localhost [127.0.0.1])
+	by mail.svuonline.org (Postfix) with ESMTP id 94D3D12D5F9
+	for <aalaa_101123@svuonline.org>; Sun,  5 Jan 2020 14:55:58 +0200 (EET)
+X-Virus-Scanned: Debian amavisd-new at mail.svuonline.org
+X-Spam-Flag: NO
+X-Spam-Score: -2.9
+X-Spam-Level:
+X-Spam-Status: No, score=-2.9 tagged_above=-9999 required=6.31
+	tests=[ALL_TRUSTED=-1, BAYES_00=-1.9] autolearn=ham autolearn_force=no
+Received: from mail.svuonline.org ([127.0.0.1])
+	by localhost (mail.svuonline.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id axc3CHtK4EHH for <aalaa_101123@svuonline.org>;
+	Sun,  5 Jan 2020 14:55:57 +0200 (EET)
+Received: from mail.svuonline.org (unknown [10.1.15.110])
+	by mail.svuonline.org (Postfix) with ESMTP id BD10212D109
+	for <aalaa_101123@svuonline.org>; Sun,  5 Jan 2020 14:55:57 +0200 (EET)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Date: Sun, 05 Jan 2020 15:14:49 +0200
+From: "Rasha AlKayal (104135)" <rasha_104135@svuonline.org>
+To: Aalaa Alaya <aalaa_101123@svuonline.org>
+Subject: =?UTF-8?Q?=D8=AA=D8=AC=D8=B1=D8=A8=D8=A9_=D8=B1=D8=AF=D9=88?=
+ =?UTF-8?Q?=D8=AF_=D9=85=D8=AA=D9=83=D8=B1=D8=B1=D8=A9?=
+Organization: MWS
+Return-Receipt-To: "Rasha AlKayal (104135)" <rasha_104135@svuonline.org>
+Disposition-Notification-To: "Rasha AlKayal (104135)"
+ <rasha_104135@svuonline.org>
+Message-ID: <93d83ad6968a937de1c09a1a7ce6fb5e@svuonline.org>
+X-Sender: rasha_104135@svuonline.org
+User-Agent: Roundcube Webmail/1.1.1
+
+--94D3D12D5F9.1578228958/mail.svuonline.org--

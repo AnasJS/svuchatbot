@@ -1,0 +1,331 @@
+Return-Path: <m.shafaamry@gmail.com>
+Delivered-To: rasha_104135@svuonline.org
+Received: from localhost (localhost [127.0.0.1])
+	by mail.svuonline.org (Postfix) with ESMTP id A2212C7582;
+	Mon, 22 Jul 2019 16:40:36 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at mail.svuonline.org
+X-Spam-Flag: NO
+X-Spam-Score: -1.996
+X-Spam-Level:
+X-Spam-Status: No, score=-1.996 tagged_above=-9999 required=6.31
+	tests=[BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+	DKIM_VALID_AU=-0.1, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
+	SPF_HELO_NONE=0.001, URIBL_BLOCKED=0.001]
+	autolearn=ham autolearn_force=no
+Authentication-Results: mail.svuonline.org (amavisd-new);
+	dkim=pass (2048-bit key) header.d=gmail.com
+Received: from mail.svuonline.org ([127.0.0.1])
+	by localhost (mail.svuonline.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id mP2cfS1T4CMP; Mon, 22 Jul 2019 16:40:35 +0300 (EEST)
+Received: from mailfilter.svuonline.org (unknown [10.1.15.115])
+	by mail.svuonline.org (Postfix) with SMTP id 7D6C499FFF;
+	Mon, 22 Jul 2019 16:40:35 +0300 (EEST)
+Received: by mailfilter.svuonline.org (Postfix, from userid 500)
+	id 49985802CF; Mon, 22 Jul 2019 17:14:13 +0300 (EEST)
+Received: from viprelay.scs-net.org (viprelay.scs-net.org [213.178.225.17])
+	by mailfilter.svuonline.org (Postfix) with ESMTP id 3E69C80205;
+	Mon, 22 Jul 2019 17:14:12 +0300 (EEST)
+Received: from localhost (localhost [127.0.0.1])
+	by viprelay.scs-net.org (Postfix) with ESMTP id A97189B48C4;
+	Mon, 22 Jul 2019 16:56:48 +0300 (EEST)
+X-Virus-Scanned: by SpamTitan at scs-net.org
+Received: from viprelay.scs-net.org (localhost [127.0.0.1])
+	by viprelay.scs-net.org (Postfix) with ESMTP id AEEEA9B473B;
+	Mon, 22 Jul 2019 16:56:41 +0300 (EEST)
+Received: from mail-ed1-f68.google.com (mail-ed1-f68.google.com [209.85.208.68])
+	by viprelay.scs-net.org (Postfix) with ESMTP id 74C7B9B4753;
+	Mon, 22 Jul 2019 16:56:16 +0300 (EEST)
+Authentication-Results: viprelay.scs-net.org;
+        dkim=pass (2048-bit rsa key sha256) header.d=gmail.com
+          header.i=@gmail.com header.b=EDkFOr+9 header.a=rsa-sha256
+          header.s=20161025 x-bits=2048;
+        spf=pass smtp.mailfrom=m.shafaamry@gmail.com
+          smtp.helo=mail-ed1-f68.google.com;
+        spf=pass smtp.mailfrom=m.shafaamry@gmail.com
+          smtp.helo=mail-ed1-f68.google.com;
+        spf=pass smtp.mailfrom=m.shafaamry@gmail.com
+          smtp.helo=mail-ed1-f68.google.com;
+        spf=pass smtp.mailfrom=m.shafaamry@gmail.com
+          smtp.helo=mail-ed1-f68.google.com;
+        spf=pass smtp.mailfrom=m.shafaamry@gmail.com
+          smtp.helo=mail-ed1-f68.google.com;
+        spf=pass smtp.mailfrom=m.shafaamry@gmail.com
+          smtp.helo=mail-ed1-f68.google.com;
+        spf=pass smtp.mailfrom=m.shafaamry@gmail.com
+          smtp.helo=mail-ed1-f68.google.com;
+        spf=pass smtp.mailfrom=m.shafaamry@gmail.com
+          smtp.helo=mail-ed1-f68.google.com;
+        spf=pass smtp.mailfrom=m.shafaamry@gmail.com
+          smtp.helo=mail-ed1-f68.google.com;
+        spf=pass smtp.mailfrom=m.shafaamry@gmail.com
+          smtp.helo=mail-ed1-f68.google.com;
+        spf=pass smtp.mailfrom=m.shafaamry@gmail.com
+          smtp.helo=mail-ed1-f68.google.com;
+        spf=pass smtp.mailfrom=m.shafaamry@gmail.com
+          smtp.helo=mail-ed1-f68.google.com;
+        spf=pass smtp.mailfrom=m.shafaamry@gmail.com
+          smtp.helo=mail-ed1-f68.google.com;
+        spf=pass smtp.mailfrom=m.shafaamry@gmail.com
+          smtp.helo=mail-ed1-f68.google.com;
+        spf=pass smtp.mailfrom=m.shafaamry@gmail.com
+          smtp.helo=mail-ed1-f68.google.com;
+        spf=pass smtp.mailfrom=m.shafaamry@gmail.com
+          smtp.helo=mail-ed1-f68.google.com;
+        spf=pass smtp.mailfrom=m.shafaamry@gmail.com
+          smtp.helo=mail-ed1-f68.google.com;
+        spf=pass smtp.mailfrom=m.shafaamry@gmail.com
+          smtp.helo=mail-ed1-f68.google.com;
+        spf=pass smtp.mailfrom=m.shafaamry@gmail.com
+          smtp.helo=mail-ed1-f68.google.com;
+        x-google-dkim=pass (2048-bit rsa key) header.d=1e100.net
+          header.i=@1e100.net header.b=MdZeezfL
+Received-SPF: pass
+        (gmail.com ... _spf.google.com: Sender is authorized to use 'm.shafaamry@gmail.com' in 'mfrom' identity (mechanism 'include:_netblocks.google.com' matched))
+        receiver=viprelay.scs-net.org;
+        identity=mailfrom;
+        envelope-from="m.shafaamry@gmail.com";
+        helo=mail-ed1-f68.google.com;
+        client-ip=209.85.208.68
+Received-SPF: pass
+        (gmail.com ... _spf.google.com: Sender is authorized to use 'm.shafaamry@gmail.com' in 'mfrom' identity (mechanism 'include:_netblocks.google.com' matched))
+        receiver=viprelay.scs-net.org;
+        identity=mailfrom;
+        envelope-from="m.shafaamry@gmail.com";
+        helo=mail-ed1-f68.google.com;
+        client-ip=209.85.208.68
+Received-SPF: pass
+        (gmail.com ... _spf.google.com: Sender is authorized to use 'm.shafaamry@gmail.com' in 'mfrom' identity (mechanism 'include:_netblocks.google.com' matched))
+        receiver=viprelay.scs-net.org;
+        identity=mailfrom;
+        envelope-from="m.shafaamry@gmail.com";
+        helo=mail-ed1-f68.google.com;
+        client-ip=209.85.208.68
+Received-SPF: pass
+        (gmail.com ... _spf.google.com: Sender is authorized to use 'm.shafaamry@gmail.com' in 'mfrom' identity (mechanism 'include:_netblocks.google.com' matched))
+        receiver=viprelay.scs-net.org;
+        identity=mailfrom;
+        envelope-from="m.shafaamry@gmail.com";
+        helo=mail-ed1-f68.google.com;
+        client-ip=209.85.208.68
+Received-SPF: pass
+        (gmail.com ... _spf.google.com: Sender is authorized to use 'm.shafaamry@gmail.com' in 'mfrom' identity (mechanism 'include:_netblocks.google.com' matched))
+        receiver=viprelay.scs-net.org;
+        identity=mailfrom;
+        envelope-from="m.shafaamry@gmail.com";
+        helo=mail-ed1-f68.google.com;
+        client-ip=209.85.208.68
+Received-SPF: pass
+        (gmail.com ... _spf.google.com: Sender is authorized to use 'm.shafaamry@gmail.com' in 'mfrom' identity (mechanism 'include:_netblocks.google.com' matched))
+        receiver=viprelay.scs-net.org;
+        identity=mailfrom;
+        envelope-from="m.shafaamry@gmail.com";
+        helo=mail-ed1-f68.google.com;
+        client-ip=209.85.208.68
+Received-SPF: pass
+        (gmail.com ... _spf.google.com: Sender is authorized to use 'm.shafaamry@gmail.com' in 'mfrom' identity (mechanism 'include:_netblocks.google.com' matched))
+        receiver=viprelay.scs-net.org;
+        identity=mailfrom;
+        envelope-from="m.shafaamry@gmail.com";
+        helo=mail-ed1-f68.google.com;
+        client-ip=209.85.208.68
+Received-SPF: pass
+        (gmail.com ... _spf.google.com: Sender is authorized to use 'm.shafaamry@gmail.com' in 'mfrom' identity (mechanism 'include:_netblocks.google.com' matched))
+        receiver=viprelay.scs-net.org;
+        identity=mailfrom;
+        envelope-from="m.shafaamry@gmail.com";
+        helo=mail-ed1-f68.google.com;
+        client-ip=209.85.208.68
+Received-SPF: pass
+        (gmail.com ... _spf.google.com: Sender is authorized to use 'm.shafaamry@gmail.com' in 'mfrom' identity (mechanism 'include:_netblocks.google.com' matched))
+        receiver=viprelay.scs-net.org;
+        identity=mailfrom;
+        envelope-from="m.shafaamry@gmail.com";
+        helo=mail-ed1-f68.google.com;
+        client-ip=209.85.208.68
+Received-SPF: pass
+        (gmail.com ... _spf.google.com: Sender is authorized to use 'm.shafaamry@gmail.com' in 'mfrom' identity (mechanism 'include:_netblocks.google.com' matched))
+        receiver=viprelay.scs-net.org;
+        identity=mailfrom;
+        envelope-from="m.shafaamry@gmail.com";
+        helo=mail-ed1-f68.google.com;
+        client-ip=209.85.208.68
+Received-SPF: pass
+        (gmail.com ... _spf.google.com: Sender is authorized to use 'm.shafaamry@gmail.com' in 'mfrom' identity (mechanism 'include:_netblocks.google.com' matched))
+        receiver=viprelay.scs-net.org;
+        identity=mailfrom;
+        envelope-from="m.shafaamry@gmail.com";
+        helo=mail-ed1-f68.google.com;
+        client-ip=209.85.208.68
+Received-SPF: pass
+        (gmail.com ... _spf.google.com: Sender is authorized to use 'm.shafaamry@gmail.com' in 'mfrom' identity (mechanism 'include:_netblocks.google.com' matched))
+        receiver=viprelay.scs-net.org;
+        identity=mailfrom;
+        envelope-from="m.shafaamry@gmail.com";
+        helo=mail-ed1-f68.google.com;
+        client-ip=209.85.208.68
+Received-SPF: pass
+        (gmail.com ... _spf.google.com: Sender is authorized to use 'm.shafaamry@gmail.com' in 'mfrom' identity (mechanism 'include:_netblocks.google.com' matched))
+        receiver=viprelay.scs-net.org;
+        identity=mailfrom;
+        envelope-from="m.shafaamry@gmail.com";
+        helo=mail-ed1-f68.google.com;
+        client-ip=209.85.208.68
+Received-SPF: pass
+        (gmail.com ... _spf.google.com: Sender is authorized to use 'm.shafaamry@gmail.com' in 'mfrom' identity (mechanism 'include:_netblocks.google.com' matched))
+        receiver=viprelay.scs-net.org;
+        identity=mailfrom;
+        envelope-from="m.shafaamry@gmail.com";
+        helo=mail-ed1-f68.google.com;
+        client-ip=209.85.208.68
+Received-SPF: pass
+        (gmail.com ... _spf.google.com: Sender is authorized to use 'm.shafaamry@gmail.com' in 'mfrom' identity (mechanism 'include:_netblocks.google.com' matched))
+        receiver=viprelay.scs-net.org;
+        identity=mailfrom;
+        envelope-from="m.shafaamry@gmail.com";
+        helo=mail-ed1-f68.google.com;
+        client-ip=209.85.208.68
+Received-SPF: pass
+        (gmail.com ... _spf.google.com: Sender is authorized to use 'm.shafaamry@gmail.com' in 'mfrom' identity (mechanism 'include:_netblocks.google.com' matched))
+        receiver=viprelay.scs-net.org;
+        identity=mailfrom;
+        envelope-from="m.shafaamry@gmail.com";
+        helo=mail-ed1-f68.google.com;
+        client-ip=209.85.208.68
+Received-SPF: pass
+        (gmail.com ... _spf.google.com: Sender is authorized to use 'm.shafaamry@gmail.com' in 'mfrom' identity (mechanism 'include:_netblocks.google.com' matched))
+        receiver=viprelay.scs-net.org;
+        identity=mailfrom;
+        envelope-from="m.shafaamry@gmail.com";
+        helo=mail-ed1-f68.google.com;
+        client-ip=209.85.208.68
+Received-SPF: pass
+        (gmail.com ... _spf.google.com: Sender is authorized to use 'm.shafaamry@gmail.com' in 'mfrom' identity (mechanism 'include:_netblocks.google.com' matched))
+        receiver=viprelay.scs-net.org;
+        identity=mailfrom;
+        envelope-from="m.shafaamry@gmail.com";
+        helo=mail-ed1-f68.google.com;
+        client-ip=209.85.208.68
+Received-SPF: pass
+        (gmail.com ... _spf.google.com: Sender is authorized to use 'm.shafaamry@gmail.com' in 'mfrom' identity (mechanism 'include:_netblocks.google.com' matched))
+        receiver=viprelay.scs-net.org;
+        identity=mailfrom;
+        envelope-from="m.shafaamry@gmail.com";
+        helo=mail-ed1-f68.google.com;
+        client-ip=209.85.208.68
+Received: by mail-ed1-f68.google.com with SMTP id k8so40679036edr.11;
+        Mon, 22 Jul 2019 06:57:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=v3R3DhsjXMYmeZgDW0LrVccKrywP76RIGJRZf6TTt2I=;
+        b=EDkFOr+9gDKVnTSuz42YgHVOuVevczYrI5u+pvQwbe2iRoRlx+bHcl4vvptlIgC7uo
+         0BSmsYeDR+gdAGt94wr7eG/tH7WuOQcvVrrVTq6CPv078TGPa+PSuSvNn6p+bU+5RrLb
+         Mrb7rH8iLURykX71ck5w4psjkY8UHDXviwZBCOw2DJ3s5tPe+V9rHrwMOD2bCvREraxd
+         CJKor60C5+L9uyQb/oOneXp4ilPT039L3Fi3R+sgtIMI5SaTXLCQV4IeRgjYz6PDT1Cl
+         NIeuZMohIaHuQj6TupL1CBPtl5zSnljKHyCtu8SctqnKBF2uGl7I+lN73wlMZV/5CY3i
+         YU7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=v3R3DhsjXMYmeZgDW0LrVccKrywP76RIGJRZf6TTt2I=;
+        b=MdZeezfLdtcFMUGuZ1secbEbwghuTGir3iE0kW1oSd/IFTHl73j+EV+NoxzkshP74p
+         pLt4/xVenbVOJ7cRTBp+Olq2Rtzf0c3tHnjaHTbAd8J5m7wcstUiF2duYOBMZ4TgO5Q9
+         3Cd/mlDbH9C/L35vuqXngedrD+5UnWPt6pW2XFDV0D6rdOTPYjJtsWFlX2vLyJZdTjRj
+         XIaB3rhFHVCpHe1sqtG1iur+WGb+MC7q6AVTtqpSsiHD20uNacYjqOclOgpHoP8E9AmC
+         XloAi2NFSQg0yTnJ84KkP6PHY16OQCnjnsaKbGNWO0BpCeRK/O1zOFAgUCbQwcx0qwUE
+         E2Dg==
+X-Gm-Message-State: APjAAAXl15vs15H7s4M+xn6kbP855tslE8h4xiOjhaHdv68XQE9344+q
+	E9fkl1Wdsv7z4XMPXdLsbYezVugL7pJWz8Q6Hok=
+X-Google-Smtp-Source: APXvYqw7UXc/9BYtTsz0NvNcv7nz+kPsjeWxp6GGrfDoYfYQxRujDbyzRvDaFNdlpaekKSkSMQk4kyCofC+STj4eLPQ=
+X-Received: by 2002:a50:f781:: with SMTP id h1mr62059519edn.240.1563803830364;
+ Mon, 22 Jul 2019 06:57:10 -0700 (PDT)
+MIME-Version: 1.0
+From: moutasm shafaamry <m.shafaamry@gmail.com>
+Date: Mon, 22 Jul 2019 16:57:03 +0300
+Message-ID: <CAAR-Sregw0fqrt5+ybzHR8ARMis506itJf+YuHn6y5aH0DB28A@mail.gmail.com>
+Subject: grade of assessment MWS_AWS_C1_C2_C3_F18_assignment_1_2019-06-19
+To: ayman_83288@svuonline.org, fuad_83398@svuonline.org, 
+	mohamad_90449@svuonline.org, sounia_90499@svuonline.org, 
+	ali_90770@svuonline.org, yaser_90785@svuonline.org, suha_91605@svuonline.org, 
+	ghader_91646@svuonline.org, manar_91686@svuonline.org, 
+	sumer_91891@svuonline.org, ahmad_92053@svuonline.org, 
+	rafah_92277@svuonline.org, hasan_92434@svuonline.org, 
+	hussein_93380@svuonline.org, abdalrzzaq_94013@svuonline.org, 
+	milad_94022@svuonline.org, hasan_94117@svuonline.org, 
+	amjad_94155@svuonline.org, raad_94157@svuonline.org, 
+	sobhie_94188@svuonline.org, mohannad_94295@svuonline.org, 
+	mohamad_94303@svuonline.org, yasser_94341@svuonline.org, 
+	ali_94359@svuonline.org, aram_94544@svuonline.org, eyas_94554@svuonline.org, 
+	yousef_94679@svuonline.org, myassar_94717@svuonline.org, 
+	omar_94791@svuonline.org, lorena_95188@svuonline.org, 
+	yosef_96149@svuonline.org, fatema_96158@svuonline.org, 
+	jaber_96464@svuonline.org, mohamad_nour_96472@svuonline.org, 
+	samer_96898@svuonline.org, mohammad_96977@svuonline.org, 
+	wissam_97035@svuonline.org, adham_97145@svuonline.org, 
+	zaid_97154@svuonline.org, ansam_97187@svuonline.org, 
+	ahmed_97252@svuonline.org, diaa_97314@svuonline.org, 
+	mahmoud_97348@svuonline.org, mohammad_97386@svuonline.org, 
+	abdallah_97504@svuonline.org, yamen_97668@svuonline.org, 
+	ali_97930@svuonline.org, abir_98320@svuonline.org, 
+	abdulhamid_98588@svuonline.org, mohanad_98705@svuonline.org, 
+	somer_99272@svuonline.org, alan_100157@svuonline.org, 
+	ammar_100495@svuonline.org, ali_100503@svuonline.org, 
+	shihab_aldin_100556@svuonline.org, omar_100629@svuonline.org, 
+	mahmoud_100633@svuonline.org, alhussen_100641@svuonline.org, 
+	aram_100668@svuonline.org, zoubair_100747@svuonline.org, 
+	ibrahim_100788@svuonline.org, hadi_100793@svuonline.org, 
+	diana_100975@svuonline.org, eyad_101024@svuonline.org, 
+	noufal_101083@svuonline.org, victoria_101095@svuonline.org, 
+	yaman_101120@svuonline.org, aalaa_101123@svuonline.org, 
+	ahmed_101184@svuonline.org, rami_101210@svuonline.org, 
+	anwar_101253@svuonline.org, ammar_101268@svuonline.org, 
+	lama_101275@svuonline.org, karram_101357@svuonline.org, 
+	rawan_101359@svuonline.org, lujain_101373@svuonline.org, 
+	yasser_101387@svuonline.org, rawan_101390@svuonline.org, 
+	hiam_101411@svuonline.org, bashar_101544@svuonline.org, 
+	raghad_101560@svuonline.org, belal_101561@svuonline.org, 
+	mazan_101579@svuonline.org, manal_101599@svuonline.org, 
+	hazem_101666@svuonline.org, basel_101707@svuonline.org, 
+	ahmad_101718@svuonline.org, reham_101724@svuonline.org, 
+	talal_101764@svuonline.org, fadi_101775@svuonline.org, 
+	marwan_101777@svuonline.org, ayham_101792@svuonline.org, 
+	wael_101897@svuonline.org, mamoun_101917@svuonline.org, 
+	farah_102163@svuonline.org, tareq_102611@svuonline.org, 
+	ashraf_102624@svuonline.org, manal_102652@svuonline.org, 
+	basel_102672@svuonline.org, leen_102693@svuonline.org, 
+	mahmoud_102783@svuonline.org, kenda_102807@svuonline.org, 
+	rouaa_102870@svuonline.org, mohamad_103176@svuonline.org, 
+	alaa_103240@svuonline.org, mohammad_basheer_103265@svuonline.org, 
+	bashar_103299@svuonline.org, rahaf_103359@svuonline.org, 
+	mutaz_103629@svuonline.org, marah_103665@svuonline.org, 
+	dalal_103691@svuonline.org, douaa_103739@svuonline.org, 
+	mohamed_faek_103964@svuonline.org, taghreed_104031@svuonline.org, 
+	rasha_104135@svuonline.org, rima_104182@svuonline.org
+Cc: MWS_exam@svuonline.org, t_mshafaamri@svuonline.org, mws_pd@svuonline.org
+Content-Type: multipart/alternative; boundary="000000000000ceb1ab058e457337"
+
+--000000000000ceb1ab058e457337
+Content-Type: text/plain; charset="UTF-8"
+
+Dear student
+
+ Your grade of assessment (MWS_AWS_C1_C2_C3_F18_assignment_1_2019-06-19)
+has been added by tutor (Moutasem Mouhamad Shafamry)
+
+ Please find it on http://www.svuonline.org/SVUIS/ams.php
+
+ Syrian Virtual University
+
+ Exam Affair
+
+--000000000000ceb1ab058e457337
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Dear student<br><br>=C2=A0Your grade of assessment (MWS_AW=
+S_C1_C2_C3_F18_assignment_1_2019-06-19) has been added by tutor (Moutasem M=
+ouhamad Shafamry)<br><br>=C2=A0Please find it on <a href=3D"http://www.svuo=
+nline.org/SVUIS/ams.php">http://www.svuonline.org/SVUIS/ams.php</a><br><br>=
+=C2=A0Syrian Virtual University<br><br>=C2=A0Exam Affair<br><br></div>
+
+--000000000000ceb1ab058e457337--

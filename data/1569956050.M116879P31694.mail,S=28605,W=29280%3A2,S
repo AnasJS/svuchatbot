@@ -1,0 +1,675 @@
+Return-Path: <HZEFYSmHZOxk4BCKXGd5xHiwBwGcUeP7bQxc@bounce.researchgate.net>
+Delivered-To: aalaa_101123@svuonline.org
+Received: from localhost (localhost [127.0.0.1])
+	by mail.svuonline.org (Postfix) with ESMTP id 14416EB37B
+	for <aalaa_101123@svuonline.org>; Tue,  1 Oct 2019 21:54:10 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at mail.svuonline.org
+X-Spam-Flag: NO
+X-Spam-Score: -0.206
+X-Spam-Level:
+X-Spam-Status: No, score=-0.206 tagged_above=-9999 required=6.31
+	tests=[BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543, DKIMWL_WL_MED=-0.001,
+	DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+	HEADER_FROM_DIFFERENT_DOMAINS=0.249, HTML_MESSAGE=0.001,
+	RCVD_IN_DNSWL_BLOCKED=0.001, RCVD_IN_MSPIKE_H2=-0.001,
+	SPF_HELO_NONE=0.001, URIBL_BLOCKED=0.001]
+	autolearn=no autolearn_force=no
+Authentication-Results: mail.svuonline.org (amavisd-new);
+	dkim=pass (1024-bit key) header.d=researchgatemail.net;
+	domainkeys=pass (1024-bit key)
+	header.from=no-reply@researchgatemail.net
+	header.d=researchgatemail.net
+Received: from mail.svuonline.org ([127.0.0.1])
+	by localhost (mail.svuonline.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id L94wC9p1zI6U for <aalaa_101123@svuonline.org>;
+	Tue,  1 Oct 2019 21:54:09 +0300 (EEST)
+Received: from mailfilter.svuonline.org (unknown [10.1.15.115])
+	by mail.svuonline.org (Postfix) with SMTP id 199D4EB026
+	for <aalaa_101123@svuonline.org>; Tue,  1 Oct 2019 21:54:09 +0300 (EEST)
+Received: by mailfilter.svuonline.org (Postfix, from userid 500)
+	id 3B159804D3; Tue,  1 Oct 2019 22:34:16 +0300 (EEST)
+Received: from viprelay.scs-net.org (viprelay.scs-net.org [213.178.225.17])
+	by mailfilter.svuonline.org (Postfix) with ESMTP id 4453E804CD
+	for <aalaa_101123@svuonline.org>; Tue,  1 Oct 2019 22:34:15 +0300 (EEST)
+Received: from localhost (localhost [127.0.0.1])
+	by viprelay.scs-net.org (Postfix) with ESMTP id 3C3429B4A8B
+	for <aalaa_101123@svuonline.org>; Tue,  1 Oct 2019 22:11:40 +0300 (EEST)
+X-Virus-Scanned: by SpamTitan at scs-net.org
+Received: from viprelay.scs-net.org (localhost [127.0.0.1])
+	by viprelay.scs-net.org (Postfix) with ESMTP id E31509B4A61
+	for <aalaa_101123@svuonline.org>; Tue,  1 Oct 2019 22:11:35 +0300 (EEST)
+Received: from mr69.researchgate.net (mr69.researchgate.net [209.15.243.118])
+	by viprelay.scs-net.org (Postfix) with SMTP id 3994C9B497A
+	for <aalaa_101123@svuonline.org>; Tue,  1 Oct 2019 22:11:31 +0300 (EEST)
+Authentication-Results: viprelay.scs-net.org;
+        dkim-adsp=pass (ADSP policy from researchgatemail.net);
+        dkim=pass (1024-bit rsa key sha1) header.d=researchgatemail.net
+          header.i=@researchgatemail.net header.b=NR3+8pbK header.a=rsa-sha1
+          header.s=rg x-bits=1024;
+        domainkeys=pass (1024-bit rsa key sha1)
+          header.d=researchgatemail.net header.b=P4sVqhQJ x-bits=1024
+          x-keytype=rsa x-algorithm=sha1 x-selector=rg;
+        spf=pass
+          smtp.mailfrom=
+          HZEFYSmHZOxk4BCKXGd5xHiwBwGcUeP7bQxc@bounce.researchgate.net
+          smtp.helo=mr69.researchgate.net;
+        x-dkim-dkssp=pass (sender policy from researchgatemail.net)
+Received-SPF: pass
+        (bounce.researchgate.net: 209.15.243.118 is authorized to use 'HZEFYSmHZOxk4BCKXGd5xHiwBwGcUeP7bQxc@bounce.researchgate.net' in 'mfrom' identity (mechanism 'ip4:209.15.243.112/28' matched))
+        receiver=viprelay.scs-net.org;
+        identity=mailfrom;
+        envelope-from="HZEFYSmHZOxk4BCKXGd5xHiwBwGcUeP7bQxc@bounce.researchgate.net";
+        helo=mr69.researchgate.net;
+        client-ip=209.15.243.118
+Received: from mr69.researchgate.net (localhost [127.0.0.1])
+	by mr69.researchgate.net (Postfix) with ESMTP id 4BFAD55CC
+	for <aalaa_101123@svuonline.org>; Tue,  1 Oct 2019 19:14:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=researchgatemail.net; h=
+	message-id:date:subject:from:to:mime-version:content-type
+	:list-unsubscribe; s=rg; bh=BTZ2jScU+oriXw+tJHJ7dRVToCw=; b=NR3+
+	8pbKajoBf24uOWVUTr12f7ia6S5qRUO9tGu+YnNkyiQm89k9l3CIQgu0Q8XgUJpJ
+	JwqpcjNg4UFTM6BeRRpM1hIOXxxTAQApfXf+5Z5COy/H4zEMNjf+5hedCA0DOivO
+	6G0+1VQkm+rDeMuCpJzDWR/BGllzqnXrssmw0y0=
+DomainKey-Signature: a=rsa-sha1; c=nofws; d=researchgatemail.net; h=
+	message-id:date:subject:from:to:mime-version:content-type
+	:list-unsubscribe; q=dns; s=rg; b=P4sVqhQJEFm22MUNs64ZOSAsYCvP8g
+	PU3XX+tPXHxgrqrpCkXrJ3+UqmgeQNcQqQrsCpWC2GDPSSDg6i1aeGAV/xvUPxr4
+	aLaB/OPNhdBLmXORLHeRicn+Rx0y5WgsXu3r6nSnyKNS4x2UsVgF/03UK42OedxW
+	v+cVIan1tZGIg=
+Message-ID: <270cc422786b8233afa5c798c947c377@internal-www.rgapi.net>
+Date: Tue, 01 Oct 2019 11:48:17 +0000
+Subject: Aalaa, here's a project you might be interested in: Hereditary
+ Angioedema
+From: ResearchGate <no-reply@researchgatemail.net>
+To: Aalaa Alaya <aalaa_101123@svuonline.org>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="_=_swift_1569930497_589b9d98e03e070617bf3498e071fd7f_=_"
+X-RG-Mail-Type: SwiftMail
+x-rg-mail-id: JBNEKRSZKNWUQWSPPBVTIQSDJNMEOZBVPBEGS52CO5DWGVLFKA3WEULYMM5WCYLMMFQV6MJQGEYTEM2AON3HK33ONRUW4ZJON5ZGO===
+x-correlation-id: stuffcom-b1756455-6f83-pid-127327-evexts-proxts-proxer-proxil
+List-Unsubscribe: <https://www.researchgate.net/go.Out.projectSuggestionsMail.html?ch=reg&loginT=N_U3blxExv6ZZHNm-1F-fiZU7u2LlKewd29srks-FBzo7UmdZXLV5_fv8AvOeM7Z_HDmRQ6QK7sQJBzN2vigkRkm&cp=re389_en_u3&ev=list-usub>
+Feedback-ID: re389:re389|en:rgESP
+
+--_=_swift_1569930497_589b9d98e03e070617bf3498e071fd7f_=_
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+ResearchGate
+Discover projects from your extended network
+
+Margarita =
+L=C3=B3pez-Trascasa :
+Hereditary Angioedema
+Collaborators: Anastasios G=
+ermenis, Matthaios Speletas, Maria Kompoti, Fotis Psarros, Elena Tsitsami, =
+Marcus Maurer...
+
+View project: https://www.researchgate.net/project/He=
+reditary-Angioedema-3
+---------------------------------------------------=
+----------------------------
+This message was sent to aalaa_101123@svuonl=
+ine.org by ResearchGate. To make sure you receive our updates, add Research=
+Gate to your address book or safe list.
+See instructions: https://www.res=
+earchgate.net/help/whitelist-email?cp=3Dre389_en_we&mfl=3D1&ch=3Dreg&uid=3D=
+HZEFYSmHZOxk4BCKXGd5xHiwBwGcUeP7bQxc
+
+If you don't want to receive thes=
+e emails from ResearchGate in the future, please unsubscribe:
+https://www=
+.researchgate.net/go.Out.projectSuggestionsMail.html?loginT=3DN_U3blxExv6ZZ=
+HNm-1F-fiZU7u2LlKewd29srks-FBzo7UmdZXLV5_fv8AvOeM7Z_HDmRQ6QK7sQJBzN2vigkRkm=
+&cp=3Dre389_en_u2&mfl=3D1&ch=3Dreg&uid=3DHZEFYSmHZOxk4BCKXGd5xHiwBwGcUeP7bQ=
+xc
+
+ResearchGate GmbH, Chausseestr. 20, 10115 Berlin, Germany. Imprint:=
+ https://www.researchgate.net/imprint?cp=3Dre389_en_im
+See our Privacy Po=
+licy: https://www.researchgate.net/privacy-policy?cp=3Dre389_en_pp&mfl=3D1&=
+ch=3Dreg&uid=3DHZEFYSmHZOxk4BCKXGd5xHiwBwGcUeP7bQxc and Terms of Service: h=
+ttps://www.researchgate.net/terms-of-service?cp=3Dre389_en_tos&mfl=3D1&ch=
+=3Dreg&uid=3DHZEFYSmHZOxk4BCKXGd5xHiwBwGcUeP7bQxc
+
+--_=_swift_1569930497_589b9d98e03e070617bf3498e071fd7f_=_
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.=
+w3.org/TR/html4/loose.dtd"><html><head><meta
+http-equiv=3D"Content-Type" =
+content=3D"text/html; charset=3Dutf-8"><meta
+http-equiv=3D"X-UA-Compatibl=
+e" content=3D"IE=3Dedge"><title></title><style>body{
+                -web=
+kit-text-size-adjust:100%;
+                -ms-text-size-adjust:100%;
+ =
+               margin: 0;
+                padding: 0;
+            } /* =
+force default font sizes */
+
+            table td {
+                b=
+order-collapse: collapse;
+            }
+
+            table {
+      =
+          mso-table-lspace: 0pt;
+                mso-table-rspace: 0pt;=
+
+            }
+
+            .imgDesk {
+                display: blo=
+ck;
+                max-height: initial;
+                overflow: visi=
+ble;
+            }
+
+            .imgMobile {
+                displa=
+y: none;
+                max-height: 0;
+                overflow: hidde=
+n;
+                font-size: 0;
+                mso-hide: all;
+     =
+       }
+
+            @media only screen and (min-device-width: 376px) =
+{
+                .content {
+                    width: 590px !importan=
+t;
+                }
+            }
+            @media only screen and=
+ (max-device-width: 736px) {
+                .hidden-sm {
+             =
+       display: none;
+                }
+                .column-stack {=
+
+                    display:block !important;
+                    widt=
+h:100% !important;
+                    margin-bottom: 10px;
+           =
+     }
+                .fullwidth-sm {
+                    max-width: 1=
+00% !important;
+                    width: 100% !important;
+           =
+     }
+                .fulltext-available-sm {
+                    fon=
+t-size: 12px !important;
+                    color: #71a62e !important;=
+
+                    background-color: #e3edd6;
+                    pad=
+ding: 2px 0;
+                }
+                .mailContentCustomSize {=
+
+                    width: 100% !important;
+                }
+      =
+          .text-centered-sm {
+                    width: 100% !important;=
+
+                    text-align: center !important;
+                }=
+
+                .img-pub-sm {
+                    height: 70px !import=
+ant;
+                    width: 60px !important;
+                    mi=
+n-width: 60px !important;
+                }
+                .img-accoun=
+t-sm {
+                    height: 30px !important;
+                   =
+ width: 30px !important;
+                    min-width: 30px !important;=
+
+                }
+                .reset-height-sm {
+               =
+     height: initial !important;
+                }
+                .img=
+-header-sm {
+                    text-align: center !important;
+       =
+             padding: 0 !important;
+                }
+                .=
+nova-font-size-l {
+                    font-size: 16px !important;
+    =
+                line-height: 24px !important;
+                }
+       =
+         .nova-font-size-m {
+                    font-size: 14px !importa=
+nt;
+                    line-height: 18px !important;
+                }=
+
+            }
+            @media only screen and (max-device-width: 55=
+0px) {
+                .fullWidthContent-xs {
+                    width=
+: 100%!important;
+                }
+                .imgDesk {
+      =
+              display: none !important;
+                    max-height: 0=
+ !important;
+                    overflow: hidden !important;
+         =
+           font-size: 0 !important;
+                    mso-hide: all !im=
+portant;
+                }
+                .imgMobile {
+             =
+       display: block !important;
+                    max-height: initial=
+ !important;
+                    overflow: visible !important;
+        =
+        }
+            }</style></head><body
+style=3D"background-color: =
+#fff;"><table
+class=3D"container" width=3D"100%" align=3D"center" cellpad=
+ding=3D"0" cellspacing=3D"0" border=3D"0" style=3D"width: 100% !important; =
+padding: 0; border-spacing: 0; background-color: #fff; border: 1px solid #d=
+dd;"><tr><td><table
+class=3D"header-outer" width=3D"100%" cellspacing=3D"=
+0" cellpadding=3D"0" border=3D"0" style=3D"width: 100% !important; backgrou=
+nd-color: #ffffff; padding: 0; border-spacing: 0;"><tr
+style=3D"font-size=
+:1px; line-height:0; mso-margin-top-alt:1px;"><td
+height=3D"3">=C2=A0</td=
+></tr><tr><td
+valign=3D"top" align=3D"center"> <!--[if (gte mso 9)|(IE)]>=
+<table
+width=3D"590" align=3D"center" cellpadding=3D"0" cellspacing=3D"0"=
+ border=3D"0"><tr><td><![endif]--><table
+cellspacing=3D"0" cellpadding=3D=
+"0" border=3D"0" width=3D"100%" style=3D"font-family: Helvetica, Arial, san=
+s-serif; width: 100% !important; padding: 0; border-spacing: 0;"><tr
+styl=
+e=3D"font-size: 1px; line-height: 0; mso-margin-top-alt: 1px;"><td
+width=
+=3D"5" style=3D"width: 5px"></td><td
+height=3D"48" align=3D"center"> <img=
+
+style=3D"border: 0; outline: none; margin: 0; padding: 0; font-size: 7px=
+; color: #00A39E; font-weight: bold; text-decoration: none;" height=3D"15" =
+width=3D"119" title=3D"ResearchGate" alt=3D"ResearchGate" src=3D"https://ww=
+w.researchgate.net/mail/rg_logo_mail_grey.png?uid=3DHZEFYSmHZOxk4BCKXGd5xHi=
+wBwGcUeP7bQxc&amp;cn=3D1gl_Z0XQRRY9OeQkNntcIwJgAQ41usHjKuch1g_VNS9XvYLqOXXB=
+C5MuLAsQfrPghOGac0hk69nqxjDI8shp2OH4ZWEWZMb6McjjjXM-lAsk7C4L3ZSM5xLh&amp;lo=
+ginT=3DN_U3blxExv6ZZHNm-1F-fiZU7u2LlKewd29srks-FBzo7UmdZXLV5_fv8AvOeM7Z_HDm=
+RQ6QK7sQJBzN2vigkRkm&amp;cpc=3Dre389_en_"></td><td
+width=3D"5" style=3D"w=
+idth: 5px"></td></tr></table> <!--[if (gte mso 9)|(IE)]></td></tr></table><=
+![endif]--></td></tr><tr
+style=3D"font-size:1px; line-height:0; mso-margi=
+n-top-alt:1px;"><td
+height=3D"4">=C2=A0</td></tr></table><table
+class=
+=3D"content-outer" width=3D"100%" align=3D"center" cellpadding=3D"0" cellsp=
+acing=3D"0" border=3D"0" style=3D"width: 100% !important; padding: 0; borde=
+r-spacing: 0;"><tr><td> <!--[if (gte mso 9)|(IE)]><table
+width=3D"590" al=
+ign=3D"center" cellpadding=3D"0" cellspacing=3D"0" border=3D"0"><tr><td><![=
+endif]--><table
+class=3D"content" align=3D"center" cellpadding=3D"0" cell=
+spacing=3D"0" border=3D"0" style=3D"width: 100% !important; max-width: 100%=
+; padding: 0; border-spacing: 0;"><tr><td><table
+class=3D"project-suggest=
+ions-wrapper" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%" style=3D"w=
+idth: 100%!important; padding: 0; border-spacing: 0; background-color: #F2F=
+7FA;"><tr><td
+align=3D"center"><table
+class=3D"project-suggestions-back=
+ground" cellspacing=3D"0" cellpadding=3D"0" style=3D"padding: 0; border-spa=
+cing: 0;"><tr><td><table
+cellspacing=3D"0" cellpadding=3D"0" borderspacin=
+g=3D"0" width=3D"100%" style=3D"width: 100% !important; padding: 0; border-=
+spacing: 0;"><tr><td
+width=3D"20" style=3D"width: 20px"></td><td
+width=
+=3D"36" style=3D"width: 36px" class=3D"hidden-sm"></td><td><table
+cellspa=
+cing=3D"0" cellpadding=3D"0" width=3D"100%" style=3D"width: 100%!important;=
+ padding: 0; border-spacing: 0;"><tr><td><table
+class=3D"mail-stub-contai=
+ner" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%" style=3D"width: 100=
+%!important; max-width: 590px; padding: 0; border-spacing: 0;"><tr
+style=
+=3D"font-size:1px; line-height:0; mso-margin-top-alt:1px;"><td
+height=3D"=
+2">=C2=A0</td></tr><tr><td
+align=3D"center"><table
+class=3D"main-conten=
+t-box" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%" style=3D"width: 1=
+00%!important; padding: 0; border-spacing: 0;"><tr><td><table
+class=3D"pr=
+oject-item-container" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%" st=
+yle=3D"width: 100%!important; padding: 0; border-spacing: 0;"><tr><td><tabl=
+e
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=3D"100%" style=
+=3D"width: 100% !important; padding: 0; border-spacing: 0;"><tr><td
+class=
+=3D"hidden-sm"><table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" st=
+yle=3D"padding: 0; border-spacing: 0;"><tr
+style=3D"font-size:1px; line-h=
+eight:0; mso-margin-top-alt:1px;"><td
+height=3D"10">=C2=A0</td></tr></tab=
+le></td></tr><tr><td><table
+cellspacing=3D"0" cellpadding=3D"0" border=3D=
+"0" style=3D"padding: 0; border-spacing: 0;"><tr
+style=3D"font-size:1px; =
+line-height:0; mso-margin-top-alt:1px;"><td
+height=3D"30" colspan=3D"5">=
+=C2=A0</td></tr><tr><td> <a
+href=3D"https://www.researchgate.net/profile/=
+Margarita_Lopez-Trascasa?pli=3D1&amp;loginT=3DN_U3blxExv6ZZHNm-1F-fiZU7u2Ll=
+Kewd29srks-FBzo7UmdZXLV5_fv8AvOeM7Z_HDmRQ6QK7sQJBzN2vigkRkm&amp;uid=3DHZEFY=
+SmHZOxk4BCKXGd5xHiwBwGcUeP7bQxc&amp;cp=3Dre389_en_p200&amp;ch=3Dreg&amp;utm=
+_medium=3Demail&amp;utm_source=3Dresearchgate&amp;utm_campaign=3Dre389&amp;=
+utm_term=3Dre389_en&amp;utm_content=3Dre389_en_p200" style=3D"text-decorati=
+on: none;"> <img
+src=3D"https://i1.rgstatic.net/ii/profile.image/27215195=
+3539072-1441897490123_Q64/Margarita_Lopez-Trascasa.jpg" width=3D"40" height=
+=3D"40" style=3D"width: 40px; height: 40px; border-radius: 50px; border: 0;=
+ outline: none; text-decoration: none; padding: 0; margin: 0;"></a></td><td=
+
+width=3D"10"></td><td
+style=3D"line-height: 21px; font-size: 14px; col=
+or: #555555; font-family: HelveticaNeue, arial, helvetica, clean, sans-seri=
+f"> <span
+class=3D"list-header" style=3D"font-size: 14px; color: #555; fo=
+nt-family: Helvetica, Arial, sans-serif"> A researcher in your extended net=
+work </span> <span
+class=3D"list-header" style=3D"font-size: 14px; color:=
+ #555; font-family: Helvetica, Arial, sans-serif"> is a collaborator on: </=
+span></td></tr><tr
+style=3D"font-size:1px; line-height:0; mso-margin-top-=
+alt:1px;"><td
+height=3D"10" colspan=3D"5">=C2=A0</td></tr></table></td></=
+tr><tr><td><table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=
+=3D"100%" style=3D"width: 100% !important; background-color: #ffffff; paddi=
+ng: 0; border-spacing: 0;"><tr
+style=3D"font-size:1px; line-height:0; mso=
+-margin-top-alt:1px;"><td
+height=3D"25">=C2=A0</td></tr><tr><td
+class=
+=3D"hidden-sm"><table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" st=
+yle=3D"padding: 0; border-spacing: 0;"><tr
+style=3D"font-size:1px; line-h=
+eight:0; mso-margin-top-alt:1px;"><td
+height=3D"10">=C2=A0</td></tr></tab=
+le></td></tr><tr><td><table
+cellspacing=3D"0" cellpadding=3D"0" borderspa=
+cing=3D"0" width=3D"100%" style=3D"width: 100% !important; padding: 0; bord=
+er-spacing: 0;"><tr><td
+width=3D"25" style=3D"width: 25px"></td><td
+wid=
+th=3D"10" style=3D"width: 10px" class=3D"hidden-sm"></td><td><table
+cells=
+pacing=3D"0" cellpadding=3D"0" border=3D"0" width=3D"100%" style=3D"width: =
+100% !important; padding: 0; border-spacing: 0;"><tr><td
+style=3D"text-al=
+ign: left"><div
+class=3D"project-heading" style=3D"font-family: 'Roboto',=
+Arial,sans-serif; font-size: 14px; font-weight: 700; color: #111;"> Project=
+</div></td></tr><tr
+style=3D"font-size:1px; line-height:0; mso-margin-top=
+-alt:1px;"><td
+height=3D"5">=C2=A0</td></tr><tr><td
+style=3D"text-align=
+: left"><div
+class=3D"project-title nova-font-size-l" style=3D"font-famil=
+y: 'Roboto',Arial,sans-serif; font-size: 22px; line-height: 130%; color: #1=
+11;"> <a
+href=3D"https://www.researchgate.net/project/Hereditary-Angioede=
+ma-3?pli=3D1&amp;loginT=3DN_U3blxExv6ZZHNm-1F-fiZU7u2LlKewd29srks-FBzo7UmdZ=
+XLV5_fv8AvOeM7Z_HDmRQ6QK7sQJBzN2vigkRkm&amp;uid=3DHZEFYSmHZOxk4BCKXGd5xHiwB=
+wGcUeP7bQxc&amp;cp=3Dre389_en_p2&amp;ch=3Dreg&amp;utm_medium=3Demail&amp;ut=
+m_source=3Dresearchgate&amp;utm_campaign=3Dre389&amp;utm_term=3Dre389_en&am=
+p;utm_content=3Dre389_en_p2" class=3D"project" style=3D"color: #111111; tex=
+t-decoration: none;"> Hereditary Angioedema </a></div></td></tr><tr
+style=
+=3D"font-size:1px; line-height:0; mso-margin-top-alt:1px;"><td
+height=3D"=
+10">=C2=A0</td></tr><tr><td
+style=3D"text-align: left"><div
+class=3D"pr=
+oject-collaborators" style=3D"font-family: 'Roboto',Arial,sans-serif; font-=
+size: 14px; line-height: 150%; color: #777;"> Anastasios Germenis, Matthaio=
+s Speletas, Maria Kom...</div></td></tr><tr
+style=3D"font-size:1px; line-=
+height:0; mso-margin-top-alt:1px;"><td
+height=3D"20">=C2=A0</td></tr><tr>=
+<td><table
+class=3D"mail-button-container" cellpadding=3D"0" cellspacing=
+=3D"0" style=3D"padding: 0; border-spacing: 0;"><tr><td
+class=3D"mail-but=
+ton " align=3D"center" height=3D"41" style=3D"width: 135px; padding: 0; bor=
+der-radius: .125rem; border: 0; box-shadow: 0; background-color: #0080FF;">=
+ <a
+href=3D"https://www.researchgate.net/project/Hereditary-Angioedema-3?=
+pli=3D1&amp;loginT=3DN_U3blxExv6ZZHNm-1F-fiZU7u2LlKewd29srks-FBzo7UmdZXLV5_=
+fv8AvOeM7Z_HDmRQ6QK7sQJBzN2vigkRkm&amp;uid=3DHZEFYSmHZOxk4BCKXGd5xHiwBwGcUe=
+P7bQxc&amp;cp=3Dre389_en_p100&amp;ch=3Dreg&amp;utm_medium=3Demail&amp;utm_s=
+ource=3Dresearchgate&amp;utm_campaign=3Dre389&amp;utm_term=3Dre389_en&amp;u=
+tm_content=3Dre389_en_p100" style=3D"height: 100% !important; line-height: =
+41px; text-decoration: none; font-size: 14px; text-align: center; display: =
+block; margin: 0; font-family: 'Roboto',Arial,sans-serif; width: 100%; colo=
+r: #fff;"> View project </a></td></tr></table></td></tr></table></td><td
+=
+width=3D"10" style=3D"width: 10px" class=3D"hidden-sm"></td><td
+width=3D"=
+25" style=3D"width: 25px"></td></tr></table></td></tr><tr><td
+class=3D"hi=
+dden-sm"><table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" style=3D=
+"padding: 0; border-spacing: 0;"><tr
+style=3D"font-size:1px; line-height:=
+0; mso-margin-top-alt:1px;"><td
+height=3D"10">=C2=A0</td></tr></table></t=
+d></tr><tr
+style=3D"font-size:1px; line-height:0; mso-margin-top-alt:1px;=
+"><td
+height=3D"25">=C2=A0</td></tr></table></td></tr></table></td></tr><=
+/table></td></tr></table></td></tr><tr
+style=3D"font-size:1px; line-heigh=
+t:0; mso-margin-top-alt:1px;"><td
+height=3D"2">=C2=A0</td></tr><tr><td
+=
+align=3D"center"><table
+class=3D"main-content-box" cellspacing=3D"0" cell=
+padding=3D"0" width=3D"100%" style=3D"width: 100%!important; padding: 0; bo=
+rder-spacing: 0;"><tr><td><table
+cellspacing=3D"0" cellpadding=3D"0" widt=
+h=3D"100%" style=3D"width: 100%!important; padding: 0; border-spacing: 0;">=
+<tr><td
+class=3D"hidden-sm"><table
+cellspacing=3D"0" cellpadding=3D"0" =
+border=3D"0" style=3D"padding: 0; border-spacing: 0;"><tr
+style=3D"font-s=
+ize:1px; line-height:0; mso-margin-top-alt:1px;"><td
+height=3D"10">=C2=
+=A0</td></tr></table></td></tr><tr><td><table
+cellspacing=3D"0" cellpaddi=
+ng=3D"0" border=3D"0" width=3D"100%" style=3D"width: 100% !important; backg=
+round-color: #ffffff; padding: 0; border-spacing: 0;"><tr
+style=3D"font-s=
+ize:1px; line-height:0; mso-margin-top-alt:1px;"><td
+height=3D"25">=C2=
+=A0</td></tr><tr><td
+class=3D"hidden-sm"><table
+cellspacing=3D"0" cellp=
+adding=3D"0" border=3D"0" style=3D"padding: 0; border-spacing: 0;"><tr
+st=
+yle=3D"font-size:1px; line-height:0; mso-margin-top-alt:1px;"><td
+height=
+=3D"10">=C2=A0</td></tr></table></td></tr><tr><td><table
+cellspacing=3D"0=
+" cellpadding=3D"0" borderspacing=3D"0" width=3D"100%" style=3D"width: 100%=
+ !important; padding: 0; border-spacing: 0;"><tr><td
+width=3D"25" style=
+=3D"width: 25px"></td><td
+width=3D"10" style=3D"width: 10px" class=3D"hid=
+den-sm"></td><td><table
+class=3D"discover-more-container" cellspacing=3D"=
+0" cellpadding=3D"0" border=3D"0" width=3D"100%" style=3D"width: 100% !impo=
+rtant; padding: 0; border-spacing: 0;"><tr
+style=3D"font-size:1px; line-h=
+eight:0; mso-margin-top-alt:1px;"><td
+height=3D"5">=C2=A0</td></tr><tr><t=
+d
+align=3D"center"><div
+class=3D"project-discover" style=3D"word-wrap: =
+break-word; word-break: normal; font-family: 'Roboto',Arial,sans-serif; fon=
+t-size: 14px; color: #111;"> <a
+href=3D"https://www.researchgate.net//?pl=
+i=3D1&amp;loginT=3DN_U3blxExv6ZZHNm-1F-fiZU7u2LlKewd29srks-FBzo7UmdZXLV5_fv=
+8AvOeM7Z_HDmRQ6QK7sQJBzN2vigkRkm&amp;uid=3DHZEFYSmHZOxk4BCKXGd5xHiwBwGcUeP7=
+bQxc&amp;cp=3Dre389_en_p1&amp;ch=3Dreg&amp;utm_medium=3Demail&amp;utm_sourc=
+e=3Dresearchgate&amp;utm_campaign=3Dre389&amp;utm_term=3Dre389_en&amp;utm_c=
+ontent=3Dre389_en_p1" class=3D"discover-link" style=3D"text-decoration: non=
+e; color: #0080FF;"> Discover more projects </a> on ResearchGate</div></td>=
+</tr></table></td><td
+width=3D"10" style=3D"width: 10px" class=3D"hidden-=
+sm"></td><td
+width=3D"25" style=3D"width: 25px"></td></tr></table></td></=
+tr><tr><td
+class=3D"hidden-sm"><table
+cellspacing=3D"0" cellpadding=3D"=
+0" border=3D"0" style=3D"padding: 0; border-spacing: 0;"><tr
+style=3D"fon=
+t-size:1px; line-height:0; mso-margin-top-alt:1px;"><td
+height=3D"10">=
+=C2=A0</td></tr></table></td></tr><tr
+style=3D"font-size:1px; line-height=
+:0; mso-margin-top-alt:1px;"><td
+height=3D"25">=C2=A0</td></tr></table></=
+td></tr></table></td></tr></table></td></tr></table></td></tr></table></td>=
+<td
+width=3D"36" style=3D"width: 36px" class=3D"hidden-sm"></td><td
+wid=
+th=3D"20" style=3D"width: 20px"></td></tr></table></td></tr><tr
+style=3D"=
+font-size:1px; line-height:0; mso-margin-top-alt:1px;"><td
+height=3D"100"=
+>=C2=A0</td></tr><tr><td
+class=3D"hidden-sm"><table
+cellspacing=3D"0" c=
+ellpadding=3D"0" border=3D"0" style=3D"padding: 0; border-spacing: 0;"><tr=
+
+style=3D"font-size:1px; line-height:0; mso-margin-top-alt:1px;"><td
+he=
+ight=3D"30">=C2=A0</td></tr></table></td></tr></table></td></tr></table></t=
+d></tr></table> <!--[if (gte mso 9)|(IE)]></td></tr></table><![endif]--></t=
+d></tr></table><table
+class=3D"footer-outer" width=3D"100%" align=3D"cent=
+er" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" style=3D"width: 100% !=
+important; padding: 0; border-spacing: 0;"><tr><td> <!--[if (gte mso 9)|(IE=
+)]><table
+width=3D"590" align=3D"center" cellpadding=3D"0" cellspacing=3D=
+"0" border=3D"0"><tr><td><![endif]--><table
+class=3D"footer" align=3D"cen=
+ter" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" style=3D"width: 100% =
+!important; max-width: 590px; padding: 0; border-spacing: 0;"><tr><td><tabl=
+e
+class=3D"mail-footer" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0=
+" border=3D"0" style=3D"width: 100% !important; padding: 0; border-spacing:=
+ 0;"><tbody><tr
+style=3D"font-size:1px; line-height:0; mso-margin-top-alt=
+:1px;"><td
+height=3D"30">=C2=A0</td></tr><tr><td><table
+cellspacing=3D"=
+0" cellpadding=3D"0" borderspacing=3D"0" width=3D"100%" style=3D"width: 100=
+% !important; padding: 0; border-spacing: 0;"><tr><td
+width=3D"10" style=
+=3D"width: 10px"></td><td
+width=3D"20" style=3D"width: 20px" class=3D"hid=
+den-sm"></td><td><table
+width=3D"100%" cellspacing=3D"0" cellpadding=3D"0=
+" border=3D"0" style=3D"width: 100% !important; padding: 20px 0; border-spa=
+cing: 0; border-top: 0; padding-top: 0;" class=3D"mail-footer-content"><tbo=
+dy><tr><td><p
+class=3D"mail-footer-line" style=3D"font-size: 11px; line-h=
+eight: 15px; font-family: 'Roboto',Arial,sans-serif; color: #888; margin-bo=
+ttom: 20px; text-align: center;"> This message was sent to aalaa_101123@svu=
+online.org by ResearchGate. To make sure you receive our updates, add Resea=
+rchGate to your address book or safe list. <a
+style=3D"text-decoration: u=
+nderline; font-size: 11px; line-height: 15px; font-family: 'Roboto',Arial,s=
+ans-serif; color: #888; margin-bottom: 20px; text-align: center;" href=3D"h=
+ttps://www.researchgate.net/help/whitelist-email?cp=3Dre389_en_we&amp;mfl=
+=3D1&amp;ch=3Dreg&amp;uid=3DHZEFYSmHZOxk4BCKXGd5xHiwBwGcUeP7bQxc">See instr=
+uctions</a><br><br> If you don't want to receive these emails from Research=
+Gate in the future, please <a
+style=3D"text-decoration: underline; font-s=
+ize: 11px; line-height: 15px; font-family: 'Roboto',Arial,sans-serif; color=
+: #888; margin-bottom: 20px; text-align: center;" href=3D"https://www.resea=
+rchgate.net/go.Out.projectSuggestionsMail.html?loginT=3DN_U3blxExv6ZZHNm-1F=
+-fiZU7u2LlKewd29srks-FBzo7UmdZXLV5_fv8AvOeM7Z_HDmRQ6QK7sQJBzN2vigkRkm&amp;c=
+p=3Dre389_en_u1&amp;mfl=3D1&amp;ch=3Dreg&amp;uid=3DHZEFYSmHZOxk4BCKXGd5xHiw=
+BwGcUeP7bQxc">unsubscribe</a>.<br><br>ResearchGate GmbH, Chausseestr. 20, 1=
+0115 Berlin, Germany. <a
+style=3D"color: #888; text-decoration: underline=
+; font-size: 11px; line-height: 15px; font-family: 'Roboto',Arial,sans-seri=
+f; margin-bottom: 20px; text-align: center;" href=3D"https://www.researchga=
+te.net/imprint?cp=3Dre389_en_im">Imprint.</a><br> See our <a
+style=3D"tex=
+t-decoration: underline; font-size: 11px; line-height: 15px; font-family: '=
+Roboto',Arial,sans-serif; color: #888; margin-bottom: 20px; text-align: cen=
+ter;" href=3D"https://www.researchgate.net/privacy-policy?cp=3Dre389_en_pp&=
+amp;mfl=3D1&amp;ch=3Dreg&amp;uid=3DHZEFYSmHZOxk4BCKXGd5xHiwBwGcUeP7bQxc">Pr=
+ivacy Policy</a> and <a
+style=3D"text-decoration: underline; font-size: 1=
+1px; line-height: 15px; font-family: 'Roboto',Arial,sans-serif; color: #888=
+; margin-bottom: 20px; text-align: center;" href=3D"https://www.researchgat=
+e.net/terms-of-service?cp=3Dre389_en_tos&amp;mfl=3D1&amp;ch=3Dreg&amp;uid=
+=3DHZEFYSmHZOxk4BCKXGd5xHiwBwGcUeP7bQxc">Terms of Service</a>.</p></td></tr=
+></tbody></table></td><td
+width=3D"20" style=3D"width: 20px" class=3D"hid=
+den-sm"></td><td
+width=3D"10" style=3D"width: 10px"></td></tr></table></t=
+d></tr></tbody></table></td></tr></table> <!--[if (gte mso 9)|(IE)]></td></=
+tr></table><![endif]--></td></tr></table></td></tr><tr><td
+class=3D"hidde=
+n-sm"> <img
+alt=3D"" width=3D"590" height=3D"1" border=3D"0" style=3D"dis=
+play: block; min-height: 1px; max-height: 1px; width: 590px; min-width: 590=
+px; border: 0; outline: none; text-decoration: none; padding: 0; margin: 0;=
+" src=3D"data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAAB=
+AAEAAAIBRAA7"></td></tr></table></body></html>
+
+--_=_swift_1569930497_589b9d98e03e070617bf3498e071fd7f_=_--
+

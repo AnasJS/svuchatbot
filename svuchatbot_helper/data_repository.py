@@ -1,5 +1,8 @@
 import nltk
 import numpy
+
+from svuchatbot_config import db_connection_params
+from svuchatbot_mogodb.client import get_client
 from svuchatbot_repository.stemmers import snowball_stemmer
 
 
@@ -74,3 +77,10 @@ def bag_of_words(s, words):
                 bag[i] = 1
 
     return numpy.array(bag)
+
+def bag_of_words_from_mails():
+    db_client = get_client()
+    db_name = db_connection_params['db']
+    db = db_client[db_name]
+    col = db['analysed']
+    mails = col.find({'payload'})
