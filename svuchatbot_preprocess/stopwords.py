@@ -5,18 +5,35 @@ import camel_tools
 # print(dediac_ar("الحَمدُ للًَهِ" ))
 
 from nltk.corpus import stopwords
-
-from svuchatbot_preprocess.bag_of_word import camel_based_bag,nltk_based_bag
+from pprint import pprint
+# from svuchatbot_preprocess.bag_of_word import camel_based_bag,nltk_based_bag
 from nltk.corpus import stopwords
-def nltk_based_filter_stopwords():
-    n_fdist = nltk_based_bag()
-    c_fdsit = camel_based_bag()
-    arabic_stopwords = stopwords.words('arabic')
-    res = {k:v for k,v in n_fdist.items() if k not in arabic_stopwords}
-    print("hgjfkdlshgjfkdlsljghjfkdsldkfjghjfkdls;aslkfjghjfkdlsldkfjghjfkdls;lkfjgfkdls;lkfjkdls;a")
-    print(res)
-    print(len(res))
+import arabicstopwords.arabicstopwords as stp
 
-nltk_based_filter_stopwords()
+
+def nltk_based_filter_stopwords_for_sentence(sent):
+    return [w for w in sent if w not in stopwords.words('arabic')]
+
+
+def arabic_stopwords_based_filter_stopwords_for_sentence(sent):
+    arabic_stopwords = stp.stopwords_list()
+    return [w for w in sent if w not in arabic_stopwords]
+
+#
+# def nltk_based_filter_stopwords():
+#     n_fdist = nltk_based_bag()
+#     arabic_stopwords = stopwords.words('arabic')
+#     return {k:v for k,v in n_fdist.items() if k not in arabic_stopwords}
+#
+#
+# def arabic_stopwords_based_filter_stopwords():
+#     n_fdist = camel_based_bag()
+#     arabic_stopwords = stp.stopwords_list()
+#     return {k:v for k,v in n_fdist.items() if k not in arabic_stopwords}
+
+
+# nltk_based_filter_stopwords()
 # import nltk
+# pprint(arabic_stopwords_based_filter_stopwords().keys())
 # nltk.download('stopwords')
+
