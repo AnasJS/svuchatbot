@@ -140,11 +140,11 @@ def find_pairs():
     for c in conversation:
         print("file name of p1 : " ,c["q_file_name"],"\n")
         print("From : ",c["q_from"],"\n")
-        # print("question : ", c["q_content"],"\n")
-        # print("/*","\n")
+        print("question : ", c["q_content"],"\n")
+        print("/*","\n")
         print("file name of p2 : " ,c["a_file_name"],"\n")
         print("From : ",c["a_from"],"\n")
-        # print("answer : ",c["a_content"])
+        print("answer : ",c["a_content"])
         print("***********")
 
     return conversation
