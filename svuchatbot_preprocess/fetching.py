@@ -62,12 +62,12 @@ def email_to_db(_email, db, col, file_name):
             col.insert_one(email_as_dict)
 
 
-def insert_emails_into_db():
+def insert_emails_into_db(collection_name = 'mails'):
     mails = dict()
     db_client = get_client()
     db_name = db_connection_params['db']
     db = db_client[db_name]
-    col = db['mails']
+    col = db[collection_name]
     all_types = set()
     for x, y in fetch():
         mp = join(x, y)
@@ -102,11 +102,11 @@ def insert_emails_into_db():
 #             print(email.is_multipart())
 #
 
-def find_pairs():
+def find_pairs(from_col,to_col):
     db_client = get_client()
     db_name = db_connection_params['db']
     db = db_client[db_name]
-    col = db['analysed']
+    col = db[from_col]
     replies_emails = [e for e  in col.find({"In-Reply-To": {"$exists": True}},["Message-ID","In-Reply-To", "References", "From", "To", "payload",'file_name'])]
     start_emails = [e for e in col.find({"In-Reply-To": {"$exists": False}},["Message-ID", "From", "To", "payload",'file_name'])]
     conversation = [
@@ -146,8 +146,8 @@ def find_pairs():
         print("From : ",c["a_from"],"\n")
         print("answer : ",c["a_content"])
         print("***********")
-
-    return conversation
+    db[to_col].insert_many(conversation)
+    # return to_col
 
 
 def fields_based_filter(collection,
@@ -164,21 +164,21 @@ def device_based_filter(documents, excluded_field="X-Android-Message-ID"):
     return [e for e in documents if excluded_field not in e.keys()]
 
 
-def filtering():
-    # todo delete check conent languafe for english or english and arabic
-    # todo delete all emails from andriod
-    # todo  create pairs of Qustion and answer
-    # todo delete multiple replay
+def filtering(from_col,to_col):
+    # delete check conent languafe for english or english and arabic
+    # delete all emails from andriod
+    # create pairs of Qustion and answer
+    # delete multiple replay
 
     db_client = get_client()
     db_name = db_connection_params['db']
     db = db_client[db_name]
-    col = db['mails']
+    col = db[from_col]
     documents = fields_based_filter(col)
     documents = language_based_filter(documents)
-    # documents = device_based_filter(documents)
+    documents = device_based_filter(documents)
 
-    db['analysed'].insert_many(documents)
+    db[to_col].insert_many(documents)
 def parse_multipart_emails():
     ##  not to use
     db_client = get_client()
@@ -211,16 +211,16 @@ def parse_multipart_emails():
 # print(fetch())
 
 #
-db_client = get_client()
-db_name = db_connection_params['db']
-db = db_client[db_name]
-db.drop_collection("mails")
-db.drop_collection("analysed")
-db.drop_collection("multipart")
-insert_emails_into_db()
-
-filtering()
-
+# db_client = get_client()
+# db_name = db_connection_params['db']
+# db = db_client[db_name]
+# db.drop_collection("mails")
+# db.drop_collection("analysed")
+# db.drop_collection("multipart")
+# insert_emails_into_db()
 #
-find_pairs()
+# filtering()
+#
+# #
+# find_pairs()
 # parse_multipart_emails()

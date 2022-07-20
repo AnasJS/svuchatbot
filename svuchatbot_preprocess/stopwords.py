@@ -10,6 +10,9 @@ from pprint import pprint
 from nltk.corpus import stopwords
 import arabicstopwords.arabicstopwords as stp
 
+from svuchatbot_config import db_connection_params
+from svuchatbot_mogodb.client import get_client
+
 
 def nltk_based_filter_stopwords_for_sentence(sent):
     return [w for w in sent if w not in stopwords.words('arabic')]
@@ -18,6 +21,18 @@ def nltk_based_filter_stopwords_for_sentence(sent):
 def arabic_stopwords_based_filter_stopwords_for_sentence(sent):
     arabic_stopwords = stp.stopwords_list()
     return [w for w in sent if w not in arabic_stopwords]
+
+
+def remove_stop_words(from_col, to_col):
+    db_client = get_client()
+    db_name = db_connection_params['db']
+    db = db_client[db_name]
+    col = db[from_col]
+    documents = [d for d in col.find()]
+    for item in documents:
+        item["cleaned_tokens"] = arabic_stopwords_based_filter_stopwords_for_sentence(item["tokens"])
+    db[to_col].insert_many(documents)
+    return documents
 
 #
 # def nltk_based_filter_stopwords():

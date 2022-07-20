@@ -72,13 +72,17 @@ def build_vectorizer(sentences, vocab=None, min_df=0.0, max_df=1.0,
 
     return cvec, feature_names, df_bag_of_words, tfidf, df_weights, cos_sim, samp_dist
 
-def extract_key_words(col= "mails_from_files"):
-    sentences = nltk_based_accumulate_clean_phrases(col=col)
+def extract_key_words(from_col= "mails_from_files",to_col="tf-idf"):
+    db_client = get_client()
+    db_name = db_connection_params['db']
+    db = db_client[db_name]
+    collection = db[from_col]
+    sentences = [d["payload"] for d in collection.find()]
 
-    # sentences = df_sentences['Sentence'].values.tolist()
     cvec, feature_names, df_bag_of_words, tfidf, df_weights, cos_sim, samp_dist = build_vectorizer(sentences)
 
     df_tfidf = pd.DataFrame(tfidf.todense(), columns=feature_names)
+    # res = {message_id:tf_idf_row for message_id,tf_idf_row in zip(sentences.keys(), df_tfidf.iloc)}
 
     print("%d dummy sentences:" % len(sentences))
     print(sentences)
@@ -93,15 +97,15 @@ def extract_key_words(col= "mails_from_files"):
     print(df_weights)
     print("---")
     print("cos_sim[%d,%d] (a square matrix of length and width = len(sentences)):" % (len(sentences), len(sentences)))
-    print(type(cos_sim))
+    print(cos_sim)
     print("df_bag_of_words[%d,%d]:" % (len(sentences), len(feature_names)))
     print(df_bag_of_words)
     "/************************** insert into db **********************************/"
-    db_client = get_client()
-    db_name = db_connection_params['db']
-    db = db_client[db_name]
-    collection = db[col]
-    documents = [d for d in collection.find()]
+    # db_client = get_client()
+    # db_name = db_connection_params['db']
+    # db = db_client[db_name]
+    # collection = db[col]
+    # documents = [d for d in collection.find()]
     # res=[]
     # for cs in cos_sim:
     #     res_r=[]
@@ -109,20 +113,54 @@ def extract_key_words(col= "mails_from_files"):
     #         if cs[i]>0.5:
     #             res_r.append(feature_names[i])
     #     res.append({"key_words" :res_r})
-    res = []
-    for r in df_tfidf.iloc:
-        res_r = []
-        for c in df_tfidf.columns:
-            if r[c] > 0.1:
-                res_r.append(c)
-        res.append({"key_words" :res_r})
+    # res = []
+    # for r in df_tfidf.iloc:
+    #     res_r = []
+    #     for c in df_tfidf.columns:
+    #         if r[c] > 0.1:
+    #             res_r.append(c)
+    #     res.append({"key_words" :res_r})
+    #
+    # new_collection = [{**d, **r} for (d,r) in zip(documents,res)]
+    # db["mails_with_key_word"].insert_many(new_collection)
 
-    new_collection = [{**d, **r} for (d,r) in zip(documents,res)]
-    db["mails_with_key_word"].insert_many(new_collection)
+
+    document = {
+        # "cvec" : cvec ,
+     "feature_names" : feature_names ,
+     # "df_bag_of_words" : df_bag_of_words.to_dict() ,
+     # "tfidf" : df_tfidf.to_dict() ,
+     # "df_weights" : df_weights.to_dict() ,
+     # "cos_sim" : cos_sim ,
+     # "samp_dist" : samp_dist
+    }
+    db[to_col].insert_one(document)
+
+    collection = db[from_col]
+    messages_ids = [d["Message-ID"] for d in collection.find({},["Message-ID"])]
+    m_db = db_client["Methodology"]
+    col = m_db["TF-IDF"]
+    for id,item in zip(messages_ids,df_tfidf.iloc):
+        item=item.to_dict()
+        item["Message-ID"] = id
+        col.insert_one(dict(item))
+
+    col = m_db["Bag-Of-Words"]
+    for item in df_bag_of_words.iloc:
+        col.insert_one(item.to_dict())
+
+    col = m_db["Weights"]
+    for item in df_weights.iloc:
+        col.insert_one(item.to_dict())
 
 
-extract_key_words()
-extract_key_words(col="analysed")
+    col = m_db["COS_SIN"]
+    for id,item in zip(messages_ids,cos_sim):
+        col.insert_one({"Messag-ID":id,"cos_sin":list(item)})
+
+#
+# extract_key_words()
+# extract_key_words(col="analysed")
 
 
 
