@@ -1,0 +1,157 @@
+Return-Path: <survey@svuonline.org>
+Delivered-To: rasha_104135@svuonline.org
+Received: from localhost (localhost [127.0.0.1])
+	by mail.svuonline.org (Postfix) with ESMTP id 6DF39EB212
+	for <rasha_104135@svuonline.org>; Thu, 21 Nov 2019 15:54:48 +0200 (EET)
+X-Virus-Scanned: Debian amavisd-new at mail.svuonline.org
+X-Spam-Flag: NO
+X-Spam-Score: -2.898
+X-Spam-Level:
+X-Spam-Status: No, score=-2.898 tagged_above=-9999 required=6.31
+	tests=[ALL_TRUSTED=-1, BAYES_00=-1.9, HTML_MESSAGE=0.001,
+	URIBL_BLOCKED=0.001] autolearn=ham autolearn_force=no
+Received: from mail.svuonline.org ([127.0.0.1])
+	by localhost (mail.svuonline.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id uMN7hXqfCXDt for <rasha_104135@svuonline.org>;
+	Thu, 21 Nov 2019 15:54:47 +0200 (EET)
+Received: from survey.svuonline.org (unknown [10.1.15.25])
+	by mail.svuonline.org (Postfix) with ESMTP id CF9BA128608
+	for <rasha_104135@svuonline.org>; Thu, 21 Nov 2019 15:49:01 +0200 (EET)
+Date: Thu, 21 Nov 2019 14:14:41 +0000
+To: Rasha AlKayal <rasha_104135@svuonline.org>
+From: SVU Programming Competition <survey@svuonline.org>
+Reply-to: SVU Programming Competition <survey@svuonline.org>
+Subject: =?utf-8?B?2KfYs9iq2KjZitin2YYg2KfZhNmF2LPYp9io2YLYqSDYp9mE2KjYsdmF2KzZitip?=
+Message-ID: <c0f2db1ddab88e960caecfac4e209121@survey.svuonline.org>
+X-Priority: 3
+X-Mailer: PHPMailer 5.1 (phpmailer.sourceforge.net)
+X-surveyid: 826338
+X-tokenid: rm84nay4v4qteci
+X-Surveymailer: SVU Students Survey System Emailer (LimeSurvey.sourceforge.net)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="b1_c0f2db1ddab88e960caecfac4e209121"
+
+
+--b1_c0f2db1ddab88e960caecfac4e209121
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+
+	
+		
+	
+	
+		
+			الطلاب الأعزاء،
+		
+			فيما يلي الاستبيان الخاص بالمسابقة البرمجية الجامعية للفصل S19، يرجى الإجابة على الأسئلة التالية في حال رغبتكم بالمشاركة في المسابقة.
+		
+			مع العلم أنه يحق للطالب الاشتراك في المسابقة البرمجية للكليات الجامعية في حال:
+		
+			حقق الشروط العامة التالية:
+		
+			
+				أن يكون طالباً جامعياً في إحدى الجامعات السورية.
+			
+				أن لا يكون قد شارك في النهائي العالمي أكثر من مرتين.
+			
+				أن لا يكون قد شارك في النهائي الإقليمي أكثر من خمس مرات.
+		
+		
+			حقق أحد الشرطين التاليين، بالإضافة إلى الشروط العامة السابقة:
+		
+			
+				أن يكون الطالب قد بدأ دراسته الجامعية قبل أربعة أعوام ميلادية على الأكثر من العام الجاري للمسابقة التي يشارك بها.
+			
+				أن يكون عمر الطالب أقل من 24 عاماً.
+		
+		
+			 
+		
+			بإمكانكم الحصول على معلومات عن المسابقة من خلال الرابط التالي: https://svuonline.org/ar/acm
+		
+			وصفحة المسابقة البرمجية في الجامعة الافتراضية على الفيسبوك: https://www.facebook.com/groups/ACM.SVU/?fref=ts
+		
+			وصفحة المسابقة البرمجية السورية على فايسبوك: https://www.facebook.com/SyriaCPC
+		
+			ورابط موقع المسابقة العالمية على الإنترنت: http://icpc.baylor.edu
+		
+			ولأي استفسار يمكن مراسلة إدارة برنامج المسابقة على الإيميل: acm_pd@svuonline.org
+		
+			 
+		
+			فيما يلي رابط الاستبيان:
+		
+			http://survey.svuonline.org/stdSurvey/index.php/survey/index/sid/826338/token/rm84nay4v4qteci/lang/ar
+		
+			علماً بأن أخر موعد للإجابة على الاستبيان هو يوم الثلاثاء 3/12/2019
+		
+			وشكراً
+	
+
+
+
+--b1_c0f2db1ddab88e960caecfac4e209121
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+<html>
+	<head>
+		<title></title>
+	</head>
+	<body>
+		<p dir="RTL">
+			<strong>الطلاب الأعزاء،</strong></p>
+		<p dir="RTL">
+			فيما يلي الاستبيان الخاص بالمسابقة البرمجية الجامعية للفصل <span dir="LTR">S19</span>، يرجى الإجابة على الأسئلة التالية في حال رغبتكم بالمشاركة في المسابقة.</p>
+		<p dir="RTL">
+			مع العلم أنه يحق للطالب الاشتراك في المسابقة البرمجية للكليات الجامعية في حال:</p>
+		<p dir="RTL">
+			<u>حقق الشروط العامة التالية</u>:</p>
+		<ol dir="rtl">
+			<li>
+				أن يكون طالباً جامعياً في إحدى الجامعات السورية.</li>
+			<li>
+				أن لا يكون قد شارك في النهائي العالمي أكثر من مرتين.</li>
+			<li>
+				أن لا يكون قد شارك في النهائي الإقليمي أكثر من خمس مرات.</li>
+		</ol>
+		<p dir="RTL">
+			<u>حقق أحد الشرطين التاليين، بالإضافة إلى الشروط العامة السابقة</u>:</p>
+		<ol dir="rtl">
+			<li>
+				أن يكون الطالب قد بدأ دراسته الجامعية قبل أربعة أعوام ميلادية على الأكثر من العام الجاري للمسابقة التي يشارك بها.</li>
+			<li>
+				أن يكون عمر الطالب أقل من 24 عاماً.</li>
+		</ol>
+		<p dir="rtl">
+			 </p>
+		<p dir="RTL">
+			بإمكانكم الحصول على معلومات عن المسابقة من خلال الرابط التالي: <strong><a href="https://svuonline.org/ar/acm"><span dir="LTR">https://svuonline.org/ar/acm</span></a></strong></p>
+		<p dir="RTL">
+			وصفحة المسابقة البرمجية في الجامعة الافتراضية على الفيسبوك: <strong><a href="https://www.facebook.com/groups/ACM.SVU/?fref=ts"><span dir="LTR">https://www.facebook.com/groups/ACM.SVU/?fref=ts</span></a></strong></p>
+		<p dir="RTL">
+			وصفحة المسابقة البرمجية السورية على فايسبوك: <strong><a href="https://www.facebook.com/SyriaCPC"><span dir="LTR">https://www.facebook.com/SyriaCPC</span></a></strong></p>
+		<p dir="RTL">
+			ورابط موقع المسابقة العالمية على الإنترنت: <strong><a href="http://icpc.baylor.edu"><span dir="LTR">http://icpc.baylor.edu</span></a></strong></p>
+		<p dir="RTL">
+			ولأي استفسار يمكن مراسلة إدارة برنامج المسابقة على الإيميل: <strong><a href="mailto:acm_pd@svuonline.org"><span dir="LTR">acm_pd@svuonline.org</span></a></strong></p>
+		<p dir="RTL">
+			 </p>
+		<p dir="RTL">
+			<strong>فيما يلي رابط الاستبيان:</strong></p>
+		<p dir="RTL">
+			<span dir="LTR"><a href='http://survey.svuonline.org/stdSurvey/index.php/survey/index/sid/826338/token/rm84nay4v4qteci/lang/ar'>http://survey.svuonline.org/stdSurvey/index.php/survey/index/sid/826338/token/rm84nay4v4qteci/lang/ar</a></span></p>
+		<p dir="RTL">
+			علماً بأن أخر موعد للإجابة على الاستبيان هو يوم الثلاثاء 3/12/2019</p>
+		<p dir="RTL">
+			وشكراً</p>
+	</body>
+</html>
+
+
+
+--b1_c0f2db1ddab88e960caecfac4e209121--
+
+

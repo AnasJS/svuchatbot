@@ -1,0 +1,72 @@
+Return-Path: <MAILER-DAEMON>
+Delivered-To: aalaa_101123@svuonline.org
+Received: from localhost (localhost [127.0.0.1])
+	by mail.svuonline.org (Postfix) with ESMTP id CDD5999A1C
+	for <aalaa_101123@svuonline.org>; Sun,  5 Jan 2020 14:47:58 +0200 (EET)
+X-Virus-Scanned: Debian amavisd-new at mail.svuonline.org
+X-Spam-Flag: NO
+X-Spam-Score: -2.899
+X-Spam-Level:
+X-Spam-Status: No, score=-2.899 tagged_above=-9999 required=6.31
+	tests=[ALL_TRUSTED=-1, BAYES_00=-1.9, URIBL_BLOCKED=0.001]
+	autolearn=ham autolearn_force=no
+Received: from mail.svuonline.org ([127.0.0.1])
+	by localhost (mail.svuonline.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id E70wky_HZAbc for <aalaa_101123@svuonline.org>;
+	Sun,  5 Jan 2020 14:47:58 +0200 (EET)
+Received: from mail.svuonline.org (unknown [10.1.15.110])
+	by mail.svuonline.org (Postfix) with ESMTP id 1FBBD87645
+	for <aalaa_101123@svuonline.org>; Sun,  5 Jan 2020 14:47:58 +0200 (EET)
+MIME-Version: 1.0
+Content-Type: multipart/report;
+ report-type=disposition-notification;
+ boundary="=_c79627d92097f6ff30a9ff104cd27d92"
+Date: Sun, 05 Jan 2020 15:06:49 +0200
+From: "Rasha AlKayal (104135)" <rasha_104135@svuonline.org>
+To: aalaa_101123@svuonline.org
+Subject: =?UTF-8?Q?=D8=A5=D9=8A=D8=B5=D8=A7=D9=84_=D8=A7=D9=84=D8=A7?=
+ =?UTF-8?Q?=D8=B3=D8=AA=D9=84=D8=A7=D9=85_=29=D8=A8=D8=A7=D9=84=D9=82?=
+ =?UTF-8?Q?=D8=B1=D8=A7=D8=A1=D8=A9=29=3A_Test_replay?=
+Message-ID: <557ff98703017da8c03a5fb240918a4d@svuonline.org>
+X-Sender: rasha_104135@svuonline.org
+References: <dcfbffa508f33994a63ce6120fc01745@svuonline.org>
+User-Agent: Roundcube Webmail/1.1.1
+
+--=_c79627d92097f6ff30a9ff104cd27d92
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+
+=D9=87=D8=B0=D8=A7 =D8=A5=D9=8A=D8=B5=D8=A7=D9=84 =D8=A8=D9=82=D8=B1=D8=A7=
+=D8=A1=D8=A9 =D8=B1=D8=B3=D8=A7=D9=84=D8=AA=D9=83
+
+	=D8=A7=D9=84=D9=85=D8=B3=D8=AA=D9=82=D8=A8=D9=84: Rasha AlKayal <rasha_104=
+135@svuonline.org>
+	=D8=A7=D9=84=D9=85=D9=88=D8=B6=D9=88=D8=B9: Test replay
+	=D8=A7=D9=84=D8=AA=D8=A7=D8=B1=D9=8A=D8=AE: 2020-01-05 14:52
+
+=D9=85=D9=84=D8=A7=D8=AD=D8=B8=D8=A9: =D9=8A=D9=8F=D8=B9=D9=84=D9=85=D9=83 =
+=D9=87=D8=B0=D8=A7 =D8=A7=D9=84=D8=A5=D9=8A=D8=B5=D8=A7=D9=84 =D8=A8=D8=A3=
+=D9=86 =D8=B1=D8=B3=D8=A7=D9=84=D8=AA=D9=83 =D9=82=D8=AF =D8=B8=D9=87=D8=B1=
+=D8=AA =D8=B9=D9=84=D9=89 =D8=AC=D9=87=D8=A7=D8=B2 =D8=A7=D9=84=D9=85=D8=B3=
+=D8=AA=D9=82=D8=A8=D9=90=D9=84. =D9=84=D9=8A=D8=B3=D8=AA =D9=87=D9=86=D8=A7=
+=D9=83
+=D8=A3=D9=8A=D8=A9 =D8=B6=D9=85=D8=A7=D9=86=D8=A7=D8=AA =D8=A3=D9=86 =D8=A7=
+=D9=84=D9=85=D8=B3=D8=AA=D9=82=D8=A8=D9=84 =D9=82=D8=AF =D9=82=D8=B1=D8=A3 =
+=D8=A3=D9=88 =D9=81=D9=87=D9=85 =D9=85=D8=AD=D8=AA=D9=88=D9=8A=D8=A7=D8=AA =
+=D8=A7=D9=84=D8=B1=D8=B3=D8=A7=D9=84=D8=A9.
+--=_c79627d92097f6ff30a9ff104cd27d92
+Content-Transfer-Encoding: 7bit
+Content-Type: message/disposition-notification;
+ name=MDNPart2.txt
+Content-Disposition: inline;
+ filename=MDNPart2.txt;
+ size=284
+
+Final-Recipient: rfc822; rasha_104135@svuonline.org
+Original-Message-ID: <dcfbffa508f33994a63ce6120fc01745@svuonline.org>
+Disposition: manual-action/MDN-sent-manually; displayed
+Original-Recipient: Rasha AlKayal <rasha_104135@svuonline.org>
+Reporting-UA: Roundcube Webmail/1.1.1
+
+--=_c79627d92097f6ff30a9ff104cd27d92--
+

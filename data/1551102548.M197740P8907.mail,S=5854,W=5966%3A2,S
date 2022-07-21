@@ -1,0 +1,112 @@
+Return-Path: <survey@svuonline.org>
+Delivered-To: aalaa_101123@svuonline.org
+Received: from localhost (localhost [127.0.0.1])
+	by mail.svuonline.org (Postfix) with ESMTP id 29D3D12534B
+	for <aalaa_101123@svuonline.org>; Mon, 25 Feb 2019 15:49:08 +0200 (EET)
+X-Virus-Scanned: Debian amavisd-new at mail.svuonline.org
+X-Spam-Flag: NO
+X-Spam-Score: -2.898
+X-Spam-Level:
+X-Spam-Status: No, score=-2.898 tagged_above=-9999 required=6.31
+	tests=[ALL_TRUSTED=-1, BAYES_00=-1.9, HTML_MESSAGE=0.001,
+	URIBL_BLOCKED=0.001] autolearn=ham autolearn_force=no
+Received: from mail.svuonline.org ([127.0.0.1])
+	by localhost (mail.svuonline.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 7Zgd0HwImP36 for <aalaa_101123@svuonline.org>;
+	Mon, 25 Feb 2019 15:49:03 +0200 (EET)
+Received: from survey.svuonline.org (unknown [10.1.15.25])
+	by mail.svuonline.org (Postfix) with ESMTP id 2B26F127267
+	for <aalaa_101123@svuonline.org>; Mon, 25 Feb 2019 15:06:42 +0200 (EET)
+Date: Mon, 25 Feb 2019 13:24:32 +0000
+To: Aalaa Alaya <aalaa_101123@svuonline.org>
+From: SVU Quality Assurance <survey@svuonline.org>
+Reply-to: SVU Quality Assurance <survey@svuonline.org>
+Subject: =?utf-8?B?2KfYs9iq2KjZitin2YYg2KfZhNiq2YLZitmK2YU=?=
+Message-ID: <3a4fab39a473d3a578c0a85346341f30@survey.svuonline.org>
+X-Priority: 3
+X-Mailer: PHPMailer 5.1 (phpmailer.sourceforge.net)
+X-surveyid: 861369
+X-tokenid: dczbnbmdpxj332y
+X-Surveymailer: SVU Students Survey System Emailer (LimeSurvey.sourceforge.net)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="b1_3a4fab39a473d3a578c0a85346341f30"
+
+
+--b1_3a4fab39a473d3a578c0a85346341f30
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+
+	
+		
+	
+	
+		
+			عزيزي الطالب،
+		
+			إن مشاركتك في ملء هذا الاستبيان ستسهم بتحسين الأساليب التعليمية المتبعة، وستشكل تغذية راجعة لإدارة الجامعة لتساعدها في تطوير المحتوى وتقييم المنهاج.
+
+			للحصول على نتائج إيجابية، نرجو منك التأني والإجابة بشكل محايد على جميع الاستبيانات المتعلقة ببعض المواد التي سجلت فيها في الفصل S18.
+		
+			يرجى الانتباه إلى أن:
+		
+			
+				 كل مادة سيكون لها استبيان خاص يحوي اسم المادة واسم المدرس في بدايته.
+			
+				هذه الاستبيانات تجري وفق المعايير والأسس المتبعة في الجامعات العالمية لتقييم عمل البرامج الأكاديمية وعمل أساتذتها.
+			
+				إدارة الجامعة تضمن خصوصية الإجابات التي يضعها الطلاب على استبياناتهم وتتم معالجة المعلومات من قبل فريق خاص مكلف بالعمل تحت إشراف رئاسة الجامعة.
+		
+		
+			فيما يلي رابط الاستبيان:
+		
+			http://survey.svuonline.org/stdSurvey/index.php/survey/index/sid/861369/token/dczbnbmdpxj332y/lang/ar
+		
+			علماً بأن آخر موعد للإجابة على الاستبيان هو يوم الأربعاء 27/02/2019
+		
+			شاكرين تعاونكم لما فيه مصلحة العملية التدريسية في الجامعة.
+	
+
+
+
+--b1_3a4fab39a473d3a578c0a85346341f30
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+<html>
+	<head>
+		<title></title>
+	</head>
+	<body>
+		<p dir="RTL" style="text-align: justify;">
+			<strong>عزيزي الطالب،</strong></p>
+		<p dir="RTL" style="text-align: justify;">
+			إن مشاركتك في ملء هذا الاستبيان ستسهم بتحسين الأساليب التعليمية المتبعة، وستشكل تغذية راجعة لإدارة الجامعة لتساعدها في تطوير المحتوى وتقييم المنهاج.<br />
+			للحصول على نتائج إيجابية، نرجو منك التأني والإجابة بشكل محايد على جميع الاستبيانات المتعلقة ببعض المواد التي سجلت فيها في الفصل <span dir="LTR">S18</span>.</p>
+		<p dir="RTL" style="text-align: justify;">
+			يرجى الانتباه إلى أن:</p>
+		<ol dir="rtl">
+			<li style="text-align: justify;" value="NaN">
+				 كل مادة سيكون لها استبيان خاص يحوي اسم المادة واسم المدرس في بدايته.</li>
+			<li style="text-align: justify;" value="NaN">
+				هذه الاستبيانات تجري وفق المعايير والأسس المتبعة في الجامعات العالمية لتقييم عمل البرامج الأكاديمية وعمل أساتذتها.</li>
+			<li style="text-align: justify;" value="NaN">
+				إدارة الجامعة تضمن خصوصية الإجابات التي يضعها الطلاب على استبياناتهم وتتم معالجة المعلومات من قبل فريق خاص مكلف بالعمل تحت إشراف رئاسة الجامعة.</li>
+		</ol>
+		<p dir="RTL" style="text-align: justify;">
+			فيما يلي رابط الاستبيان:</p>
+		<p dir="RTL">
+			<span dir="LTR"><a href='http://survey.svuonline.org/stdSurvey/index.php/survey/index/sid/861369/token/dczbnbmdpxj332y/lang/ar'>http://survey.svuonline.org/stdSurvey/index.php/survey/index/sid/861369/token/dczbnbmdpxj332y/lang/ar</a></span></p>
+		<p dir="RTL" style="text-align: justify;">
+			علماً بأن آخر موعد للإجابة على الاستبيان هو يوم الأربعاء <span dir="LTR">27/02/2019</span></p>
+		<p dir="RTL" style="text-align: justify;">
+			شاكرين تعاونكم لما فيه مصلحة العملية التدريسية في الجامعة.</p>
+	</body>
+</html>
+
+
+
+--b1_3a4fab39a473d3a578c0a85346341f30--
+
+

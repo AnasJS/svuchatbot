@@ -1,0 +1,70 @@
+Return-Path: <mws_amw_c2_f18-owner@svuonline.org>
+Delivered-To: rasha_104135@svuonline.org
+Received: by mail.svuonline.org (Postfix, from userid 114)
+	id E166DC8F33; Thu, 25 Jul 2019 13:34:22 +0300 (EEST)
+Delivered-To: mws_amw_c2_f18@mail.svuonline.org
+Received: from localhost (localhost [127.0.0.1])
+	by mail.svuonline.org (Postfix) with ESMTP id BB977CC2A9;
+	Thu, 25 Jul 2019 13:34:18 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at mail.svuonline.org
+X-Spam-Flag: NO
+X-Spam-Score: -2.899
+X-Spam-Level:
+X-Spam-Status: No, score=-2.899 tagged_above=-9999 required=6.31
+	tests=[ALL_TRUSTED=-1, BAYES_00=-1.9, URIBL_BLOCKED=0.001]
+	autolearn=ham autolearn_force=no
+Received: from mail.svuonline.org ([127.0.0.1])
+	by localhost (mail.svuonline.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id EYTfVBOOeU8I; Thu, 25 Jul 2019 13:34:17 +0300 (EEST)
+Received: from Dell (unknown [5.155.14.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: t_mmustafa@svuonline.org)
+	by mail.svuonline.org (Postfix) with ESMTPSA id 0097F9DF99;
+	Thu, 25 Jul 2019 13:34:16 +0300 (EEST)
+From: "Dr. Muhammad Mazen Almustafa" <t_mmustafa@svuonline.org>
+To: <MWS_AMW_C3_F18@svuonline.org>,
+	<MWS_AMW_C2_F18@svuonline.org>,
+	<MWS_AMW_C1_F18@svuonline.org>
+Cc: <ahmad_96956@svuonline.org>
+References: <c0aabcefac69ba6db8b2ed4b840f3e60@svuonline.org> <000901d542d1$6152ebc0$23f8c340$@svuonline.org> <e76aed0aa231eb5e07996b88fade9875@svuonline.org>
+In-Reply-To: <e76aed0aa231eb5e07996b88fade9875@svuonline.org>
+Date: Thu, 25 Jul 2019 13:51:25 +0300
+Message-ID: <000001d542d6$e8bd43d0$ba37cb70$@svuonline.org>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="UTF-8"
+Content-Transfer-Encoding: base64
+X-Mailer: Microsoft Outlook 15.0
+Thread-Index: AQMzRmEy8bAHQ/h20Uk4S+SBQRZo7gHxTVjhAfDBQzmkAA2u8A==
+Content-Language: en-us
+Subject: RE: [mws_amw_c2_f18] =?UTF-8?B?2KfZhNin2YXYqtit2KfZhiDYp9mE2YY=?=
+ =?UTF-8?B?2LjYsdmK?=
+Reply-To: "Dr. Muhammad Mazen Almustafa" <t_mmustafa@svuonline.org>
+X-Loop: mws_amw_c2_f18@svuonline.org
+X-Sequence: 6
+Errors-to: mws_amw_c2_f18-owner@svuonline.org
+Precedence: list
+Precedence: bulk
+Sender: mws_amw_c2_f18-request@svuonline.org
+X-no-archive: yes
+List-Id: <mws_amw_c2_f18.svuonline.org>
+List-Archive: <http://mail.svuonline.org/wws/arc/mws_amw_c2_f18>
+List-Help: <mailto:sympa@svuonline.org?subject=help>
+List-Owner: <mailto:mws_amw_c2_f18-request@svuonline.org>
+List-Post: <mailto:mws_amw_c2_f18@svuonline.org>
+List-Subscribe: <mailto:sympa@svuonline.org?subject=subscribe%20mws_amw_c2_f18>
+List-Unsubscribe: <mailto:sympa@svuonline.org?subject=unsubscribe%20mws_amw_c2_f18>
+
+2KfZhNi32YTYp9ioINin2YTYo9i52LLYp9ihDQrZhtiq2YrYrNipINmE2YTYo9iz2KbZhNipINin
+2YTZhdiq2YPYsdix2KkgDQrYs9mK2K/YrtmEINmB2Yog2KfZhNin2YXYqtit2KfZhiANCtmD2YQg
+2KfZhNmF2YTZgdin2Kog2KfZhNmF2YjYrNmI2K/YqSDZgdmKINmF2KzZhNivINin2YTZhdit2KrZ
+iNmJINin2YTYudmE2YXZiiDZhNmE2YXYp9iv2Kkg2LnZhNmJINmG2LjYp9mFIExNUw0K2KjYp9mE
+2KXYttin2YHYqSDYpdmE2Ykg2YPZhCDZhdinINmI2LHYryDZgdmKINin2YTZhdit2KfYttix2KfY
+qg0K2KjYp9mE2KrZiNmB2YrZgiDZhNmE2KzZhdmK2LkNCg0KRHIuIE11aGFtbWFkIE1hemVuIEFs
+bXVzdGFmYQ0KDQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJvbTogYWhtYWRfOTY5NTZA
+c3Z1b25saW5lLm9yZyBbbWFpbHRvOmFobWFkXzk2OTU2QHN2dW9ubGluZS5vcmddIA0KU2VudDog
+VGh1cnNkYXksIEp1bHkgMjUsIDIwMTkgMToyNiBQTQ0KVG86IERyLiBNdWhhbW1hZCBNYXplbiBB
+bG11c3RhZmENClN1YmplY3Q6IFJFOiDYp9mE2KfZhdiq2K3Yp9mGINin2YTZhti42LHZig0KDQpB
+TVcg2K/Zg9iq2YjYsQ0K
+

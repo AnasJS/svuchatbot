@@ -1,0 +1,838 @@
+Return-Path: <CxkcToL89hxF0LeBp6e4ANISczKFQfe1pKSa@bounce.researchgate.net>
+Delivered-To: aalaa_101123@svuonline.org
+Received: from localhost (localhost [127.0.0.1])
+	by mail.svuonline.org (Postfix) with ESMTP id B0A1C84227
+	for <aalaa_101123@svuonline.org>; Fri, 13 Sep 2019 08:19:38 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at mail.svuonline.org
+X-Spam-Flag: NO
+X-Spam-Score: -1.997
+X-Spam-Level:
+X-Spam-Status: No, score=-1.997 tagged_above=-9999 required=6.31
+	tests=[BAYES_00=-1.9, DKIMWL_WL_MED=-0.001, DKIM_SIGNED=0.1,
+	DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+	HEADER_FROM_DIFFERENT_DOMAINS=0.001, HTML_MESSAGE=0.001,
+	SPF_HELO_NONE=0.001, URIBL_BLOCKED=0.001]
+	autolearn=ham autolearn_force=no
+Authentication-Results: mail.svuonline.org (amavisd-new);
+	dkim=pass (1024-bit key) header.d=researchgatemail.net;
+	domainkeys=pass (1024-bit key)
+	header.from=no-reply@researchgatemail.net
+	header.d=researchgatemail.net
+Received: from mail.svuonline.org ([127.0.0.1])
+	by localhost (mail.svuonline.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id NJ-vQUYWLJNH for <aalaa_101123@svuonline.org>;
+	Fri, 13 Sep 2019 08:19:37 +0300 (EEST)
+Received: from mailfilter.svuonline.org (unknown [10.1.15.115])
+	by mail.svuonline.org (Postfix) with SMTP id 5967C87613
+	for <aalaa_101123@svuonline.org>; Fri, 13 Sep 2019 08:19:37 +0300 (EEST)
+Received: by mailfilter.svuonline.org (Postfix, from userid 500)
+	id EBE3880360; Fri, 13 Sep 2019 08:55:04 +0300 (EEST)
+Received: from viprelay.scs-net.org (viprelay.scs-net.org [213.178.225.17])
+	by mailfilter.svuonline.org (Postfix) with ESMTP id F3A5B8035D
+	for <aalaa_101123@svuonline.org>; Fri, 13 Sep 2019 08:55:03 +0300 (EEST)
+Received: from localhost (localhost [127.0.0.1])
+	by viprelay.scs-net.org (Postfix) with ESMTP id 607A69B4722
+	for <aalaa_101123@svuonline.org>; Fri, 13 Sep 2019 08:33:49 +0300 (EEST)
+X-Virus-Scanned: by SpamTitan at scs-net.org
+Received: from viprelay.scs-net.org (localhost [127.0.0.1])
+	by viprelay.scs-net.org (Postfix) with ESMTP id 4DDFD9B479B
+	for <aalaa_101123@svuonline.org>; Fri, 13 Sep 2019 08:33:44 +0300 (EEST)
+Received: from mr70.researchgate.net (mr70.researchgate.net [209.15.243.119])
+	by viprelay.scs-net.org (Postfix) with SMTP id 2CC459B47E7
+	for <aalaa_101123@svuonline.org>; Fri, 13 Sep 2019 08:33:39 +0300 (EEST)
+Authentication-Results: viprelay.scs-net.org;
+        dkim-adsp=pass (ADSP policy from researchgatemail.net);
+        dkim=pass (1024-bit rsa key sha1) header.d=researchgatemail.net
+          header.i=@researchgatemail.net header.b=fQNRjfzg header.a=rsa-sha1
+          header.s=rg x-bits=1024;
+        domainkeys=pass (1024-bit rsa key sha1)
+          header.d=researchgatemail.net header.b=CIplY2Nr x-bits=1024
+          x-keytype=rsa x-algorithm=sha1 x-selector=rg;
+        spf=pass
+          smtp.mailfrom=
+          CxkcToL89hxF0LeBp6e4ANISczKFQfe1pKSa@bounce.researchgate.net
+          smtp.helo=mr70.researchgate.net;
+        x-dkim-dkssp=pass (sender policy from researchgatemail.net)
+Received-SPF: pass
+        (bounce.researchgate.net: 209.15.243.119 is authorized to use 'CxkcToL89hxF0LeBp6e4ANISczKFQfe1pKSa@bounce.researchgate.net' in 'mfrom' identity (mechanism 'ip4:209.15.243.112/28' matched))
+        receiver=viprelay.scs-net.org;
+        identity=mailfrom;
+        envelope-from="CxkcToL89hxF0LeBp6e4ANISczKFQfe1pKSa@bounce.researchgate.net";
+        helo=mr70.researchgate.net;
+        client-ip=209.15.243.119
+Received: from mr70.researchgate.net (localhost [127.0.0.1])
+	by mr70.researchgate.net (Postfix) with ESMTP id C0A348007806
+	for <aalaa_101123@svuonline.org>; Fri, 13 Sep 2019 05:36:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=researchgatemail.net; h=
+	message-id:date:subject:from:to:mime-version:content-type
+	:list-unsubscribe; s=rg; bh=7nGjuJ+mL/HgVGfHMJ8eb2TCq+c=; b=fQNR
+	jfzgbo2vxgr+YUj0UDjhbYuCsomKH+hxkiv8LVPw9w9PRu6QG0KKg9BfEWCOLdI3
+	GfKkKt1Y3u9nRnGh9yL5it+hv8CItuHytTF/f12b4LkJ6zX5QBo5fMBl/Ll78iGR
+	Leno/XObrc3TBcZdrY7lRcFa3gpm1c+CmEzx4WY=
+DomainKey-Signature: a=rsa-sha1; c=nofws; d=researchgatemail.net; h=
+	message-id:date:subject:from:to:mime-version:content-type
+	:list-unsubscribe; q=dns; s=rg; b=CIplY2NruxOk3RYTTHhY0QM5VRhsNX
+	NknkL1ZLlwvs555cZCQGNNxtfIBAEVVSXkKDwzQ02kfIB9Dhhe3gj5EYPnVr5Hlt
+	Qe2Zt40yg/QviVqz3zQIyEA0gyRw/C7Tr1QQCSXyUP8UWINSf6kRjN7YzxnV2JlN
+	pmixuK4x/toeM=
+Message-ID: <7c1fc0a074ffad3798754f19f1edacac@internal-www.rgapi.net>
+Date: Fri, 13 Sep 2019 05:36:18 +0000
+Subject: Aalaa, 6 of your institution colleagues just joined ResearchGate
+From: ResearchGate <no-reply@researchgatemail.net>
+To: aalaa_101123@svuonline.org
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="_=_swift_1568352978_9fb9dbd805cbfaf2d30802a083c3e2d6_=_"
+X-RG-Mail-Type: SwiftMail
+x-rg-mail-id: IN4GWY2UN5GDQOLIPBDDATDFIJYDMZJUIFHESU3DPJFUMULGMUYXAS2TME5WCYLMMFQV6MJQGEYTEM2AON3HK33ONRUW4ZJON5ZGO===
+x-correlation-id: stuffcom-24704498-2ace-pid-2351-evexts-broxse-folxer-folxil
+List-Unsubscribe: <https://www.researchgate.net/go.Out.researchgateFollowSuggestions.html?ch=reg&loginT=fs2LgdXbE4eIhyi4TJBox10ZZPlciBZPgv1ue2Wdh7Z_DF-OKzpNjqkyUv7ly1yhtqFCTGtGuVdXN_NkS0-AWcm2&cp=re320_cs_u3&ev=list-usub>
+Feedback-ID: re320:re320|cs:rgESP
+
+--_=_swift_1568352978_9fb9dbd805cbfaf2d30802a083c3e2d6_=_
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+ResearchGate
+
+
+
+---------------------------------------------------=
+--------------------------------------
+Aalaa, 6 of your institution colle=
+agues  just joined ResearchGate. Why not follow them?
+6 researchers from =
+ Syrian Virtual University
+View all: https://www.researchgate.net/browse.=
+BrowseSuggestResearcher.html?query=3Dinstitution&sort=3Drecent&pli=3D1&logi=
+nT=3Dfs2LgdXbE4eIhyi4TJBox10ZZPlciBZPgv1ue2Wdh7Z_DF-OKzpNjqkyUv7ly1yhtqFCTG=
+tGuVdXN_NkS0-AWcm2&uid=3DCxkcToL89hxF0LeBp6e4ANISczKFQfe1pKSa&cp=3Dre320_cs=
+_p2&ch=3Dreg&utm_medium=3Demail&utm_source=3Dresearchgate&utm_campaign=3Dre=
+320&utm_term=3Dre320_cs&utm_content=3Dre320_cs_p2
+
+More researchers you=
+ may be interested in:
+Loay Alasmaer -  - Your department colleague - Fol=
+low: https://www.researchgate.net/go.OneClickFollowAccount.html?sig=3DAYlXC=
+xxJOridRDHblQEmKfTVHdm23GEBaf0dpnApyu84I1jvdofMv5OPnAkL_9KSdG63wrpRzF8kuVwS=
+aUPM2o04dJsEt7mQ3HMvRo9cEqkZtsVnq9DYuDCEt6OJ3kM4MBFBaMP4QGRJ_hL4eX8&pli=3D1=
+&loginT=3Dfs2LgdXbE4eIhyi4TJBox10ZZPlciBZPgv1ue2Wdh7Z_DF-OKzpNjqkyUv7ly1yht=
+qFCTGtGuVdXN_NkS0-AWcm2&uid=3DCxkcToL89hxF0LeBp6e4ANISczKFQfe1pKSa&cp=3Dre3=
+20_cs_p9&ch=3Dreg&utm_medium=3Demail&utm_source=3Dresearchgate&utm_campaign=
+=3Dre320&utm_term=3Dre320_cs&utm_content=3Dre320_cs_p9
+Wasim Syrian -  - =
+Your department colleague - Follow: https://www.researchgate.net/go.OneClic=
+kFollowAccount.html?sig=3DKL_xm4pqhUEpUyJGZlicZwyd5we4SWAU8yPKomecz7jiwB9wM=
+NGueeQfa9RDtj25v92KC2Wg255dgubYnoICQRQXIYg4TIWlvGbYaekXB-5LlodYPGLXVUzEr0vO=
+43-ENN0esuDpfKy2vFkSOkE&pli=3D1&loginT=3Dfs2LgdXbE4eIhyi4TJBox10ZZPlciBZPgv=
+1ue2Wdh7Z_DF-OKzpNjqkyUv7ly1yhtqFCTGtGuVdXN_NkS0-AWcm2&uid=3DCxkcToL89hxF0L=
+eBp6e4ANISczKFQfe1pKSa&cp=3Dre320_cs_p9&ch=3Dreg&utm_medium=3Demail&utm_sou=
+rce=3Dresearchgate&utm_campaign=3Dre320&utm_term=3Dre320_cs&utm_content=3Dr=
+e320_cs_p9
+Luei Muazen -  - Your department colleague - Follow: https://w=
+ww.researchgate.net/go.OneClickFollowAccount.html?sig=3DA0SHW4JtafXhFO0dUvg=
+c1GOuDBMWW521XuZT2kU4zcjzqZs7STOEB_yIWn0djtn7MZBgUJ4EK_JzXqWoXtkaINDa0u3MV-=
+AUnebmJGyO1XUStqnaqOCBYrUpV6ztsMhSWbaPor4MWOxAsK_B53T73g&pli=3D1&loginT=3Df=
+s2LgdXbE4eIhyi4TJBox10ZZPlciBZPgv1ue2Wdh7Z_DF-OKzpNjqkyUv7ly1yhtqFCTGtGuVdX=
+N_NkS0-AWcm2&uid=3DCxkcToL89hxF0LeBp6e4ANISczKFQfe1pKSa&cp=3Dre320_cs_p9&ch=
+=3Dreg&utm_medium=3Demail&utm_source=3Dresearchgate&utm_campaign=3Dre320&ut=
+m_term=3Dre320_cs&utm_content=3Dre320_cs_p9
+Ammar Sabbagh -  - Your depar=
+tment colleague - Follow: https://www.researchgate.net/go.OneClickFollowAcc=
+ount.html?sig=3DxQU18p5yDxCWEgLc_mjPdxcJSxQfWP1znTeNG3JpfxrKJIYh0Rs4bzJx5Rq=
+j-krvp2Y9-ZuuHKm8uy2vVFx4lq_xJ8zm8s0fjkaWkCnmXdZJySTnR980Gz1FXM4VkaZSGuinzI=
+H61W9wEj2WB9w-Fw&pli=3D1&loginT=3Dfs2LgdXbE4eIhyi4TJBox10ZZPlciBZPgv1ue2Wdh=
+7Z_DF-OKzpNjqkyUv7ly1yhtqFCTGtGuVdXN_NkS0-AWcm2&uid=3DCxkcToL89hxF0LeBp6e4A=
+NISczKFQfe1pKSa&cp=3Dre320_cs_p9&ch=3Dreg&utm_medium=3Demail&utm_source=3Dr=
+esearchgate&utm_campaign=3Dre320&utm_term=3Dre320_cs&utm_content=3Dre320_cs=
+_p9
+Modar Abbass -  - Your department colleague - Follow: https://www.res=
+earchgate.net/go.OneClickFollowAccount.html?sig=3DmvJ6gZBAVow72RCEYwPgdCwX4=
+yvchd6WwTpEBUNZ3LMnh87qEiHhoYqBsNRi9354joEoN-0y0_TPxmWpEThc32KKBSW0COVdMrhm=
+mLjcccXhvN5vfn-wQmaTUgWOnxxIjmocE_KjS-oTqJEc080&pli=3D1&loginT=3Dfs2LgdXbE4=
+eIhyi4TJBox10ZZPlciBZPgv1ue2Wdh7Z_DF-OKzpNjqkyUv7ly1yhtqFCTGtGuVdXN_NkS0-AW=
+cm2&uid=3DCxkcToL89hxF0LeBp6e4ANISczKFQfe1pKSa&cp=3Dre320_cs_p9&ch=3Dreg&ut=
+m_medium=3Demail&utm_source=3Dresearchgate&utm_campaign=3Dre320&utm_term=3D=
+re320_cs&utm_content=3Dre320_cs_p9
+Khaled Daghestani -  - Your department=
+ colleague - Follow: https://www.researchgate.net/go.OneClickFollowAccount.=
+html?sig=3DEvCzhMKnIQPSecFQdCAc9x_knlFYSwW0bUuLo8ZEJYjlsa6IaqNQV8UccfdF9ayw=
+aCkNwOmU5tEcgXfmSmW9Ya--toLoKuolH2S2k5ONlhaNmRCClTpfEMs9YwfxZma4epTfMCxzHvw=
+7o6VvoYU&pli=3D1&loginT=3Dfs2LgdXbE4eIhyi4TJBox10ZZPlciBZPgv1ue2Wdh7Z_DF-OK=
+zpNjqkyUv7ly1yhtqFCTGtGuVdXN_NkS0-AWcm2&uid=3DCxkcToL89hxF0LeBp6e4ANISczKFQ=
+fe1pKSa&cp=3Dre320_cs_p9&ch=3Dreg&utm_medium=3Demail&utm_source=3Dresearchg=
+ate&utm_campaign=3Dre320&utm_term=3Dre320_cs&utm_content=3Dre320_cs_p9
+--=
+---------------------------------------------------------------------------=
+--
+This message was sent to aalaa_101123@svuonline.org by ResearchGate. T=
+o make sure you receive our updates, add ResearchGate to your address book =
+or safe list.
+See instructions: https://www.researchgate.net/help/whiteli=
+st-email?cp=3Dre320_cs_we&mfl=3D1&ch=3Dreg&uid=3DCxkcToL89hxF0LeBp6e4ANIScz=
+KFQfe1pKSa
+
+If you don't want to receive these emails from ResearchGate=
+ in the future, please unsubscribe:
+https://www.researchgate.net/go.Out.r=
+esearchgateFollowSuggestions.html?loginT=3Dfs2LgdXbE4eIhyi4TJBox10ZZPlciBZP=
+gv1ue2Wdh7Z_DF-OKzpNjqkyUv7ly1yhtqFCTGtGuVdXN_NkS0-AWcm2&cp=3Dre320_cs_u2&m=
+fl=3D1&ch=3Dreg&uid=3DCxkcToL89hxF0LeBp6e4ANISczKFQfe1pKSa
+
+ResearchGat=
+e GmbH, Chausseestr. 20, 10115 Berlin, Germany. Imprint: https://www.resear=
+chgate.net/imprint?cp=3Dre320_cs_im
+See our Privacy Policy: https://www.r=
+esearchgate.net/privacy-policy?cp=3Dre320_cs_pp&mfl=3D1&ch=3Dreg&uid=3DCxkc=
+ToL89hxF0LeBp6e4ANISczKFQfe1pKSa and Terms of Service: https://www.research=
+gate.net/terms-of-service?cp=3Dre320_cs_tos&mfl=3D1&ch=3Dreg&uid=3DCxkcToL8=
+9hxF0LeBp6e4ANISczKFQfe1pKSa
+
+--_=_swift_1568352978_9fb9dbd805cbfaf2d30802a083c3e2d6_=_
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.=
+w3.org/TR/html4/loose.dtd"><html><head><meta
+http-equiv=3D"Content-Type" =
+content=3D"text/html; charset=3Dutf-8"/><meta
+http-equiv=3D"X-UA-Compatib=
+le" content=3D"IE=3Dedge"/><title></title></head><body
+style=3D"backgroun=
+d-color: #ffffff;"><table
+width=3D"100%" cellspacing=3D"0" cellpadding=3D=
+"0" border=3D"0" bgcolor=3D"#ffffff" style=3D"width: 100% !important;"><tr>=
+<td><table
+width=3D"590" cellspacing=3D"0" cellpadding=3D"0" border=3D"0"=
+ align=3D"center" style=3D"width: 590px"><tr><td><table
+width=3D"100%" ce=
+llspacing=3D"0" cellpadding=3D"0" border=3D"0" style=3D"width: 100% !import=
+ant; border: 1px solid #eaeaea; background: #f7f7f4; "><tr
+style=3D"font-=
+size: 1px; line-height: 0; mso-margin-top-alt: 1px;"><td
+width=3D"100%" v=
+align=3D"middle" height=3D"7" style=3D"font-size: 1px; height: 1px;">&nbsp;=
+</td></tr><tr><td
+valign=3D"top"><table
+width=3D"100%" cellspacing=3D"0=
+" cellpadding=3D"0" border=3D"0" style=3D"font-family: Helvetica, Arial, sa=
+ns-serif !important; width: 100% !important;"><tr><td
+height=3D"48" width=
+=3D"197" align=3D"left" style=3D"padding-top: 8px; font-family: 'Helvetica =
+Neue Light', Arial, sans-serif; font-size: 18px; color: #ccc;"><div
+style=
+=3D"width: 197px; padding-left: 30px; text-align: left; float: left;"></div=
+></td><td
+height=3D"48" width=3D"133px" align=3D"center" class=3D"img-hea=
+der-sm"><div
+style=3D"width: 133px;"> <img
+style=3D"border: 0; outline:=
+ 0; margin: 0 0 2px 0; padding: 0;" width=3D"126" height=3D"17" title=3D"Re=
+searchGate" alt=3D"ResearchGate" src=3D"https://www.researchgate.net/mail/r=
+g_logo_mail.png?uid=3DCxkcToL89hxF0LeBp6e4ANISczKFQfe1pKSa&cn=3Dlb1pMVgfOhR=
+1BNDDtlpKJ32F-442GiFbyivWc0OzRt8lSgzIW7hPcdpoR_FHjBcJOSnWaI15rVtKX7Kgpur1Of=
+B3Jk1OgY09f4UXEk3WSQ7BFPITLwMQ3rpsFqtHbBz8Qu1wnFHh1C1OAvEpOH4K1W4Oeyb4lQ&lo=
+ginT=3Dfs2LgdXbE4eIhyi4TJBox10ZZPlciBZPgv1ue2Wdh7Z_DF-OKzpNjqkyUv7ly1yhtqFC=
+TGtGuVdXN_NkS0-AWcm2&cpc=3Dre320_cs_"/></div></td><td
+height=3D"48" width=
+=3D"197" align=3D"right" style=3D"font-family: 'Helvetica Neue Light', Aria=
+l, sans-serif; text-align: right; font-size: 12px; color: #55b1f5;" valign=
+=3D"middle"><div
+style=3D"width: 197px; padding-right: 30px; text-align: =
+right; float: right;"><table
+cellspacing=3D"0" cellpadding=3D"0" border=
+=3D"0" style=3D"text-align: right; font-family: Helvetica, Arial, sans-seri=
+f !important; width: 100% !important;"><tr
+style=3D"display: inline-block=
+;"><td
+height=3D"48" align=3D"right" width=3D"17" style=3D"text-align: ri=
+ght; font-family: 'Helvetica Neue Light', Arial, sans-serif; font-size: 12p=
+x; color: #55b1f5;" valign=3D"middle"></td><td
+height=3D"48" align=3D"rig=
+ht" style=3D"text-align: right; font-family: 'Helvetica Neue Light', Arial,=
+ sans-serif; font-size: 12px; color: #55b1f5;" valign=3D"middle" class=3D"n=
+otification-text"></td></tr></table></div></td><td
+width=3D"30"></td></tr=
+></table></td></tr><tr
+style=3D"font-size: 1px; line-height: 0; mso-margi=
+n-top-alt: 1px;"><td
+width=3D"100%" valign=3D"middle" height=3D"5" style=
+=3D"font-size: 1px; height: 1px;">&nbsp;</td></tr></table><table
+cellspac=
+ing=3D"0" border=3D"0" cellpadding=3D"0" width=3D"100%" bgcolor=3D"#ffffff"=
+ style=3D"width:100%!important;border-left: 1px solid #eaeaea; border-right=
+: 1px solid #eaeaea;"><tr><td><table
+align=3D"center" cellspacing=3D"0" b=
+order=3D"0" cellpadding=3D"0" width=3D"100%" style=3D"width:100%!important;=
+padding:0; background-color:#f7f7f4"><tr
+style=3D"font-size:1px; line-hei=
+ght:0; mso-margin-top-alt:1px;"><td
+width=3D"30"></td><td
+height=3D"30"=
+></td><td
+width=3D"30"></td></tr><tr><td></td><td><table
+cellpadding=3D=
+"0" cellspacing=3D"0" width=3D"100%" style=3D"width:100%!important;"><tr><t=
+d
+style=3D"font-size: 18px; color: #666666; font-family: helvetica neue, =
+helvetica, arial, sans-serif;  line-height: 28px;text-align: left;"><table=
+
+width=3D"100%" cellspacing=3D"0" cellpadding=3D"0" border=3D"0"><tr><td=
+
+style=3D"font-size: 18px; color: #666666; font-family: helvetica neue, h=
+elvetica, arial, sans-serif;  line-height: 28px;text-align: left;"> Aalaa, =
+6 of your institution colleagues  just joined ResearchGate. Why not follow =
+them?</td></tr></table></td></tr><tr><td
+height=3D"30"><div></div></td></=
+tr><tr><td><table
+cellspacing=3D"0" border=3D"0" cellpadding=3D"0" width=
+=3D"100%" style=3D"border-spacing: 0; border-collapse: collapse;"><tbody><t=
+r><td><table
+cellspacing=3D"0" border=3D"0" cellpadding=3D"0" width=3D"52=
+8" style=3D"padding: 0; border-collapse: collapse; border-spacing: 0; borde=
+r: 1px solid #eaeaea;" bgcolor=3D"#ffffff"><tbody><tr><td
+width=3D"113"> =
+<a
+href=3D"https://www.researchgate.net/browse.BrowseSuggestResearcher.ht=
+ml?sort=3Drecent&pli=3D1&loginT=3Dfs2LgdXbE4eIhyi4TJBox10ZZPlciBZPgv1ue2Wdh=
+7Z_DF-OKzpNjqkyUv7ly1yhtqFCTGtGuVdXN_NkS0-AWcm2&uid=3DCxkcToL89hxF0LeBp6e4A=
+NISczKFQfe1pKSa&cp=3Dre320_cs_p10&ch=3Dreg&utm_medium=3Demail&utm_source=3D=
+researchgate&utm_campaign=3Dre320&utm_term=3Dre320_cs&utm_content=3Dre320_c=
+s_p10"> <img
+style=3D"float: left;" width=3D"50" height=3D"50" src=3D"htt=
+ps://c5.rgstatic.net/m/437738464651637/images/template/default/profile/prof=
+ile_default_l.jpg" alt=3D"Researchers"/> <img
+style=3D"float: left;" widt=
+h=3D"50" height=3D"50" src=3D"https://c5.rgstatic.net/m/437738464651637/ima=
+ges/template/default/profile/profile_default_l.jpg" alt=3D"Researchers"/> <=
+img
+style=3D"float: left;" width=3D"50" height=3D"50" src=3D"https://c5.r=
+gstatic.net/m/437738464651637/images/template/default/profile/profile_defau=
+lt_l.jpg" alt=3D"Researchers"/> <img
+style=3D"float: left;" width=3D"50" =
+height=3D"50" src=3D"https://i1.rgstatic.net/ii/profile.image/7975710438277=
+13-1567167163909_Q128/Sarah_Mohammad6.jpg" alt=3D"Researchers"/> </a></td><=
+td
+width=3D"20"></td><td
+width=3D"80" align=3D"right"> <span
+style=3D=
+"font-family: helvetica, arial, clean, sans-serif; font-size: 30px;"> <a
+=
+href=3D"https://www.researchgate.net/browse.BrowseSuggestResearcher.html?qu=
+ery=3Dinstitution&amp;sort=3Drecent&pli=3D1&loginT=3Dfs2LgdXbE4eIhyi4TJBox1=
+0ZZPlciBZPgv1ue2Wdh7Z_DF-OKzpNjqkyUv7ly1yhtqFCTGtGuVdXN_NkS0-AWcm2&uid=3DCx=
+kcToL89hxF0LeBp6e4ANISczKFQfe1pKSa&cp=3Dre320_cs_p2&ch=3Dreg&utm_medium=3De=
+mail&utm_source=3Dresearchgate&utm_campaign=3Dre320&utm_term=3Dre320_cs&utm=
+_content=3Dre320_cs_p2" style=3D"color: #36a493; text-decoration: none;">6<=
+/a> </span></td><td
+width=3D"10"></td><td
+width=3D"230"><table
+cellsp=
+acing=3D"0" border=3D"0" cellpadding=3D"0" width=3D"100%" style=3D"padding:=
+ 0; border-spacing: 0"><tbody><tr><td> <span
+style=3D"font-family: helvet=
+ica, arial, clean, sans-serif; color: #666666; font-size: 16px;"> researche=
+rs </span></td></tr><tr
+height=3D"5"><td></td></tr><tr><td> <span
+style=
+=3D"font-family: helvetica, arial, clean, sans-serif; color: #666666; font-=
+size: 14px;"> from <span
+style=3D"color: #999999;">Syrian Virtual Univers=
+ity</span> </span></td></tr></tbody></table></td><td
+width=3D"100" valign=
+=3D"middle" style=3D"line-height: 0;"><table
+cellspacing=3D"0" border=3D"=
+0" cellpadding=3D"0" style=3D"padding: 0; border-spacing: 0"><tr><td
+heig=
+ht=3D"20"></td></tr><tr><td><table
+width=3D"100" align=3D"left" cellspaci=
+ng=3D"0" cellpadding=3D"0" borderspacing=3D"0" style=3D"width: 100px;"><tr>=
+<td><table
+width=3D"100%" align=3D"center" cellspacing=3D"0" cellpadding=
+=3D"0" borderspacing=3D"0" style=3D"width: 100% !important;"><tbody><tr><td=
+
+class=3D"button-small" height=3D"32" align=3D"center" style=3D"padding: =
+0; background-color: #55b1f5; -webkit-border-radius: 3px; -moz-border-radiu=
+s: 3px; border-radius: 3px; -webkit-box-shadow: 0 2px 0 0 #027dca; -moz-box=
+-shadow: 0 2px 0 0 #027dca; box-shadow: 0 2px 0 0 #027dca;"><table
+width=
+=3D"100%" cellpadding=3D"0" cellspacing=3D"0" style=3D"width: 100% !importa=
+nt;"><tbody><tr><td
+align=3D"center"> <a
+href=3D"https://www.researchga=
+te.net/browse.BrowseSuggestResearcher.html?query=3Dinstitution&amp;sort=3Dr=
+ecent&pli=3D1&loginT=3Dfs2LgdXbE4eIhyi4TJBox10ZZPlciBZPgv1ue2Wdh7Z_DF-OKzpN=
+jqkyUv7ly1yhtqFCTGtGuVdXN_NkS0-AWcm2&uid=3DCxkcToL89hxF0LeBp6e4ANISczKFQfe1=
+pKSa&cp=3Dre320_cs_p2&ch=3Dreg&utm_medium=3Demail&utm_source=3Dresearchgate=
+&utm_campaign=3Dre320&utm_term=3Dre320_cs&utm_content=3Dre320_cs_p2" style=
+=3D"display: block; text-decoration: none; height: 100%; color: #ffffff; ma=
+rgin: 0; font-family: helvetica, arial, sans-serif; width: 100%; font-size:=
+ 14px; font-weight:bold;"> View all </a></td></tr></tbody></table></td></tr=
+></tbody></table></td></tr></table></td></tr><tr><td
+height=3D"20"></td><=
+/tr></table></td><td
+width=3D"18"></td></tr></tbody></table></td></tr><tr=
+
+style=3D"line-height: 0"><td> <img
+src=3D"https://www.researchgate.net=
+/images/mailing/shadow.png" width=3D"530" height=3D"9" style=3D"width: 530p=
+x; height: 9px;"></td></tr></tbody></table></td></tr><tr><td
+height=3D"30=
+"></td></tr><tr><td
+style=3D"font-size: 18px; color: #999999; font-family=
+: helvetica neue, helvetica, arial, sans-serif;  line-height: 21px;text-ali=
+gn: left;"><table
+width=3D"100%" cellspacing=3D"0" cellpadding=3D"0" bord=
+er=3D"0"><tr><td
+style=3D"font-size: 18px; color: #999999; font-family: h=
+elvetica neue, helvetica, arial, sans-serif;  line-height: 21px;text-align:=
+ left;"> More researchers you may be interested in:</td></tr></table></td><=
+/tr><tr><td
+height=3D"20"><div></div></td></tr><tr><td><table
+width=3D"=
+100%" cellspacing=3D"0" cellpadding=3D"0" border=3D"0" style=3D"width: 100%=
+!important;"><td
+width=3D"100%" valign=3D"top"><table
+cellpadding=3D"0"=
+ cellspacing=3D"0" width=3D"100%"><tr><td
+valign=3D"top" width=3D"60" hei=
+ght=3D"60" style=3D"text-align: center;"><table
+cellspacing=3D"0" cellpad=
+ding=3D"0"><tbody><tr><td
+style=3D" "> <a
+href=3D"https://www.researchg=
+ate.net/profile/Loay_Alasmaer?pli=3D1&loginT=3Dfs2LgdXbE4eIhyi4TJBox10ZZPlc=
+iBZPgv1ue2Wdh7Z_DF-OKzpNjqkyUv7ly1yhtqFCTGtGuVdXN_NkS0-AWcm2&uid=3DCxkcToL8=
+9hxF0LeBp6e4ANISczKFQfe1pKSa&cp=3Dre320_cs_p8&ch=3Dreg&utm_medium=3Demail&u=
+tm_source=3Dresearchgate&utm_campaign=3Dre320&utm_term=3Dre320_cs&utm_conte=
+nt=3Dre320_cs_p8" style=3D"text-decoration: none;"> <img
+width=3D"50" hei=
+ght=3D"50" src=3D"https://i1.rgstatic.net/ii/profile.image/277736372359182-=
+1443228919259_Q128/Loay_Alasmaer.jpg" alt=3D"Loay Alasmaer" /> </a></td></t=
+r></tbody></table></td><td
+width=3D"10"></td><td
+valign=3D"top" width=
+=3D"355"><table
+cellpadding=3D"0" cellspacing=3D"0" width=3D"100%"><tr
+=
+height=3D"20"><td> <a
+href=3D"https://www.researchgate.net/profile/Loay_A=
+lasmaer?pli=3D1&loginT=3Dfs2LgdXbE4eIhyi4TJBox10ZZPlciBZPgv1ue2Wdh7Z_DF-OKz=
+pNjqkyUv7ly1yhtqFCTGtGuVdXN_NkS0-AWcm2&uid=3DCxkcToL89hxF0LeBp6e4ANISczKFQf=
+e1pKSa&cp=3Dre320_cs_p10&ch=3Dreg&utm_medium=3Demail&utm_source=3Dresearchg=
+ate&utm_campaign=3Dre320&utm_term=3Dre320_cs&utm_content=3Dre320_cs_p10" st=
+yle=3D"text-decoration: none; font-size: 16px; color: #444444; font-family:=
+ helvetica, arial, sans-serif; font-weight: bold;"> Loay Alasmaer </a></td>=
+</tr><tr
+height=3D"20"><td><div
+style=3D"font-size: 12px; color:#999999=
+; font-family: helvetica, arial, sans-serif;"> Your department colleague</d=
+iv></td></tr></table></td><td
+valign=3D"top"><table
+width=3D"100" align=
+=3D"left" cellspacing=3D"0" cellpadding=3D"0" borderspacing=3D"0" style=3D"=
+width: 100px;"><tr><td><table
+width=3D"100%" align=3D"center" cellspacing=
+=3D"0" cellpadding=3D"0" borderspacing=3D"0" style=3D"width: 100% !importan=
+t;"><tbody><tr><td
+style=3D"border-color: #cccccc; border-width: 1px; bor=
+der-style: solid; background-color: #ffffff;" height=3D"25" align=3D"center=
+"><table
+width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" borderspacing=
+=3D"0" style=3D"width: 100% !important;"><tbody><tr><td
+align=3D"center">=
+ <a
+href=3D"https://www.researchgate.net/go.OneClickFollowAccount.html?si=
+g=3DAYlXCxxJOridRDHblQEmKfTVHdm23GEBaf0dpnApyu84I1jvdofMv5OPnAkL_9KSdG63wrp=
+RzF8kuVwSaUPM2o04dJsEt7mQ3HMvRo9cEqkZtsVnq9DYuDCEt6OJ3kM4MBFBaMP4QGRJ_hL4eX=
+8&pli=3D1&loginT=3Dfs2LgdXbE4eIhyi4TJBox10ZZPlciBZPgv1ue2Wdh7Z_DF-OKzpNjqky=
+Uv7ly1yhtqFCTGtGuVdXN_NkS0-AWcm2&uid=3DCxkcToL89hxF0LeBp6e4ANISczKFQfe1pKSa=
+&cp=3Dre320_cs_p9&ch=3Dreg&utm_medium=3Demail&utm_source=3Dresearchgate&utm=
+_campaign=3Dre320&utm_term=3Dre320_cs&utm_content=3Dre320_cs_p9" style=3D"d=
+isplay: block; text-decoration: none; height: 100%; color: #666666; margin:=
+ 0; font-family: helvetica, arial, sans-serif; width: 100%; font-size: 12px=
+; font-weight:normal;"> Follow </a></td></tr></tbody></table></td></tr></tb=
+ody></table></td></tr></table></td></tr></table></td><tr><td
+height=3D"15=
+"></td></tr><td
+width=3D"100%" valign=3D"top"><table
+cellpadding=3D"0" =
+cellspacing=3D"0" width=3D"100%"><tr><td
+valign=3D"top" width=3D"60" heig=
+ht=3D"60" style=3D"text-align: center;"><table
+cellspacing=3D"0" cellpadd=
+ing=3D"0"><tbody><tr><td
+style=3D" "> <a
+href=3D"https://www.researchga=
+te.net/profile/Wasim_Syrian?pli=3D1&loginT=3Dfs2LgdXbE4eIhyi4TJBox10ZZPlciB=
+ZPgv1ue2Wdh7Z_DF-OKzpNjqkyUv7ly1yhtqFCTGtGuVdXN_NkS0-AWcm2&uid=3DCxkcToL89h=
+xF0LeBp6e4ANISczKFQfe1pKSa&cp=3Dre320_cs_p8&ch=3Dreg&utm_medium=3Demail&utm=
+_source=3Dresearchgate&utm_campaign=3Dre320&utm_term=3Dre320_cs&utm_content=
+=3Dre320_cs_p8" style=3D"text-decoration: none;"> <img
+width=3D"50" heigh=
+t=3D"50" src=3D"https://i1.rgstatic.net/ii/profile.image/278611425808392-14=
+43437548687_Q128/Wasim_Syrian.jpg" alt=3D"Wasim Syrian" /> </a></td></tr></=
+tbody></table></td><td
+width=3D"10"></td><td
+valign=3D"top" width=3D"35=
+5"><table
+cellpadding=3D"0" cellspacing=3D"0" width=3D"100%"><tr
+height=
+=3D"20"><td> <a
+href=3D"https://www.researchgate.net/profile/Wasim_Syrian=
+?pli=3D1&loginT=3Dfs2LgdXbE4eIhyi4TJBox10ZZPlciBZPgv1ue2Wdh7Z_DF-OKzpNjqkyU=
+v7ly1yhtqFCTGtGuVdXN_NkS0-AWcm2&uid=3DCxkcToL89hxF0LeBp6e4ANISczKFQfe1pKSa&=
+cp=3Dre320_cs_p10&ch=3Dreg&utm_medium=3Demail&utm_source=3Dresearchgate&utm=
+_campaign=3Dre320&utm_term=3Dre320_cs&utm_content=3Dre320_cs_p10" style=3D"=
+text-decoration: none; font-size: 16px; color: #444444; font-family: helvet=
+ica, arial, sans-serif; font-weight: bold;"> Wasim Syrian </a></td></tr><tr=
+
+height=3D"20"><td><div
+style=3D"font-size: 12px; color:#999999; font-f=
+amily: helvetica, arial, sans-serif;"> Your department colleague</div></td>=
+</tr></table></td><td
+valign=3D"top"><table
+width=3D"100" align=3D"left=
+" cellspacing=3D"0" cellpadding=3D"0" borderspacing=3D"0" style=3D"width: 1=
+00px;"><tr><td><table
+width=3D"100%" align=3D"center" cellspacing=3D"0" c=
+ellpadding=3D"0" borderspacing=3D"0" style=3D"width: 100% !important;"><tbo=
+dy><tr><td
+style=3D"border-color: #cccccc; border-width: 1px; border-styl=
+e: solid; background-color: #ffffff;" height=3D"25" align=3D"center"><table=
+
+width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" borderspacing=3D"0" s=
+tyle=3D"width: 100% !important;"><tbody><tr><td
+align=3D"center"> <a
+hr=
+ef=3D"https://www.researchgate.net/go.OneClickFollowAccount.html?sig=3DKL_x=
+m4pqhUEpUyJGZlicZwyd5we4SWAU8yPKomecz7jiwB9wMNGueeQfa9RDtj25v92KC2Wg255dgub=
+YnoICQRQXIYg4TIWlvGbYaekXB-5LlodYPGLXVUzEr0vO43-ENN0esuDpfKy2vFkSOkE&pli=3D=
+1&loginT=3Dfs2LgdXbE4eIhyi4TJBox10ZZPlciBZPgv1ue2Wdh7Z_DF-OKzpNjqkyUv7ly1yh=
+tqFCTGtGuVdXN_NkS0-AWcm2&uid=3DCxkcToL89hxF0LeBp6e4ANISczKFQfe1pKSa&cp=3Dre=
+320_cs_p9&ch=3Dreg&utm_medium=3Demail&utm_source=3Dresearchgate&utm_campaig=
+n=3Dre320&utm_term=3Dre320_cs&utm_content=3Dre320_cs_p9" style=3D"display: =
+block; text-decoration: none; height: 100%; color: #666666; margin: 0; font=
+-family: helvetica, arial, sans-serif; width: 100%; font-size: 12px; font-w=
+eight:normal;"> Follow </a></td></tr></tbody></table></td></tr></tbody></ta=
+ble></td></tr></table></td></tr></table></td><tr><td
+height=3D"15"></td><=
+/tr><td
+width=3D"100%" valign=3D"top"><table
+cellpadding=3D"0" cellspac=
+ing=3D"0" width=3D"100%"><tr><td
+valign=3D"top" width=3D"60" height=3D"60=
+" style=3D"text-align: center;"><table
+cellspacing=3D"0" cellpadding=3D"0=
+"><tbody><tr><td
+style=3D" "> <a
+href=3D"https://www.researchgate.net/p=
+rofile/Luei_Muazen?pli=3D1&loginT=3Dfs2LgdXbE4eIhyi4TJBox10ZZPlciBZPgv1ue2W=
+dh7Z_DF-OKzpNjqkyUv7ly1yhtqFCTGtGuVdXN_NkS0-AWcm2&uid=3DCxkcToL89hxF0LeBp6e=
+4ANISczKFQfe1pKSa&cp=3Dre320_cs_p8&ch=3Dreg&utm_medium=3Demail&utm_source=
+=3Dresearchgate&utm_campaign=3Dre320&utm_term=3Dre320_cs&utm_content=3Dre32=
+0_cs_p8" style=3D"text-decoration: none;"> <img
+width=3D"50" height=3D"50=
+" src=3D"https://c5.rgstatic.net/m/437738464651637/images/template/default/=
+profile/profile_default_l.jpg" alt=3D"Luei Muazen" /> </a></td></tr></tbody=
+></table></td><td
+width=3D"10"></td><td
+valign=3D"top" width=3D"355"><t=
+able
+cellpadding=3D"0" cellspacing=3D"0" width=3D"100%"><tr
+height=3D"2=
+0"><td> <a
+href=3D"https://www.researchgate.net/profile/Luei_Muazen?pli=
+=3D1&loginT=3Dfs2LgdXbE4eIhyi4TJBox10ZZPlciBZPgv1ue2Wdh7Z_DF-OKzpNjqkyUv7ly=
+1yhtqFCTGtGuVdXN_NkS0-AWcm2&uid=3DCxkcToL89hxF0LeBp6e4ANISczKFQfe1pKSa&cp=
+=3Dre320_cs_p10&ch=3Dreg&utm_medium=3Demail&utm_source=3Dresearchgate&utm_c=
+ampaign=3Dre320&utm_term=3Dre320_cs&utm_content=3Dre320_cs_p10" style=3D"te=
+xt-decoration: none; font-size: 16px; color: #444444; font-family: helvetic=
+a, arial, sans-serif; font-weight: bold;"> Luei Muazen </a></td></tr><tr
+=
+height=3D"20"><td><div
+style=3D"font-size: 12px; color:#999999; font-fami=
+ly: helvetica, arial, sans-serif;"> Your department colleague</div></td></t=
+r></table></td><td
+valign=3D"top"><table
+width=3D"100" align=3D"left" c=
+ellspacing=3D"0" cellpadding=3D"0" borderspacing=3D"0" style=3D"width: 100p=
+x;"><tr><td><table
+width=3D"100%" align=3D"center" cellspacing=3D"0" cell=
+padding=3D"0" borderspacing=3D"0" style=3D"width: 100% !important;"><tbody>=
+<tr><td
+style=3D"border-color: #cccccc; border-width: 1px; border-style: =
+solid; background-color: #ffffff;" height=3D"25" align=3D"center"><table
+=
+width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" borderspacing=3D"0" styl=
+e=3D"width: 100% !important;"><tbody><tr><td
+align=3D"center"> <a
+href=
+=3D"https://www.researchgate.net/go.OneClickFollowAccount.html?sig=3DA0SHW4=
+JtafXhFO0dUvgc1GOuDBMWW521XuZT2kU4zcjzqZs7STOEB_yIWn0djtn7MZBgUJ4EK_JzXqWoX=
+tkaINDa0u3MV-AUnebmJGyO1XUStqnaqOCBYrUpV6ztsMhSWbaPor4MWOxAsK_B53T73g&pli=
+=3D1&loginT=3Dfs2LgdXbE4eIhyi4TJBox10ZZPlciBZPgv1ue2Wdh7Z_DF-OKzpNjqkyUv7ly=
+1yhtqFCTGtGuVdXN_NkS0-AWcm2&uid=3DCxkcToL89hxF0LeBp6e4ANISczKFQfe1pKSa&cp=
+=3Dre320_cs_p9&ch=3Dreg&utm_medium=3Demail&utm_source=3Dresearchgate&utm_ca=
+mpaign=3Dre320&utm_term=3Dre320_cs&utm_content=3Dre320_cs_p9" style=3D"disp=
+lay: block; text-decoration: none; height: 100%; color: #666666; margin: 0;=
+ font-family: helvetica, arial, sans-serif; width: 100%; font-size: 12px; f=
+ont-weight:normal;"> Follow </a></td></tr></tbody></table></td></tr></tbody=
+></table></td></tr></table></td></tr></table></td><tr><td
+height=3D"15"><=
+/td></tr><td
+width=3D"100%" valign=3D"top"><table
+cellpadding=3D"0" cel=
+lspacing=3D"0" width=3D"100%"><tr><td
+valign=3D"top" width=3D"60" height=
+=3D"60" style=3D"text-align: center;"><table
+cellspacing=3D"0" cellpaddin=
+g=3D"0"><tbody><tr><td
+style=3D" "> <a
+href=3D"https://www.researchgate=
+.net/profile/Ammar_Sabbagh?pli=3D1&loginT=3Dfs2LgdXbE4eIhyi4TJBox10ZZPlciBZ=
+Pgv1ue2Wdh7Z_DF-OKzpNjqkyUv7ly1yhtqFCTGtGuVdXN_NkS0-AWcm2&uid=3DCxkcToL89hx=
+F0LeBp6e4ANISczKFQfe1pKSa&cp=3Dre320_cs_p8&ch=3Dreg&utm_medium=3Demail&utm_=
+source=3Dresearchgate&utm_campaign=3Dre320&utm_term=3Dre320_cs&utm_content=
+=3Dre320_cs_p8" style=3D"text-decoration: none;"> <img
+width=3D"50" heigh=
+t=3D"50" src=3D"https://i1.rgstatic.net/ii/profile.image/362329347772423-14=
+63397456741_Q128/Ammar_Sabbagh.jpg" alt=3D"Ammar Sabbagh" /> </a></td></tr>=
+</tbody></table></td><td
+width=3D"10"></td><td
+valign=3D"top" width=3D"=
+355"><table
+cellpadding=3D"0" cellspacing=3D"0" width=3D"100%"><tr
+heig=
+ht=3D"20"><td> <a
+href=3D"https://www.researchgate.net/profile/Ammar_Sabb=
+agh?pli=3D1&loginT=3Dfs2LgdXbE4eIhyi4TJBox10ZZPlciBZPgv1ue2Wdh7Z_DF-OKzpNjq=
+kyUv7ly1yhtqFCTGtGuVdXN_NkS0-AWcm2&uid=3DCxkcToL89hxF0LeBp6e4ANISczKFQfe1pK=
+Sa&cp=3Dre320_cs_p10&ch=3Dreg&utm_medium=3Demail&utm_source=3Dresearchgate&=
+utm_campaign=3Dre320&utm_term=3Dre320_cs&utm_content=3Dre320_cs_p10" style=
+=3D"text-decoration: none; font-size: 16px; color: #444444; font-family: he=
+lvetica, arial, sans-serif; font-weight: bold;"> Ammar Sabbagh </a></td></t=
+r><tr
+height=3D"20"><td><div
+style=3D"font-size: 12px; color:#999999; f=
+ont-family: helvetica, arial, sans-serif;"> Your department colleague</div>=
+</td></tr></table></td><td
+valign=3D"top"><table
+width=3D"100" align=3D=
+"left" cellspacing=3D"0" cellpadding=3D"0" borderspacing=3D"0" style=3D"wid=
+th: 100px;"><tr><td><table
+width=3D"100%" align=3D"center" cellspacing=3D=
+"0" cellpadding=3D"0" borderspacing=3D"0" style=3D"width: 100% !important;"=
+><tbody><tr><td
+style=3D"border-color: #cccccc; border-width: 1px; border=
+-style: solid; background-color: #ffffff;" height=3D"25" align=3D"center"><=
+table
+width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" borderspacing=3D=
+"0" style=3D"width: 100% !important;"><tbody><tr><td
+align=3D"center"> <a=
+
+href=3D"https://www.researchgate.net/go.OneClickFollowAccount.html?sig=
+=3DxQU18p5yDxCWEgLc_mjPdxcJSxQfWP1znTeNG3JpfxrKJIYh0Rs4bzJx5Rqj-krvp2Y9-Zuu=
+HKm8uy2vVFx4lq_xJ8zm8s0fjkaWkCnmXdZJySTnR980Gz1FXM4VkaZSGuinzIH61W9wEj2WB9w=
+-Fw&pli=3D1&loginT=3Dfs2LgdXbE4eIhyi4TJBox10ZZPlciBZPgv1ue2Wdh7Z_DF-OKzpNjq=
+kyUv7ly1yhtqFCTGtGuVdXN_NkS0-AWcm2&uid=3DCxkcToL89hxF0LeBp6e4ANISczKFQfe1pK=
+Sa&cp=3Dre320_cs_p9&ch=3Dreg&utm_medium=3Demail&utm_source=3Dresearchgate&u=
+tm_campaign=3Dre320&utm_term=3Dre320_cs&utm_content=3Dre320_cs_p9" style=3D=
+"display: block; text-decoration: none; height: 100%; color: #666666; margi=
+n: 0; font-family: helvetica, arial, sans-serif; width: 100%; font-size: 12=
+px; font-weight:normal;"> Follow </a></td></tr></tbody></table></td></tr></=
+tbody></table></td></tr></table></td></tr></table></td><tr><td
+height=3D"=
+15"></td></tr><td
+width=3D"100%" valign=3D"top"><table
+cellpadding=3D"0=
+" cellspacing=3D"0" width=3D"100%"><tr><td
+valign=3D"top" width=3D"60" he=
+ight=3D"60" style=3D"text-align: center;"><table
+cellspacing=3D"0" cellpa=
+dding=3D"0"><tbody><tr><td
+style=3D" "> <a
+href=3D"https://www.research=
+gate.net/profile/Modar_Abbass?pli=3D1&loginT=3Dfs2LgdXbE4eIhyi4TJBox10ZZPlc=
+iBZPgv1ue2Wdh7Z_DF-OKzpNjqkyUv7ly1yhtqFCTGtGuVdXN_NkS0-AWcm2&uid=3DCxkcToL8=
+9hxF0LeBp6e4ANISczKFQfe1pKSa&cp=3Dre320_cs_p8&ch=3Dreg&utm_medium=3Demail&u=
+tm_source=3Dresearchgate&utm_campaign=3Dre320&utm_term=3Dre320_cs&utm_conte=
+nt=3Dre320_cs_p8" style=3D"text-decoration: none;"> <img
+width=3D"50" hei=
+ght=3D"50" src=3D"https://c5.rgstatic.net/m/437738464651637/images/template=
+/default/profile/profile_default_l.jpg" alt=3D"Modar Abbass" /> </a></td></=
+tr></tbody></table></td><td
+width=3D"10"></td><td
+valign=3D"top" width=
+=3D"355"><table
+cellpadding=3D"0" cellspacing=3D"0" width=3D"100%"><tr
+=
+height=3D"20"><td> <a
+href=3D"https://www.researchgate.net/profile/Modar_=
+Abbass?pli=3D1&loginT=3Dfs2LgdXbE4eIhyi4TJBox10ZZPlciBZPgv1ue2Wdh7Z_DF-OKzp=
+NjqkyUv7ly1yhtqFCTGtGuVdXN_NkS0-AWcm2&uid=3DCxkcToL89hxF0LeBp6e4ANISczKFQfe=
+1pKSa&cp=3Dre320_cs_p10&ch=3Dreg&utm_medium=3Demail&utm_source=3Dresearchga=
+te&utm_campaign=3Dre320&utm_term=3Dre320_cs&utm_content=3Dre320_cs_p10" sty=
+le=3D"text-decoration: none; font-size: 16px; color: #444444; font-family: =
+helvetica, arial, sans-serif; font-weight: bold;"> Modar Abbass </a></td></=
+tr><tr
+height=3D"20"><td><div
+style=3D"font-size: 12px; color:#999999; =
+font-family: helvetica, arial, sans-serif;"> Your department colleague</div=
+></td></tr></table></td><td
+valign=3D"top"><table
+width=3D"100" align=
+=3D"left" cellspacing=3D"0" cellpadding=3D"0" borderspacing=3D"0" style=3D"=
+width: 100px;"><tr><td><table
+width=3D"100%" align=3D"center" cellspacing=
+=3D"0" cellpadding=3D"0" borderspacing=3D"0" style=3D"width: 100% !importan=
+t;"><tbody><tr><td
+style=3D"border-color: #cccccc; border-width: 1px; bor=
+der-style: solid; background-color: #ffffff;" height=3D"25" align=3D"center=
+"><table
+width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" borderspacing=
+=3D"0" style=3D"width: 100% !important;"><tbody><tr><td
+align=3D"center">=
+ <a
+href=3D"https://www.researchgate.net/go.OneClickFollowAccount.html?si=
+g=3DmvJ6gZBAVow72RCEYwPgdCwX4yvchd6WwTpEBUNZ3LMnh87qEiHhoYqBsNRi9354joEoN-0=
+y0_TPxmWpEThc32KKBSW0COVdMrhmmLjcccXhvN5vfn-wQmaTUgWOnxxIjmocE_KjS-oTqJEc08=
+0&pli=3D1&loginT=3Dfs2LgdXbE4eIhyi4TJBox10ZZPlciBZPgv1ue2Wdh7Z_DF-OKzpNjqky=
+Uv7ly1yhtqFCTGtGuVdXN_NkS0-AWcm2&uid=3DCxkcToL89hxF0LeBp6e4ANISczKFQfe1pKSa=
+&cp=3Dre320_cs_p9&ch=3Dreg&utm_medium=3Demail&utm_source=3Dresearchgate&utm=
+_campaign=3Dre320&utm_term=3Dre320_cs&utm_content=3Dre320_cs_p9" style=3D"d=
+isplay: block; text-decoration: none; height: 100%; color: #666666; margin:=
+ 0; font-family: helvetica, arial, sans-serif; width: 100%; font-size: 12px=
+; font-weight:normal;"> Follow </a></td></tr></tbody></table></td></tr></tb=
+ody></table></td></tr></table></td></tr></table></td><tr><td
+height=3D"15=
+"></td></tr><td
+width=3D"100%" valign=3D"top"><table
+cellpadding=3D"0" =
+cellspacing=3D"0" width=3D"100%"><tr><td
+valign=3D"top" width=3D"60" heig=
+ht=3D"60" style=3D"text-align: center;"><table
+cellspacing=3D"0" cellpadd=
+ing=3D"0"><tbody><tr><td
+style=3D" "> <a
+href=3D"https://www.researchga=
+te.net/profile/Khaled_Daghestani?pli=3D1&loginT=3Dfs2LgdXbE4eIhyi4TJBox10ZZ=
+PlciBZPgv1ue2Wdh7Z_DF-OKzpNjqkyUv7ly1yhtqFCTGtGuVdXN_NkS0-AWcm2&uid=3DCxkcT=
+oL89hxF0LeBp6e4ANISczKFQfe1pKSa&cp=3Dre320_cs_p8&ch=3Dreg&utm_medium=3Demai=
+l&utm_source=3Dresearchgate&utm_campaign=3Dre320&utm_term=3Dre320_cs&utm_co=
+ntent=3Dre320_cs_p8" style=3D"text-decoration: none;"> <img
+width=3D"50" =
+height=3D"50" src=3D"https://c5.rgstatic.net/m/437738464651637/images/templ=
+ate/default/profile/profile_default_l.jpg" alt=3D"Khaled Daghestani" /> </a=
+></td></tr></tbody></table></td><td
+width=3D"10"></td><td
+valign=3D"top=
+" width=3D"355"><table
+cellpadding=3D"0" cellspacing=3D"0" width=3D"100%"=
+><tr
+height=3D"20"><td> <a
+href=3D"https://www.researchgate.net/profile=
+/Khaled_Daghestani?pli=3D1&loginT=3Dfs2LgdXbE4eIhyi4TJBox10ZZPlciBZPgv1ue2W=
+dh7Z_DF-OKzpNjqkyUv7ly1yhtqFCTGtGuVdXN_NkS0-AWcm2&uid=3DCxkcToL89hxF0LeBp6e=
+4ANISczKFQfe1pKSa&cp=3Dre320_cs_p10&ch=3Dreg&utm_medium=3Demail&utm_source=
+=3Dresearchgate&utm_campaign=3Dre320&utm_term=3Dre320_cs&utm_content=3Dre32=
+0_cs_p10" style=3D"text-decoration: none; font-size: 16px; color: #444444; =
+font-family: helvetica, arial, sans-serif; font-weight: bold;"> Khaled Dagh=
+estani </a></td></tr><tr
+height=3D"20"><td><div
+style=3D"font-size: 12p=
+x; color:#999999; font-family: helvetica, arial, sans-serif;"> Your departm=
+ent colleague</div></td></tr></table></td><td
+valign=3D"top"><table
+wid=
+th=3D"100" align=3D"left" cellspacing=3D"0" cellpadding=3D"0" borderspacing=
+=3D"0" style=3D"width: 100px;"><tr><td><table
+width=3D"100%" align=3D"cen=
+ter" cellspacing=3D"0" cellpadding=3D"0" borderspacing=3D"0" style=3D"width=
+: 100% !important;"><tbody><tr><td
+style=3D"border-color: #cccccc; border=
+-width: 1px; border-style: solid; background-color: #ffffff;" height=3D"25"=
+ align=3D"center"><table
+width=3D"100%" cellpadding=3D"0" cellspacing=3D"=
+0" borderspacing=3D"0" style=3D"width: 100% !important;"><tbody><tr><td
+a=
+lign=3D"center"> <a
+href=3D"https://www.researchgate.net/go.OneClickFollo=
+wAccount.html?sig=3DEvCzhMKnIQPSecFQdCAc9x_knlFYSwW0bUuLo8ZEJYjlsa6IaqNQV8U=
+ccfdF9aywaCkNwOmU5tEcgXfmSmW9Ya--toLoKuolH2S2k5ONlhaNmRCClTpfEMs9YwfxZma4ep=
+TfMCxzHvw7o6VvoYU&pli=3D1&loginT=3Dfs2LgdXbE4eIhyi4TJBox10ZZPlciBZPgv1ue2Wd=
+h7Z_DF-OKzpNjqkyUv7ly1yhtqFCTGtGuVdXN_NkS0-AWcm2&uid=3DCxkcToL89hxF0LeBp6e4=
+ANISczKFQfe1pKSa&cp=3Dre320_cs_p9&ch=3Dreg&utm_medium=3Demail&utm_source=3D=
+researchgate&utm_campaign=3Dre320&utm_term=3Dre320_cs&utm_content=3Dre320_c=
+s_p9" style=3D"display: block; text-decoration: none; height: 100%; color: =
+#666666; margin: 0; font-family: helvetica, arial, sans-serif; width: 100%;=
+ font-size: 12px; font-weight:normal;"> Follow </a></td></tr></tbody></tabl=
+e></td></tr></tbody></table></td></tr></table></td></tr></table></td></tabl=
+e></td></tr></table></td><td></td></tr><tr
+style=3D"font-size:1px; line-h=
+eight:0; mso-margin-top-alt:1px;"><td
+height=3D"20"></td><td></td><td></t=
+d></tr></table></td></tr></table><table
+class=3D"mail-footer" width=3D"10=
+0%" cellspacing=3D"0" cellpadding=3D"0" border=3D"0" style=3D"width: 100% !=
+important; background-color: #f7f7f4; border-left: 1px solid #eaeaea; borde=
+r-right: 1px solid #eaeaea; border-bottom: 1px solid #eaeaea;"><tbody><tr><=
+td><table
+cellspacing=3D"0" cellpadding=3D"0" borderspacing=3D"0" width=
+=3D"100%" style=3D"width: 100% !important;"><tr><td
+width=3D"10" style=3D=
+"width: 10px"></td><td
+width=3D"20" style=3D"width: 20px" class=3D"hidden=
+-sm"></td><td><table
+width=3D"100%" cellspacing=3D"0" cellpadding=3D"0" b=
+order=3D"0" style=3D"width: 100% !important;"><tbody><tr
+style=3D"font-si=
+ze: 1px; line-height: 0; mso-margin-top-alt: 1px;"><td
+width=3D"100%" val=
+ign=3D"middle" height=3D"1" style=3D"background-color: #eaeaea; font-size: =
+1px; height: 1px;">&nbsp;</td></tr><tr
+style=3D"font-size: 1px; line-heig=
+ht: 0; mso-margin-top-alt: 1px;"><td
+width=3D"100%" valign=3D"middle" hei=
+ght=3D"1" style=3D"background-color: #ffffff; font-size: 1px; height: 1px;"=
+>&nbsp;</td></tr><tr
+style=3D"font-size: 1px; line-height: 0; mso-margin-=
+top-alt: 1px;"><td
+height=3D"20">&nbsp;</td></tr><tr><td><p
+style=3D"fo=
+nt-size: 11px; line-height: 15px; font-family: Helvetica,Arial,sans-serif; =
+color: #888888; margin: 0 0 20px 0;"> This message was sent to aalaa_101123=
+@svuonline.org by ResearchGate. To make sure you receive our updates, add R=
+esearchGate to your address book or safe list. <a
+style=3D"color: #888888=
+; text-decoration: underline;" href=3D"https://www.researchgate.net/help/wh=
+itelist-email?cp=3Dre320_cs_we&mfl=3D1&ch=3Dreg&uid=3DCxkcToL89hxF0LeBp6e4A=
+NISczKFQfe1pKSa">See instructions</a><br/><br/> If you don&#39;t want to re=
+ceive these emails from ResearchGate in the future, please <a
+style=3D"co=
+lor: #888888; text-decoration: underline;" href=3D"https://www.researchgate=
+.net/go.Out.researchgateFollowSuggestions.html?loginT=3Dfs2LgdXbE4eIhyi4TJB=
+ox10ZZPlciBZPgv1ue2Wdh7Z_DF-OKzpNjqkyUv7ly1yhtqFCTGtGuVdXN_NkS0-AWcm2&cp=3D=
+re320_cs_u1&mfl=3D1&ch=3Dreg&uid=3DCxkcToL89hxF0LeBp6e4ANISczKFQfe1pKSa">un=
+subscribe</a>.<br/> <br/>ResearchGate GmbH, Chausseestr. 20, 10115 Berlin, =
+Germany. <a
+style=3D"color: #888888; text-decoration: underline;" href=3D=
+"https://www.researchgate.net/imprint?cp=3Dre320_cs_im">Imprint.</a><br/> S=
+ee our <a
+style=3D"color: #888888; text-decoration: underline;" href=3D"h=
+ttps://www.researchgate.net/privacy-policy?cp=3Dre320_cs_pp&mfl=3D1&ch=3Dre=
+g&uid=3DCxkcToL89hxF0LeBp6e4ANISczKFQfe1pKSa">Privacy Policy</a> and <a
+s=
+tyle=3D"color: #888888; text-decoration: underline;" href=3D"https://www.re=
+searchgate.net/terms-of-service?cp=3Dre320_cs_tos&mfl=3D1&ch=3Dreg&uid=3DCx=
+kcToL89hxF0LeBp6e4ANISczKFQfe1pKSa">Terms of Service</a>.</p></td></tr></tb=
+ody></table></td><td
+width=3D"20" style=3D"width: 20px" class=3D"hidden-s=
+m"></td><td
+width=3D"10" style=3D"width: 10px"></td></tr></table></td></t=
+r></tbody></table></td></tr></table></td></tr></table></body></html>
+
+--_=_swift_1568352978_9fb9dbd805cbfaf2d30802a083c3e2d6_=_--
+
+
+

@@ -1,0 +1,404 @@
+Return-Path: <Gls0TfKc5tRTaUPZFX3WHrMonFAHu1dFHXvZ@bounce.researchgate.net>
+Delivered-To: rasha_104135@svuonline.org
+Received: from localhost (localhost [127.0.0.1])
+	by mail.svuonline.org (Postfix) with ESMTP id 1C9C4129200
+	for <rasha_104135@svuonline.org>; Sat, 19 Oct 2019 00:11:58 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at mail.svuonline.org
+X-Spam-Flag: NO
+X-Spam-Score: -1.747
+X-Spam-Level:
+X-Spam-Status: No, score=-1.747 tagged_above=-9999 required=6.31
+	tests=[BAYES_00=-1.9, DKIMWL_WL_MED=-0.001, DKIM_SIGNED=0.1,
+	DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+	HEADER_FROM_DIFFERENT_DOMAINS=0.25, HTML_FONT_LOW_CONTRAST=0.001,
+	HTML_MESSAGE=0.001, SPF_HELO_NONE=0.001, URIBL_BLOCKED=0.001]
+	autolearn=no autolearn_force=no
+Authentication-Results: mail.svuonline.org (amavisd-new);
+	dkim=pass (1024-bit key) header.d=researchgatemail.net;
+	domainkeys=pass (1024-bit key)
+	header.from=no-reply@researchgatemail.net
+	header.d=researchgatemail.net
+Received: from mail.svuonline.org ([127.0.0.1])
+	by localhost (mail.svuonline.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 3Hlyv-_o_Itb for <rasha_104135@svuonline.org>;
+	Sat, 19 Oct 2019 00:11:57 +0300 (EEST)
+Received: from mailfilter.svuonline.org (unknown [10.1.15.115])
+	by mail.svuonline.org (Postfix) with SMTP id 0BBE1126BCC
+	for <rasha_104135@svuonline.org>; Sat, 19 Oct 2019 00:11:57 +0300 (EEST)
+Received: by mailfilter.svuonline.org (Postfix, from userid 500)
+	id 6482C80430; Sat, 19 Oct 2019 00:57:38 +0300 (EEST)
+Received: from viprelay.scs-net.org (viprelay.scs-net.org [213.178.225.17])
+	by mailfilter.svuonline.org (Postfix) with ESMTP id 5EFC4803FF
+	for <rasha_104135@svuonline.org>; Sat, 19 Oct 2019 00:57:37 +0300 (EEST)
+Received: from localhost (localhost [127.0.0.1])
+	by viprelay.scs-net.org (Postfix) with ESMTP id 19FCC9B4745
+	for <rasha_104135@svuonline.org>; Sat, 19 Oct 2019 00:33:48 +0300 (EEST)
+X-Virus-Scanned: by SpamTitan at scs-net.org
+Received: from viprelay.scs-net.org (localhost [127.0.0.1])
+	by viprelay.scs-net.org (Postfix) with ESMTP id ACCD79B4757
+	for <rasha_104135@svuonline.org>; Sat, 19 Oct 2019 00:33:42 +0300 (EEST)
+Received: from mr67.researchgate.net (mr67.researchgate.net [209.15.243.116])
+	by viprelay.scs-net.org (Postfix) with SMTP id 932C69B473B
+	for <rasha_104135@svuonline.org>; Sat, 19 Oct 2019 00:33:34 +0300 (EEST)
+Authentication-Results: viprelay.scs-net.org;
+        dkim-adsp=pass (ADSP policy from researchgatemail.net);
+        dkim=pass (1024-bit rsa key sha1) header.d=researchgatemail.net
+          header.i=@researchgatemail.net header.b=Mx4UnsuS header.a=rsa-sha1
+          header.s=rg x-bits=1024;
+        domainkeys=pass (1024-bit rsa key sha1)
+          header.d=researchgatemail.net header.b=MEK4WG7M x-bits=1024
+          x-keytype=rsa x-algorithm=sha1 x-selector=rg;
+        spf=pass
+          smtp.mailfrom=
+          Gls0TfKc5tRTaUPZFX3WHrMonFAHu1dFHXvZ@bounce.researchgate.net
+          smtp.helo=mr67.researchgate.net;
+        x-dkim-dkssp=pass (sender policy from researchgatemail.net)
+Received-SPF: pass
+        (bounce.researchgate.net: 209.15.243.116 is authorized to use 'Gls0TfKc5tRTaUPZFX3WHrMonFAHu1dFHXvZ@bounce.researchgate.net' in 'mfrom' identity (mechanism 'ip4:209.15.243.112/28' matched))
+        receiver=viprelay.scs-net.org;
+        identity=mailfrom;
+        envelope-from="Gls0TfKc5tRTaUPZFX3WHrMonFAHu1dFHXvZ@bounce.researchgate.net";
+        helo=mr67.researchgate.net;
+        client-ip=209.15.243.116
+Received: from mr67.researchgate.net (localhost [127.0.0.1])
+	by mr67.researchgate.net (Postfix) with ESMTP id 233C8100300DE
+	for <rasha_104135@svuonline.org>; Fri, 18 Oct 2019 21:37:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=researchgatemail.net; h=
+	message-id:date:subject:from:to:mime-version:content-type; s=rg;
+	 bh=yG3TX0oG7ytK8Q2fnUJClg13cxM=; b=Mx4UnsuSG3NPlzhYybspcuG8BprH
+	VeYwqShkjCR7OVgir7SWCYSwv0JD1KZ9Y+MqGhJNLBSXSoJKyGF9IuwaWvjY6wop
+	s3kHKnusdH1f0HCH8GAJCmL9FjKs7+zoYam9JzzFpkW12JjcfrcngwQxHhg0fyHf
+	Ztzj1qN5xTUr9mQ=
+DomainKey-Signature: a=rsa-sha1; c=nofws; d=researchgatemail.net; h=
+	message-id:date:subject:from:to:mime-version:content-type; q=
+	dns; s=rg; b=MEK4WG7MkdvTkAkyG3C3xqvlLVbtBbhtzxiOWH0fPAWZYek+3UB
+	Mw0omcf4IUHVm2lLAdLW+LsasYWoAbMVnEKooobETgYT8iJ53fI75M08KMBx3s/K
+	c4d8gn2RP6p+GqjnG94i0IFEuPGD8iw0tSCcRQy7ZuXcPRtWwo4RfQf8=
+Message-ID: <66d3529d66028897446b9344c209ae29@www.researchgate.net>
+Date: Fri, 18 Oct 2019 21:37:25 +0000
+Subject: Your request to reset your ResearchGate password
+From: ResearchGate <no-reply@researchgatemail.net>
+To: rasha_104135@svuonline.org
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="_=_swift_1571434645_61a8dd4a10f6dd6448caa23b0fa7c8c8_=_"
+X-RG-Mail-Type: SwiftMail
+x-rg-mail-id: I5WHGMCUMZFWGNLUKJKGCVKQLJDFQM2XJBZE233OIZAUQ5JRMRDEQWDWLI5XEYLTNBQV6MJQGQYTGNKAON3HK33ONRUW4ZJON5ZGO===
+x-correlation-id: rgreq-6613e42ffc0381dc7552da0f63b8b0c6
+Feedback-ID: re17:re17|x:rgESP
+
+--_=_swift_1571434645_61a8dd4a10f6dd6448caa23b0fa7c8c8_=_
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+ResearchGate
+----------
+Rasha, we've received your request to reset you=
+r ResearchGate password.
+
+Please click the button below to change your =
+password.
+
+Reset password: https://www.researchgate.net/go.Lost.html?db=
+w=3Dtrue&k=3DBtwS8QgxOcsssXM92mddUnlvwewT-yh26lt0Jjf58DOldS3GbR4m3YR-uM2Bdh=
+sL2DWSzombiB3nLyW5_OAbYly6c7eX2nAmbiFhzuRQekNwIK-aeeoZ9Nzo0RcHuIlHubLo8BYqV=
+lzYsaJ_3jEnLFHTrdgI1jCUt1fbhfshH8bSconJ-t9fzhH6NqoE9hdGIQl7mOQ&utm_medium=
+=3Demail&utm_source=3Dresearchgate&utm_campaign=3Dre17&utm_term=3Dre17_x&ut=
+m_content=3Dre17_x_p2&cp=3Dre17_x_p2&uid=3DGls0TfKc5tRTaUPZFX3WHrMonFAHu1dF=
+HXvZ&ch=3Dreg
+Didn't request to change your password? Contact us: https:/=
+/www.researchgate.net/application.Contact.html
+----------
+This message =
+was sent to rasha_104135@svuonline.org by ResearchGate. To make sure you re=
+ceive our updates, add ResearchGate to your address book or safe list. See =
+instructions: https://www.researchgate.net/help/whitelist-email?cp=3Dre17_x=
+_we&ch=3Dreg&mfl=3D1&uid=3DGls0TfKc5tRTaUPZFX3WHrMonFAHu1dFHXvZ
+
+Resear=
+chGate GmbH, Chausseestr. 20, 10115 Berlin, Germany. Imprint: https://www.r=
+esearchgate.net/imprint?cp=3Dre17_x_tos&ch=3Dreg&mfl=3D1&uid=3DGls0TfKc5tRT=
+aUPZFX3WHrMonFAHu1dFHXvZ.
+See our Privacy Policy: https://www.researchgat=
+e.net/privacy-policy?cp=3Dre17_x_pp&ch=3Dreg&mfl=3D1&uid=3DGls0TfKc5tRTaUPZ=
+FX3WHrMonFAHu1dFHXvZ and Terms of Service: https://www.researchgate.net/ter=
+ms-of-service?cp=3Dre17_x_tos&ch=3Dreg&mfl=3D1&uid=3DGls0TfKc5tRTaUPZFX3WHr=
+MonFAHu1dFHXvZ.
+
+--_=_swift_1571434645_61a8dd4a10f6dd6448caa23b0fa7c8c8_=_
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org=
+/TR/xhtml1/DTD/xhtml1-strict.dtd"><html
+lang=3D"en"
+dir=3D"ltr"
+xmlns=
+=3D"http://www.w3.org/1999/xhtml"
+xmlns:v=3D"urn:schemas-microsoft-com:vm=
+l"
+xmlns:o=3D"urn:schemas-microsoft-com:office:office"><head><title>Your =
+request to reset your ResearchGate password</title><meta
+http-equiv=3D"Co=
+ntent-Type" content=3D"text/html; charset=3Dutf-8" /><meta
+http-equiv=3D"=
+X-UA-Compatible" content=3D"IE=3Dedge" /><meta
+content=3D"telephone=3Dno"=
+ name=3D"format-detection" /><meta
+name=3D"viewport" content=3D"width=3Dd=
+evice-width" /><link
+href=3D"https://fonts.googleapis.com/css?family=3DRo=
+boto:400,700" rel=3D"stylesheet" type=3D"text/css" /><style type=3D"text/cs=
+s">.nova-e-text-s{font-family:Roboto,Arial,sans-serif!important;font-size:1=
+2px!important}.nova-e-text-m{font-family:Roboto,Arial,sans-serif!important;=
+font-size:14px!important}.nova-e-text-l{font-family:Roboto,Arial,sans-serif=
+!important;font-size:16px!important}.nova-e-text-xl{font-family:Roboto,Aria=
+l,sans-serif!important;font-size:22px!important}@media screen and (max-widt=
+h:480px){.nova-e-text-xl{font-size:19px!important}}a:link,span.MsoHyperlink=
+,span.MsoHyperlinkFollowed{mso-style-priority:100!important;color:#111}.nov=
+a-e-link-bare:active,.nova-e-link-bare:hover,.nova-e-link-decorated{text-de=
+coration:underline!important}</style><!--[if mso]><style type=3D"text/css">=
+/*<![CDATA[*/.nova-c-button font,
+      .nova-e-text font,
+      .nova-=
+e-link font,
+      .nova-e-link--theme-bare font,
+      .nova-e-list--i=
+tem font {
+        font-family: Arial, sans-serif;
+      }/*]]>*/</styl=
+e><![endif]--> <!--[if gte mso 9]> <xml> <o:OfficeDocumentSettings> <o:Allo=
+wPNG/> <o:PixelsPerInch>96</o:PixelsPerInch> </o:OfficeDocumentSettings> </=
+xml> <![endif]--></head><body
+bgcolor=3D"#FFFFFF" width=3D"100%" style=3D=
+"width:100% !important; background:#FFFFFF !important; -webkit-text-size-ad=
+just:none; -ms-text-size-adjust:100%; margin:0; padding:0; min-width:100%; =
+direction: ltr;"><table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" =
+bgcolor=3D"#FFFFFF" id=3D"backgroundTable" width=3D"100%" style=3D"width:10=
+0% !important; background:#FFFFFF !important; -webkit-text-size-adjust:none=
+; -ms-text-size-adjust:100%; margin:0; padding:0; min-width:100%"><tr><td=
+
+align=3D"center"> <span
+style=3D"display: none !important; color: #FFF=
+FFF; margin:0; padding:0; font-size:1px; line-height:1px; max-height: 0px; =
+max-width: 0px; opacity: 0; overflow: hidden; mso-hide: all;">Your request =
+to reset your ResearchGate password</span><div
+class=3D"email" style=3D"m=
+ax-width:600px;margin:10px auto"><table
+border=3D"0" cellPadding=3D"0" ce=
+llSpacing=3D"0" width=3D"100%"><tbody><tr><td
+style=3D"border-collapse:co=
+llapse;height:20px" aria-hidden=3D"true"></td></tr><tr><td
+style=3D"paddi=
+ng:0 0px" align=3D"center"><img
+alt=3D"ResearchGate" width=3D"104" height=
+=3D"15" src=3D"https://www.researchgate.net/mail/rg_logo_mail_nova_grey.png=
+?loginT=3DpaL4JihpKtAVxvw2QOeEPChf24aBS1YQ68MnbLgRqfPjqOEqByaLD-klRC6fov2Mq=
+gfcPqc7EkTNvSwBZ8DHxapl&amp;cpc=3Dre17_x_&amp;cn=3DJGaSFuziCFVbu0nTFIVOavt5=
+nSbQx7IvMV7wnIXq4n2Wiiovg3BBmmMqmWm1xhc5q6w5O6WATcfC1yQr9LXZH3UpbTqxs2NT5gT=
+Fq6qoiuBMB3MZcek&amp;uid=3DGls0TfKc5tRTaUPZFX3WHrMonFAHu1dFHXvZ" style=3D"v=
+ertical-align:middle;display:block;border:0;-ms-interpolation-mode:bicubic"=
+/></td></tr><tr><td
+style=3D"border-collapse:collapse;height:20px" aria-h=
+idden=3D"true"></td></tr><tr><td
+style=3D"border-bottom:1px solid #eeeeee=
+;padding:0"></td></tr><tr><td
+style=3D"border-collapse:collapse;height:20=
+px" aria-hidden=3D"true"></td></tr><tr><td
+style=3D"padding:0 0px" align=
+=3D"center"><center><table
+border=3D"0" cellPadding=3D"0" cellSpacing=3D"=
+0" width=3D"100%"><tbody><tr><td
+style=3D"border-collapse:collapse;height=
+:20px" aria-hidden=3D"true"></td></tr><tr><td
+style=3D"padding:0 40px" al=
+ign=3D"center"><span><!--[if mso]><v:oval fill=3D"true" strokeweight=3D"1px=
+" strokecolor=3D"#F4F4F4" style=3D"width:46px;height:46px;border:0"><v:fill=
+ type=3D"frame" aspect=3D"atmost" color=3D"#FFFFFF" style=3D"-ms-interpolat=
+ion-mode:bicubic" width=3D"46px" height=3D"46px" src=3D"https://c5.rgstatic=
+.net/m/4671872220764/images/template/default/profile/profile_default_m.jpg"=
+ alt=3D"Rasha Kayal"></v:fill><v:textbox inset=3D"0,0,0,0"></v:textbox></v:=
+oval><![endif]--></span><span
+style=3D"mso-hide:all"><span
+style=3D"wid=
+th:46px;height:46px;line-height:46px;border-radius:50%;border:1px solid #F4=
+F4F4;background-color:#FFFFFF;overflow:hidden !important;vertical-align:mid=
+dle;text-align:center;display:table-cell;mso-hide:all"><img
+src=3D"https:=
+//c5.rgstatic.net/m/4671872220764/images/template/default/profile/profile_d=
+efault_m.jpg" alt=3D"Rasha Kayal" width=3D"46" height=3D"46" style=3D"verti=
+cal-align:middle;display:block;border:0;-ms-interpolation-mode:bicubic;max-=
+width:46px;max-height:46px;width:100% !important;height:auto !important"/><=
+/span></span></td></tr><tr><td
+style=3D"border-collapse:collapse;height:2=
+0px" aria-hidden=3D"true"></td></tr><tr><td
+style=3D"border-collapse:coll=
+apse;height:20px" aria-hidden=3D"true"></td></tr><tr><td
+style=3D"padding=
+:0 40px" align=3D"center"><table
+border=3D"0" cellPadding=3D"0" cellSpaci=
+ng=3D"0" width=3D"100%"><tbody><tr><td
+align=3D"center" style=3D"padding-=
+top:0;padding-bottom:0px;line-height:26px"><span
+class=3D"nova-e-text-xl"=
+ style=3D"font-size:22px;font-family:Arial, sans-serif;margin:0;padding:0;m=
+so-line-height-rule:exactly;line-height:26px;color:#111111;font-weight:norm=
+al;display:block">Rasha, we&#x27;ve received your request to reset your Res=
+earchGate password.</span></td></tr></tbody></table></td></tr><tr><td
+sty=
+le=3D"border-collapse:collapse;height:20px" aria-hidden=3D"true"></td></tr>=
+<tr><td
+style=3D"border-collapse:collapse;height:20px" aria-hidden=3D"tru=
+e"></td></tr><tr><td
+style=3D"padding:0 40px" align=3D"center"><table
+b=
+order=3D"0" cellPadding=3D"0" cellSpacing=3D"0" width=3D"100%"><tbody><tr><=
+td
+align=3D"center" style=3D"padding-top:0;padding-bottom:0px;line-height=
+:18px"><span
+class=3D"nova-e-text-m" style=3D"font-size:14px;font-family:=
+Arial, sans-serif;margin:0;padding:0;mso-line-height-rule:exactly;line-heig=
+ht:18px;color:#111111;font-weight:normal;display:block">Please click the bu=
+tton below to change your password.</span></td></tr></tbody></table></td></=
+tr><tr><td
+style=3D"border-collapse:collapse;height:20px" aria-hidden=3D"=
+true"></td></tr><tr><td
+style=3D"border-collapse:collapse;height:20px" ar=
+ia-hidden=3D"true"></td></tr><tr><td
+style=3D"padding:0 40px" align=3D"ce=
+nter"><span><!--[if mso]><v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:=
+vml" xmlns:w=3D"urn:schemas-microsoft-com:office:word" href=3D"https://www.=
+researchgate.net/go.Lost.html?dbw=3Dtrue&amp;k=3DBtwS8QgxOcsssXM92mddUnlvwe=
+wT-yh26lt0Jjf58DOldS3GbR4m3YR-uM2BdhsL2DWSzombiB3nLyW5_OAbYly6c7eX2nAmbiFhz=
+uRQekNwIK-aeeoZ9Nzo0RcHuIlHubLo8BYqVlzYsaJ_3jEnLFHTrdgI1jCUt1fbhfshH8bSconJ=
+-t9fzhH6NqoE9hdGIQl7mOQ&amp;utm_medium=3Demail&amp;utm_source=3Dresearchgat=
+e&amp;utm_campaign=3Dre17&amp;utm_term=3Dre17_x&amp;utm_content=3Dre17_x_p2=
+&amp;cp=3Dre17_x_p2&amp;uid=3DGls0TfKc5tRTaUPZFX3WHrMonFAHu1dFHXvZ&amp;ch=
+=3Dreg" target=3D"_blank" rel=3D"noopener" style=3D"mso-wrap-style:none;mso=
+-position-horizontal:center;v-text-anchor:middle;height:42px;width:auto" st=
+rokeweight=3D"1px" strokecolor=3D"#0080FF" fillcolor=3D"#0080FF" arcsize=3D=
+"3%"><v:textbox inset=3D"28px, 11px, 28px, 11px" style=3D"mso-fit-shape-to-=
+text:true"><center
+name=3D"2" style=3D"color:#FFFFFF;font-family:sans-ser=
+if;font-size:14px;margin-right:-0.1in;text-indent:-0.1in">Reset password</c=
+enter></v:textbox></v:roundrect><![endif]--></span><span
+style=3D"mso-hid=
+e:all"><a
+class=3D"nova-c-button" style=3D"cursor:pointer;text-decoration=
+:none;display:inline-block;margin:0;vertical-align:middle;text-align:center=
+;line-height:1.3;font-family:&#x27;Roboto&#x27;,Arial,sans-serif;font-size:=
+14px;color:#FFFFFF;padding:11px 28px;border-radius:2px;border:1px solid #00=
+80FF;background-color:#0080FF;mso-hide:all;white-space:nowrap" href=3D"http=
+s://www.researchgate.net/go.Lost.html?dbw=3Dtrue&amp;k=3DBtwS8QgxOcsssXM92m=
+ddUnlvwewT-yh26lt0Jjf58DOldS3GbR4m3YR-uM2BdhsL2DWSzombiB3nLyW5_OAbYly6c7eX2=
+nAmbiFhzuRQekNwIK-aeeoZ9Nzo0RcHuIlHubLo8BYqVlzYsaJ_3jEnLFHTrdgI1jCUt1fbhfsh=
+H8bSconJ-t9fzhH6NqoE9hdGIQl7mOQ&amp;utm_medium=3Demail&amp;utm_source=3Dres=
+earchgate&amp;utm_campaign=3Dre17&amp;utm_term=3Dre17_x&amp;utm_content=3Dr=
+e17_x_p2&amp;cp=3Dre17_x_p2&amp;uid=3DGls0TfKc5tRTaUPZFX3WHrMonFAHu1dFHXvZ&=
+amp;ch=3Dreg" target=3D"_blank" rel=3D"noopener" name=3D"2">Reset password<=
+/a></span></td></tr><tr><td
+style=3D"border-collapse:collapse;height:20px=
+" aria-hidden=3D"true"></td></tr><tr><td
+style=3D"border-collapse:collaps=
+e;height:20px" aria-hidden=3D"true"></td></tr><tr><td
+style=3D"padding:0 =
+40px" align=3D"center"><table
+border=3D"0" cellPadding=3D"0" cellSpacing=
+=3D"0" width=3D"100%"><tbody><tr><td
+align=3D"center" style=3D"padding-to=
+p:0;padding-bottom:0px;line-height:16px"><span
+class=3D"nova-e-text-s" st=
+yle=3D"font-size:12px;font-family:Arial, sans-serif;margin:0;padding:0;mso-=
+line-height-rule:exactly;line-height:16px;color:#888888;font-weight:normal;=
+display:block">Didn&#x27;t request to change your password? <a
+style=3D"t=
+ext-decoration:underline;color:#888888" href=3D"https://www.researchgate.ne=
+t/application.Contact.html" target=3D"_blank" rel=3D"noopener" class=3D"nov=
+a-e-link-decorated">Contact us</a></span></td></tr></tbody></table></td></t=
+r><tr><td
+style=3D"border-collapse:collapse;height:20px" aria-hidden=3D"t=
+rue"></td></tr></tbody></table></center></td></tr><tr><td
+style=3D"border=
+-collapse:collapse;height:20px" aria-hidden=3D"true"></td></tr><tr><td
+st=
+yle=3D"border-bottom:1px solid #eeeeee;padding:0"></td></tr><tr><td
+style=
+=3D"border-collapse:collapse;height:20px" aria-hidden=3D"true"></td></tr><t=
+r><td
+style=3D"padding:0 0px" align=3D"center"><table
+border=3D"0" cell=
+Padding=3D"0" cellSpacing=3D"0" width=3D"100%"><tbody><tr><td
+style=3D"bo=
+rder-collapse:collapse;height:5px" aria-hidden=3D"true"></td></tr><tr><td=
+
+style=3D"padding:0 0px" align=3D"center"><table
+border=3D"0" cellPaddi=
+ng=3D"0" cellSpacing=3D"0" width=3D"100%" style=3D"line-height:1.5;text-ali=
+gn:center"><tbody><tr><td
+align=3D"center" style=3D"padding-top:0;padding=
+-bottom:0px;line-height:16px"><span
+class=3D"nova-e-text-s" style=3D"font=
+-size:12px;font-family:Arial, sans-serif;margin:0;padding:0;mso-line-height=
+-rule:exactly;line-height:1.5;color:#777777;font-weight:normal;display:bloc=
+k;text-align:center">This message was sent to <a
+style=3D"text-decoration=
+:underline;color:#777777" href=3D"mailto:rasha_104135@svuonline.org" target=
+=3D"_blank" rel=3D"noopener" class=3D"nova-e-link-decorated">rasha_104135@s=
+vuonline.org</a> by ResearchGate. To make sure you receive our updates, add=
+ ResearchGate to your address book or safe list. <a
+style=3D"text-decorat=
+ion:underline;color:#777777" href=3D"https://www.researchgate.net/help/whit=
+elist-email?cp=3Dre17_x_we&amp;ch=3Dreg&amp;mfl=3D1&amp;uid=3DGls0TfKc5tRTa=
+UPZFX3WHrMonFAHu1dFHXvZ" target=3D"_blank" rel=3D"noopener" class=3D"nova-e=
+-link-decorated">See instructions</a></span></td></tr></tbody></table></td>=
+</tr><tr><td
+style=3D"border-collapse:collapse;height:5px" aria-hidden=3D=
+"true"></td></tr><tr><td
+style=3D"border-collapse:collapse;height:5px" ar=
+ia-hidden=3D"true"></td></tr><tr><td
+style=3D"padding:0 0px" align=3D"cen=
+ter"><table
+border=3D"0" cellPadding=3D"0" cellSpacing=3D"0" width=3D"100=
+%" style=3D"line-height:1.5;text-align:center"><tbody><tr><td
+align=3D"ce=
+nter" style=3D"padding-top:0;padding-bottom:0px;line-height:16px"><span
+c=
+lass=3D"nova-e-text-s" style=3D"font-size:12px;font-family:Arial, sans-seri=
+f;margin:0;padding:0;mso-line-height-rule:exactly;line-height:1.5;color:#77=
+7777;font-weight:normal;display:block;text-align:center"><a
+style=3D"text=
+-decoration:none;color:inherit">ResearchGate GmbH, Chausseestr. 20, 10115 B=
+erlin, Germany.</a> <a
+style=3D"text-decoration:underline;color:#777777" =
+href=3D"https://www.researchgate.net/imprint?cp=3Dre17_x_tos&amp;ch=3Dreg&a=
+mp;mfl=3D1&amp;uid=3DGls0TfKc5tRTaUPZFX3WHrMonFAHu1dFHXvZ" target=3D"_blank=
+" rel=3D"noopener" class=3D"nova-e-link-decorated">Imprint</a>.</span></td>=
+</tr></tbody></table><table
+border=3D"0" cellPadding=3D"0" cellSpacing=3D=
+"0" width=3D"100%" style=3D"line-height:1.5;text-align:center"><tbody><tr><=
+td
+align=3D"center" style=3D"padding-top:0;padding-bottom:0px;line-height=
+:16px"><span
+class=3D"nova-e-text-s" style=3D"font-size:12px;font-family:=
+Arial, sans-serif;margin:0;padding:0;mso-line-height-rule:exactly;line-heig=
+ht:1.5;color:#777777;font-weight:normal;display:block;text-align:center">Se=
+e our <a
+style=3D"text-decoration:underline;color:#777777" href=3D"https:=
+//www.researchgate.net/privacy-policy?cp=3Dre17_x_pp&amp;ch=3Dreg&amp;mfl=
+=3D1&amp;uid=3DGls0TfKc5tRTaUPZFX3WHrMonFAHu1dFHXvZ" target=3D"_blank" rel=
+=3D"noopener" class=3D"nova-e-link-decorated">Privacy Policy</a> and <a
+s=
+tyle=3D"text-decoration:underline;color:#777777" href=3D"https://www.resear=
+chgate.net/terms-of-service?cp=3Dre17_x_tos&amp;ch=3Dreg&amp;mfl=3D1&amp;ui=
+d=3DGls0TfKc5tRTaUPZFX3WHrMonFAHu1dFHXvZ" target=3D"_blank" rel=3D"noopener=
+" class=3D"nova-e-link-decorated">Terms of Service</a>.</span></td></tr></t=
+body></table></td></tr><tr><td
+style=3D"border-collapse:collapse;height:5=
+px" aria-hidden=3D"true"></td></tr></tbody></table></td></tr><tr><td
+styl=
+e=3D"border-collapse:collapse;height:20px" aria-hidden=3D"true"></td></tr><=
+/tbody></table></div></td></tr></table></body></html>
+
+--_=_swift_1571434645_61a8dd4a10f6dd6448caa23b0fa7c8c8_=_--
+
