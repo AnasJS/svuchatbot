@@ -12,7 +12,7 @@ import os
 from svuchatbot_config.database import db_connection_params
 from bs4 import BeautifulSoup
 from langdetect import detect
-
+from aspose import email, util
 
 def read_intents(lang='arabic', collection_name='arabic_intents'):
     db_client = get_client()
@@ -208,19 +208,15 @@ def parse_multipart_emails():
                     single_part_col.insert_one(singlepart_email)
 
 
-# print(fetch())
+def fetch_from_pst(file_name="info@svuonline.org.pst"):
+    dataDir = os.path.join(os.curdir, '..', "data")
 
-#
-# db_client = get_client()
-# db_name = db_connection_params['db']
-# db = db_client[db_name]
-# db.drop_collection("mails")
-# db.drop_collection("analysed")
-# db.drop_collection("multipart")
-# insert_emails_into_db()
-#
-# filtering()
-#
-# #
-# find_pairs()
-# parse_multipart_emails()
+    personalStorage = PersonalStorage.from_file(dataDir + file_name)
+
+    folderInfoCollection = personalStorage.root_folder.get_sub_folders()
+
+    for folderInfo in folderInfoCollection:
+        print("Folder: " + folderInfo.display_name)
+        print("Total Items: " + str(folderInfo.content_count))
+        print("Total Unread Items: " + str(folderInfo.content_unread_count))
+        print("----------------------")
