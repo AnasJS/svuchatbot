@@ -29,13 +29,14 @@ def camle_based_tokenize_for_sentence(sent):
     return res
 
 
-def tokenize(from_col,to_col):
+def tokenize(from_col, to_col, from_db="chatbot", to_db="chatbot", field_name="payload"):
     db_client = get_client()
-    db_name = db_connection_params['db']
-    db = db_client[db_name]
-    col = db[from_col]
+    # db_name = db_connection_params['db']
+    db_from = db_client[from_db]
+    db_to = db_client[to_db]
+    col = db_from[from_col]
     documents = [d for d in col.find()]
     for item in documents:
-        item["tokens"] = camle_based_tokenize_for_sentence(item["payload"])
-    db[to_col].insert_many(documents)
+        item["tokens"] = camle_based_tokenize_for_sentence(item[field_name])
+    db_to[to_col].insert_many(documents)
     return  documents

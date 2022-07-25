@@ -1,7 +1,7 @@
 from headerparser import scan_string
 from svuchatbot_mogodb.client import get_client
 from svuchatbot_config import db_connection_params
-from collections import _count_elements as counter
+from collections import Counter
 def parse(from_col="Inbox"):
     client = get_client()
     db = client["PST"]

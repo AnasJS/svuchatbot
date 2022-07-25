@@ -156,29 +156,35 @@ def fields_based_filter(collection,
     return [e for e in collection.find({}, available_fields)]
 
 
-def language_based_filter(documents, available_lang='ar'):
-    return [e for e in documents if detect(e['payload']) == available_lang]
+def language_based_filter(documents, available_lang='ar', field_name="payload"):
+    return [e for e in documents if detect(e[field_name]) == available_lang]
 
 
 def device_based_filter(documents, excluded_field="X-Android-Message-ID"):
     return [e for e in documents if excluded_field not in e.keys()]
 
 
-def filtering(from_col,to_col):
+def filtering(from_col,to_col, filters=None, from_db="chatbot", to_db="chatbot"):
     # delete check conent languafe for english or english and arabic
     # delete all emails from andriod
     # create pairs of Qustion and answer
     # delete multiple replay
 
     db_client = get_client()
-    db_name = db_connection_params['db']
-    db = db_client[db_name]
-    col = db[from_col]
-    documents = fields_based_filter(col)
-    documents = language_based_filter(documents)
-    documents = device_based_filter(documents)
+    # db_name = db_connection_params['db']
+    db_from = db_client[from_db]
+    db_to = db_client[to_db]
+    col = db_from[from_col]
+    documents = [e for e in col.find()]
+    if "fields" in filters:
+        documents = fields_based_filter(col)
+    if "language" in filters:
+        documents = language_based_filter(documents, field_name="body")
+    if "device" in filters:
+        documents = device_based_filter(documents)
+    db_to[to_col].insert_many(documents)
 
-    db[to_col].insert_many(documents)
+
 def parse_multipart_emails():
     ##  not to use
     db_client = get_client()
