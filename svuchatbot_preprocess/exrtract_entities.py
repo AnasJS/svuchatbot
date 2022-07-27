@@ -5,7 +5,7 @@ from camel_tools.tokenizers.word import simple_word_tokenize
 from camel_tools.ner import NERecognizer
 
 from svuchatbot_config import db_connection_params
-from svuchatbot_mogodb.client import get_client
+from svuchatbot_mogodb.client import SingletonClient
 from svuchatbot_preprocess.bag_of_word import nltk_based_accumulate_clean_phrases
 from svuchatbot_preprocess.morphology_analysis import camel_based_morphology_analysing
 from camel_tools.morphology.database import MorphologyDB
@@ -17,7 +17,7 @@ def extract_entities_for_sentence(sent, ner):
 
 
 def extract_entities(from_col="mails",to_col="entities", from_db="chatbot", to_db="chatbot"):
-    db_client = get_client()
+    db_client = SingletonClient()
     # db_name = db_connection_params['db']
     db_from = db_client[from_db]
     db_to = db_client[to_db]
@@ -43,7 +43,7 @@ def extract_entities_from_emails(from_col="mails", to_col="mails_with_extracted_
         item['labels']  = extract_entities_for_sentence(item['payload'])
     return items
 # # col = "mails_with_key_word"
-# # db_client = get_client()
+# # db_client = SingletonClient()
 # # db_name = db_connection_params['db']
 # # db = db_client[db_name]
 # # collection = db[col]

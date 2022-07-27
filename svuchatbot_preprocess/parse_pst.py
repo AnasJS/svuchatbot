@@ -1,12 +1,12 @@
 import sys
 
-from svuchatbot_mogodb.client import get_client
+from svuchatbot_mogodb.client import SingletonClient
 from nltk import RegexpParser, line_tokenize, RegexpTagger
 from nltk.tree.tree import Tree
 
 
 def parse(from_col, to_col, from_db="PST", to_db="PST"):
-    client = get_client()
+    client = SingletonClient()
     db = client[from_db]
     col = db[from_col]
     db_to = client[to_db]

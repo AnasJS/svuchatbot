@@ -1,5 +1,5 @@
 from svuchatbot_config import db_connection_params
-from svuchatbot_mogodb.client import get_client
+from svuchatbot_mogodb.client import SingletonClient
 from svuchatbot_preprocess.Methodology import extract_key_words
 from svuchatbot_preprocess.exrtract_entities import extract_entities_from_emails,extract_entities
 from svuchatbot_preprocess.fetching import insert_emails_into_db,filtering,find_pairs
@@ -11,7 +11,7 @@ from svuchatbot_preprocess.parse_pst import parse
 print("*********************************** start fetching mails *********************************")
 # insert_emails_into_db("mails")
 # parse("Sent Items", "Sent-Mails-After-Parsing", from_db="PST", to_db="chatbot")
-db_client = get_client()
+db_client = SingletonClient()
 db_name = db_connection_params['db']
 db = db_client[db_name]
 print("*********************************** start filtering mails *********************************")

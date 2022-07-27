@@ -1,7 +1,7 @@
 from pprint import pprint
 
 from svuchatbot_config import db_connection_params
-from svuchatbot_mogodb.client import get_client
+from svuchatbot_mogodb.client import SingletonClient
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.probability import FreqDist
 from collections import Counter
@@ -26,7 +26,7 @@ from camel_tools.tokenizers.word import simple_word_tokenize
 
 
 def nltk_based_bag():
-    db_client = get_client()
+    db_client = SingletonClient()
     db_name = db_connection_params['db']
     db = db_client[db_name]
     col = db['mails']
@@ -51,7 +51,7 @@ def nltk_based_bag():
 
 
 def camel_based_bag():
-    db_client = get_client()
+    db_client = SingletonClient()
     db_name = db_connection_params['db']
     db = db_client[db_name]
     col = db['mails']
@@ -79,7 +79,7 @@ def camel_based_accumulation_words():
 
 
 def accumulate_phrases(col="analysed"):
-    db_client = get_client()
+    db_client = SingletonClient()
     db_name = db_connection_params['db']
     db = db_client[db_name]
     col = db[col]

@@ -3,7 +3,7 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 from camel_tools.tokenizers.word import simple_word_tokenize
 
 from svuchatbot_config import db_connection_params
-from svuchatbot_mogodb.client import get_client
+from svuchatbot_mogodb.client import SingletonClient
 
 
 def nltk_based_tokenize_for_sentence(sent):
@@ -30,7 +30,7 @@ def camle_based_tokenize_for_sentence(sent):
 
 
 def tokenize(from_col, to_col, from_db="chatbot", to_db="chatbot", field_name="payload"):
-    db_client = get_client()
+    db_client = SingletonClient()
     # db_name = db_connection_params['db']
     db_from = db_client[from_db]
     db_to = db_client[to_db]

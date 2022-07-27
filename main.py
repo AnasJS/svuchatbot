@@ -3,7 +3,7 @@
 #     print(k,v,type(v))
 # print(db_connection_params)
 # # c = get_db_uri()
-# cc = get_client()
+# cc = SingletonClient()
 # cc.list_databases()
 
 

@@ -1,4 +1,4 @@
-from svuchatbot_mogodb.client import get_client
+from svuchatbot_mogodb.client import SingletonClient
 from svuchatbot_config.database import db_connection_params
 import email
 from email.parser import BytesParser, Parser
@@ -7,7 +7,7 @@ from email.parser import BytesParser, Parser
 from email.policy import default
 from os import listdir, getcwd, walk
 from os.path import isfile, join, dirname, abspath, basename
-from svuchatbot_mogodb.client import get_client
+from svuchatbot_mogodb.client import SingletonClient
 import os
 from svuchatbot_config.database import db_connection_params
 from bs4 import BeautifulSoup
@@ -15,7 +15,7 @@ from langdetect import detect
 from aspose import email, util
 
 def read_intents(lang='arabic', collection_name='arabic_intents'):
-    db_client = get_client()
+    db_client = SingletonClient()
     db = db_client[db_connection_params['db']]
     col = db[collection_name]
     documents = [document for document in col.find({})]
@@ -64,7 +64,7 @@ def email_to_db(_email, db, col, file_name):
 
 def insert_emails_into_db(collection_name = 'mails'):
     mails = dict()
-    db_client = get_client()
+    db_client = SingletonClient()
     db_name = db_connection_params['db']
     db = db_client[db_name]
     col = db[collection_name]
@@ -103,7 +103,7 @@ def insert_emails_into_db(collection_name = 'mails'):
 #
 
 def find_pairs(from_col,to_col):
-    db_client = get_client()
+    db_client = SingletonClient()
     db_name = db_connection_params['db']
     db = db_client[db_name]
     col = db[from_col]
@@ -170,7 +170,7 @@ def filtering(from_col,to_col, filters=None, from_db="chatbot", to_db="chatbot")
     # create pairs of Qustion and answer
     # delete multiple replay
 
-    db_client = get_client()
+    db_client = SingletonClient()
     # db_name = db_connection_params['db']
     db_from = db_client[from_db]
     db_to = db_client[to_db]
@@ -187,7 +187,7 @@ def filtering(from_col,to_col, filters=None, from_db="chatbot", to_db="chatbot")
 
 def parse_multipart_emails():
     ##  not to use
-    db_client = get_client()
+    db_client = SingletonClient()
     db_name = db_connection_params['db']
     db = db_client[db_name]
     db.drop_collection("multipart_collection")

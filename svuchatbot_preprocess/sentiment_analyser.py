@@ -1,7 +1,7 @@
 from camel_tools.sentiment import SentimentAnalyzer
 
 from svuchatbot_config import db_connection_params
-from svuchatbot_mogodb.client import get_client
+from svuchatbot_mogodb.client import SingletonClient
 from svuchatbot_preprocess.bag_of_word import nltk_based_accumulate_clean_phrases
 
 
@@ -16,7 +16,7 @@ def camel_based_sentiment_analyser(from_col='mails' , to_col="mails_and_sentimen
     #todo enhancment entities extraction based on morphological analyser
     # sentences = [camel_based_morphology_analysing(sent)[0]["stem"] for sent in sentences]
     # sentiments = []
-    db_client = get_client()
+    db_client = SingletonClient()
     # db_name = db_connection_params['db']
     db_from = db_client[from_db]
     db_to = db_client[to_db]
@@ -31,7 +31,7 @@ def camel_based_sentiment_analyser(from_col='mails' , to_col="mails_and_sentimen
     return documents
 
 # col = "mails"
-# db_client = get_client()
+# db_client = SingletonClient()
 # db_name = db_connection_params['db']
 # db = db_client[db_name]
 # collection = db[col]

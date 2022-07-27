@@ -12,7 +12,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer, Tf
 from sklearn.metrics.pairwise import cosine_similarity
 
 from svuchatbot_config import db_connection_params
-from svuchatbot_mogodb.client import get_client
+from svuchatbot_mogodb.client import SingletonClient
 from svuchatbot_preprocess.bag_of_word import accumulate_phrases
 from sklearn.cluster import KMeans
 from sklearn.decomposition import NMF, LatentDirichletAllocation
@@ -73,7 +73,7 @@ def build_vectorizer(sentences, vocab=None, min_df=0.0, max_df=1.0,
     return cvec, feature_names, df_bag_of_words, tfidf, df_weights, cos_sim, samp_dist
 
 def extract_key_words(from_col= "mails_from_files",to_col="tf-idf"):
-    db_client = get_client()
+    db_client = SingletonClient()
     db_name = db_connection_params['db']
     db = db_client[db_name]
     collection = db[from_col]
@@ -101,7 +101,7 @@ def extract_key_words(from_col= "mails_from_files",to_col="tf-idf"):
     print("df_bag_of_words[%d,%d]:" % (len(sentences), len(feature_names)))
     print(df_bag_of_words)
     "/************************** insert into db **********************************/"
-    # db_client = get_client()
+    # db_client = SingletonClient()
     # db_name = db_connection_params['db']
     # db = db_client[db_name]
     # collection = db[col]
