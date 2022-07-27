@@ -23,13 +23,13 @@ def extract_entities(from_col="mails",to_col="entities", from_db="chatbot", to_d
     db_to = db_client[to_db]
     col = db_from[from_col]
     documents = [d for d in col.find()]
-    print(len(documents))
+    # print(len(documents))
     ner = NERecognizer.pretrained()
     for item in documents:
 
         item["entities"] = extract_entities_for_sentence(item["cleaned_tokens"], ner)
-        print(item["entities"])
-    print("///////////////////////////end///////////////////////////////")
+        # print(item["entities"])
+    # print("///////////////////////////end///////////////////////////////")
     db_to[to_col].insert_many(documents)
     return documents
 
