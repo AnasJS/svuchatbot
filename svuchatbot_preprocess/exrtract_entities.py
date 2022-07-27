@@ -16,20 +16,21 @@ def extract_entities_for_sentence(sent, ner):
     return [(word,label) for word,label in zip(sent,ner.predict_sentence(sent)) if not label.startswith("O") ]
 
 
-def extract_entities(from_col="mails",to_col="entities"):
+def extract_entities(from_col="mails",to_col="entities", from_db="chatbot", to_db="chatbot"):
     db_client = get_client()
-    db_name = db_connection_params['db']
-    db = db_client[db_name]
-    col = db[from_col]
+    # db_name = db_connection_params['db']
+    db_from = db_client[from_db]
+    db_to = db_client[to_db]
+    col = db_from[from_col]
     documents = [d for d in col.find()]
-    print(len(documents))
+    # print(len(documents))
     ner = NERecognizer.pretrained()
     for item in documents:
 
         item["entities"] = extract_entities_for_sentence(item["cleaned_tokens"], ner)
-        print(item["entities"])
-    print("///////////////////////////end///////////////////////////////")
-    db[to_col].insert_many(documents)
+        # print(item["entities"])
+    # print("///////////////////////////end///////////////////////////////")
+    db_to[to_col].insert_many(documents)
     return documents
 
 

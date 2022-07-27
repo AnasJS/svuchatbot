@@ -1,0 +1,312 @@
+import pypff
+pst = pypff.file()
+pst.open("ff.pst")
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+OSError: pypff_file_open: unable to open file. libcfile_file_open_with_error_code: no such file: /home/dell/works/svuchatbot/ff.pst. libcfile_file_open: unable to open file. libbfio_file_io_handle_open: unable to open file: /home/dell/works/svuchatbot/ff.pst. libbfio_handle_open: unable to open handle. libpff_file_open_file_io_handle: unable to open file IO handle. libpff_file_open: unable to open file: ff.pst.
+import os
+pst_path = os.path.join(os.curdir)
+pst_path = os.path.join(os.__file__)
+pst_path = os.path.join(__file__)
+pst_path = "/home/dell/works/svuchatbot/data/info@svuonline.org.pst")
+  File "<input>", line 1
+    pst_path = "/home/dell/works/svuchatbot/data/info@svuonline.org.pst")
+                                                                        ^
+SyntaxError: unmatched ')'
+pst_path = "/home/dell/works/svuchatbot/data/info@svuonline.org.pst"
+pst.open(pst_path)
+pst.get_content_type()
+112
+pst.get_message_store()
+<pypff.folder object at 0x7f23203e3210>
+pst.get_content_type()
+112
+pst.get_size()
+7842309120
+pst.get_name_to_id_map()
+<pypff.folder object at 0x7f23203ed7e0>
+for n,id in pst.get_name_to_id_map():
+    print(n,id)
+
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+TypeError: 'pypff.folder' object is not iterable
+n_t_i = get_name_to_id_map()
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+NameError: name 'get_name_to_id_map' is not defined
+n_t_i = pst.get_name_to_id_map()
+n_t_i
+<pypff.folder object at 0x7f2320431210>
+n_t_i.get_name()
+n_t_i.get_number_of_entries()
+217
+n_t_i.get_number_of_record_sets()
+1
+n_t_i.get_number_of_sub_items()
+0
+pst.get_root_folder()
+<pypff.folder object at 0x7f23204313f0>
+root = pst.get_root_folder()
+root.get_number_of_sub_items()
+11
+root.get_name()
+folders = root.get_sub_folder()
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+TypeError: function missing required argument 'sub_folder_index' (pos 1)
+folders = root.get_sub_folder(11)
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+OSError: pypff_folder_get_sub_folder_by_index: unable to retrieve sub folder: 11. libcdata_array_get_entry_by_index: invalid entry index value out of bounds. libpff_table_get_record_entry_by_type: unable to retrieve record set: 11. libpff_item_values_get_record_entry_by_type: unable to retrieve record entry. libpff_folder_get_sub_folder: unable to retrieve record entry.
+folders = root.get_sub_folder(10)
+folders
+<pypff.folder object at 0x7f23203edd50>
+root.get_identifier()
+290
+root.get_record_set()
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+TypeError: function missing required argument 'record_set_index' (pos 1)
+root.get_record_set(0)
+<pypff.record_set object at 0x7f232041eb50>
+root.get_record_set(0).get_entry()
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+TypeError: function missing required argument 'entry_index' (pos 1)
+root.get_record_set(0).get_entry(0)
+<pypff.record_entry object at 0x7f232041e1d0>
+root.get_record_set(0).get_entry(0).get_entry_type(0)
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+TypeError: get_entry_type() takes no arguments (1 given)
+root.get_record_set(0).get_entry(0).get_entry_type()
+12289
+clear
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+NameError: name 'clear' is not defined
+cls
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+NameError: name 'cls' is not defined
+pst
+<pypff.file object at 0x7f23216bee90>
+pst.get_message_store()
+<pypff.folder object at 0x7f23204313f0>
+pst.get_message_store().sub_messages
+<pypff.items object at 0x7f2320415a80>
+print(pst.get_message_store().sub_messages)
+<pypff.items object at 0x7f23203d8ab0>
+pst.get_message_store().get_name()
+'info@svuonline.org'
+pst.get_message_store().get_sub_message()
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+TypeError: function missing required argument 'sub_message_index' (pos 1)
+pst.get_message_store().get_sub_message(0)
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+OSError: pypff_folder_get_sub_message_by_index: unable to retrieve sub message: 0 type. libpff_item_get_type: invalid item.
+pst.get_message_store().get_name()
+'info@svuonline.org'
+pst.get_message_store().get_number_of_record_sets()
+1
+pst.get_message_store().get_number_of_sub_folders()
+0
+pst
+<pypff.file object at 0x7f23216bee90>
+pst.get_content_type()
+112
+pst.content_type
+112
+pst.get_root_item()
+<pypff.folder object at 0x7f2320431870>
+pst.get_root_item().get_name()
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+OSError: pypff_folder_get_name: unable to retrieve size of UTF-8 name. libpff_table_read: invalid table - missing data identifier. libpff_item_values_read: unable to read table. libpff_item_values_get_record_entry_by_type: unable to read item values. libpff_internal_item_get_entry_value_utf8_string_size: unable to retrieve record entry: 0x3001. libpff_folder_get_utf8_name_size: unable to retrieve size of name as UTF-8 string.
+pst.get_root_item().get_name(0)
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+TypeError: get_name() takes no arguments (1 given)
+pst.get_root_item().get_name()
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+OSError: pypff_folder_get_name: unable to retrieve size of UTF-8 name. libpff_table_read: invalid table - missing data identifier. libpff_item_values_read: unable to read table. libpff_item_values_get_record_entry_by_type: unable to read item values. libpff_internal_item_get_entry_value_utf8_string_size: unable to retrieve record entry: 0x3001. libpff_folder_get_utf8_name_size: unable to retrieve size of name as UTF-8 string.
+pst.get_root_item().get_number_of_sub_items()
+143
+pst.get_root_item().get_sub_item(0)
+<pypff.folder object at 0x7f2321818090>
+pst.get_root_item().get_sub_item(0).sub_messages
+<pypff.items object at 0x7f2321818180>
+pst.get_root_item().get_sub_item(0).get_name()
+'info@svuonline.org'
+print(pst.get_root_item().get_sub_item(0))
+<pypff.folder object at 0x7f23217e3de0>
+pst.get_root_item().get_sub_item(0).get_record_set()
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+TypeError: function missing required argument 'record_set_index' (pos 1)
+pst.get_root_item().get_sub_item(0).get_record_set(0)
+<pypff.record_set object at 0x7f23216bea50>
+pst.get_root_item().get_sub_item(0).get_sub_message()
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+TypeError: function missing required argument 'sub_message_index' (pos 1)
+root
+<pypff.folder object at 0x7f23217e6690>
+folders = [f for i in range(11) for f in root.get_sub_folder(i)]
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+  File "<input>", line 1, in <listcomp>
+TypeError: 'pypff.folder' object is not iterable
+folders = []
+for i in range(11):
+    folders.append(root.get_sub_folder())
+
+Traceback (most recent call last):
+  File "<input>", line 2, in <module>
+TypeError: function missing required argument 'sub_folder_index' (pos 1)
+for i in range(11):
+    folders.append(root.get_sub_folder(i))
+
+folder = folders[1]
+subfolders = []
+for i in range(15):
+    subfolders.append(folder.get_sub_folder(i))
+
+subfolders = []
+for i in range(15):
+    subfolders.append(folder.get_sub_folder(i))
+
+inbox = folder.get_sub_folder(1)
+count = inbox.get_number_of_sub_items()
+msg = inbox.get_sub_item(0)
+subject = msg.subject
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+AttributeError: 'pypff.item' object has no attribute 'subject'
+content = msg.plain_text_body.decode()
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+AttributeError: 'pypff.item' object has no attribute 'plain_text_body'
+msg = inbox.get_sub_item(100)
+content = msg.plain_text_body.decode()
+content
+'مساء الخير\r\nأنا طالب بالجامعة الافتراضية بالسويداء قمت بتقديم امتحان القبول باختصاص\r\nتقانة المعلومات BAIT\r\nالاسم ضياء عاصم زهر الدين\r\nاسم المستخدم: deaa_93001\r\nنتيجة الامتحان 54%\r\nلم يورد اسمي في لائحة الناجحين في مفاضلة خريف S17 بالرغم من نجاحي بالامتحان\r\nوحصولي على درجة أعلى من المعدل المطلوب بسبب عدم وضوح صورة الهوية ومصدقتي\r\nالتخرج على موقع الجامعة بدقة أقل من 200 كيلو بايت وأنا الان أطلب من حضرة\r\nالقائمين على هذا الأمر أن يسمحوا لي بتعديل صورة الهوية الشخصية ومصدقتي\r\nالتخرج التي سأقوم بإرفاقهم مع الملف وكل الشكر والتقدير لجهودكم في مساعدتي\r\nفي التسجيل في جامعتكم المرموقة.\r\n'
+subject = msg.subject
+subject
+ msg.transport_headers
+  File "<input>", line 1
+    msg.transport_headers
+    ^
+IndentationError: unexpected indent
+msg.transport_headers
+'Return-Path: <deaa.zhraldin.dr@gmail.com>\r\nDelivered-To: info@svuonline.org\r\nReceived: from localhost (localhost [127.0.0.1])\r\n\tby mail.svuonline.org (Postfix) with ESMTP id 8A9DE886D2\r\n\tfor <info@svuonline.org>; Tue, 23 May 2017 13:54:59 +0300 (EEST)\r\nX-Virus-Scanned: Debian amavisd-new at mail.svuonline.org\r\nX-Spam-Flag: NO\r\nX-Spam-Score: -1.205\r\nX-Spam-Level:\r\nX-Spam-Status: No, score=-1.205 tagged_above=-9999 required=6.31\r\n\ttests=[BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,\r\n\tDKIM_VALID_AU=-0.1, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,\r\n\tRDNS_NONE=0.793] autolearn=no autolearn_force=no\r\nAuthentication-Results: mail.svuonline.org (amavisd-new);\r\n\tdkim=pass (2048-bit key) header.d=gmail.com\r\nReceived: from mail.svuonline.org ([127.0.0.1])\r\n\tby localhost (mail.svuonline.org [127.0.0.1]) (amavisd-new, port 10024)\r\n\twith ESMTP id RKu6bfChAUKk for <info@svuonline.org>;\r\n\tTue, 23 May 2017 13:54:52 +0300 (EEST)\r\nReceived: from mailfilter.svuonline.org (unknown [10.1.15.115])\r\n\tby mail.svuonline.org (Postfix) with SMTP id 771D888390\r\n\tfor <info@svuonline.org>; Tue, 23 May 2017 13:54:51 +0300 (EEST)\r\nReceived: by mailfilter.svuonline.org (Postfix, from userid 500)\r\n\tid 2813B8032C; Tue, 23 May 2017 13:49:57 +0300 (EEST)\r\nReceived: from viprelay.scs-net.org (unknown [213.178.225.17])\r\n\tby mailfilter.svuonline.org (Postfix) with ESMTP id F051080320\r\n\tfor <info@svuonline.org>; Tue, 23 May 2017 13:49:54 +0300 (EEST)\r\nReceived: from localhost (localhost [127.0.0.1])\r\n\tby viprelay.scs-net.org (Postfix) with ESMTP id 328B397A181\r\n\tfor <info@svuonline.org>; Tue, 23 May 2017 14:03:26 +0300 (EEST)\r\nX-Virus-Scanned: by SpamTitan at scs-net.org\r\nAuthentication-Results: viprelay.scs-net.org (amavisd-new);\r\n\tdkim=pass (2048-bit key) header.d=gmail.com\r\nReceived: from viprelay.scs-net.org (localhost [127.0.0.1])\r\n\tby viprelay.scs-net.org (Postfix) with ESMTP id 190B7979D8C\r\n\tfor <info@svuonline.org>; Tue, 23 May 2017 14:03:20 +0300 (EEST)\r\nReceived-SPF: pass (gmail.com ... _spf.google.com: Sender is authorized to use \'deaa.zhraldin.dr@gmail.com\' in \'mfrom\' identity (mechanism \'include:_netblocks.google.com\' matched)) receiver=viprelay; identity=mailfrom; envelope-from="deaa.zhraldin.dr@gmail.com"; helo=mail-yb0-f175.google.com; client-ip=209.85.213.175\r\nReceived: from mail-yb0-f175.google.com (mail-yb0-f175.google.com [209.85.213.175])\r\n\tby viprelay.scs-net.org (Postfix) with ESMTP id 0DC14979DF4\r\n\tfor <info@svuonline.org>; Tue, 23 May 2017 14:00:13 +0300 (EEST)\r\nReceived: by mail-yb0-f175.google.com with SMTP id p143so36903087yba.2\r\n        for <info@svuonline.org>; Tue, 23 May 2017 04:00:14 -0700 (PDT)\r\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;\r\n        d=gmail.com; s=20161025;\r\n        h=mime-version:from:date:message-id:subject:to;\r\n        bh=l01xKk2z52OFFudS6VhGGKeA8cb5or7hOUGEC3v/hYE=;\r\n        b=Lyj2oU/leUqbkxDHhG4alkis/JKdXCtf5LQSq6Tu/a9hmQVEYf6Stj1cKxztPBG0Q5\r\n         PwP4lfNTiw9fRIDMrEKYgEM67KGo9Q1qqPmbP9b88ZSy5F24KivvO3oygQqgG7SEvkiF\r\n         0OIMC+rCPE66uKalklMDcE1/4X0j9juH61a2rzueqPVwbfBes53lZpWE58IqkTHd3X+N\r\n         GcwfxMg4u3BKLl2rhJINYDM96vqw5m4PWgJSxiiW28FIDSCEeuoGS74/jjnXupkdT3TJ\r\n         OY8IyjA0EKSo6n5rmabzfJRzRPNLIKLG9N6mC4W6Q5dMjAE6FX+YbxG71utBE/oN0Rdk\r\n         Q1Zw==\r\nX-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;\r\n        d=1e100.net; s=20161025;\r\n        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;\r\n        bh=l01xKk2z52OFFudS6VhGGKeA8cb5or7hOUGEC3v/hYE=;\r\n        b=Myrakho3L78vTm+l1EdzSEXfLatXU5S19n+jTYfD5hWceo6fQ7XSpKuRx0WofV4vZT\r\n         sV2ipZ7rixKsni2p0KW/KCVKCbPmSFN20ChiXdcX+cGrjD2CVJkSU/10WDVcEW9Fa0Ge\r\n         4YUPap4cRYiSb4F2WjKesz8yL49yE/7yRSDdgzkCYOud89wk3DMC6bKPAKbsIalYMvPC\r\n         qskyiySazzkR5vG8P9qc9PPCU6f8dn4QmB7i4qC3YMUbqcOTbtoLfFbuAx6fToLtE3TV\r\n         Vh/dRQFLSfBP+2eCFC5dULLlC+ImMB0ZQkUb6wxOulHslLv7xHFMbGc0KUh61ez/7O6J\r\n         nWYg==\r\nX-Gm-Message-State: AODbwcA55fUFhLsjTmW2EafxhzNRFalfUa6bNTGkXOLGKFa5YEPT/Lvy\r\n\tbnBulCxWDy8pLJLBLTKjA+ks1qqiIQ==\r\nX-Received: by 10.37.173.70 with SMTP id l6mr3787864ybe.140.1495537210643;\r\n Tue, 23 May 2017 04:00:10 -0700 (PDT)\r\nMIME-Version: 1.0\r\nReceived: by 10.129.108.16 with HTTP; Tue, 23 May 2017 04:00:10 -0700 (PDT)\r\nFrom: Deaa Zhraldin <deaa.zhraldin.dr@gmail.com>\r\nDate: Tue, 23 May 2017 14:00:10 +0300\r\nMessage-ID: <CACxB7veGJ-6FtGCj5pi+p+t4TLkU7n-9qQZ_D_=qGx-1wus86g@mail.gmail.com>\r\nSubject: \r\nTo: info@svuonline.org\r\nContent-Type: multipart/mixed; boundary="f403045ec9fc31a58305502ee4de"\r\n\r\n'
+header  = msg.transport_headers
+sent_time = msg.delivery_time
+if msg.number_of_attachments > 0:
+    # read from attachment 1
+    size = attachment = msg.get_attachment(0).get_size()
+    attachment_content = (msg.get_attachment(0).read_buffer(attach_size)).decode('ascii', errors='ignore')
+
+Traceback (most recent call last):
+  File "<input>", line 4, in <module>
+NameError: name 'attach_size' is not defined
+sent_time = msg.delivery_time
+messages_count = inbox.get_number_of_sub_messages()
+import pymongo
+client = pymongo.MongoClient()
+client = pymongo.MongoClient("mongodb://localhost:27017")
+db = client["PST"]
+col= db["Inbox"]
+col.insert_one({"hello":"word"})
+<pymongo.results.InsertOneResult object at 0x7f231a779760>
+for i in range(messages_count):
+    try:
+        d = {}
+        msg = inbox.get_sub_message(i)
+
+        d["subject"]= msg.subject
+        d["content"]= msg.plain_text_body.decode()
+        d["sender"]= msg.sender_name
+        d["header"]= msg.transport_headers
+        d["sent_time"]= msg.delivery_time
+        col.insert_one(d)
+    except:
+        continue
+
+
+
+col = db["Outbox"]
+outbox = folder.get_sub_folder(2)
+messages_count = outbox.get_number_of_sub_messages()
+for i in range(messages_count):
+    try:
+        d = {}
+        msg = onbox.get_sub_message(i)
+        d["subject"]= msg.subject
+        d["content"]= msg.plain_text_body.decode()
+        d["sender"]= msg.sender_name
+        d["header"]= msg.transport_headers
+        d["sent_time"]= msg.delivery_time
+        col.insert_one(d)
+    except:
+        continue
+
+col = db["Sent Items"]
+sent_items = folder.get_sub_folder(3)
+messages_count = sent_items.get_number_of_sub_messages()
+for i in range(messages_count):
+    try:
+        d = {}
+        msg = sent_items.get_sub_message(i)
+        d["subject"]= msg.subject
+        d["content"]= msg.plain_text_body.decode()
+        d["sender"]= msg.sender_name
+        d["header"]= msg.transport_headers
+        d["sent_time"]= msg.delivery_time
+        col.insert_one(d)
+    except:
+        continue
+
+col = db["Draft"]
+draft = folder.get_sub_folder(7)
+messages_count = draft.get_number_of_sub_messages()
+for i in range(messages_count):
+    try:
+        d = {}
+        msg = draft.get_sub_message(i)
+        d["subject"]= msg.subject
+        d["content"]= msg.plain_text_body.decode()
+        d["sender"]= msg.sender_name
+        d["header"]= msg.transport_headers
+        d["sent_time"]= msg.delivery_time
+        col.insert_one(d)
+    except:
+        continue
+
+col = db["Junk Emails"]
+junk = folder.get_sub_folder(7)
+junk = folder.get_sub_folder(8)
+messages_count = junk.get_number_of_sub_messages()
+for i in range(messages_count):
+    try:
+        d = {}
+        msg = junk.get_sub_message(i)
+        d["subject"]= msg.subject
+        d["content"]= msg.plain_text_body.decode()
+        d["sender"]= msg.sender_name
+        d["header"]= msg.transport_headers
+        d["sent_time"]= msg.delivery_time
+        col.insert_one(d)
+    except:
+        continue
+
+d["header"]
+'Return-Path: <MAILER-DAEMON>\r\nDelivered-To: info@svuonline.org\r\nReceived: from localhost (localhost [127.0.0.1])\r\n\tby mail.svuonline.org (Postfix) with ESMTP id 36743D850A\r\n\tfor <info@svuonline.org>; Fri,  1 Jan 2021 11:17:08 +0200 (EET)\r\nX-Virus-Scanned: Debian amavisd-new at mail.svuonline.org\r\nX-Spam-Flag: NO\r\nX-Spam-Score: -1.898\r\nX-Spam-Level:\r\nX-Spam-Status: No, score=-1.898 tagged_above=-9999 required=6.31\r\n\ttests=[BAYES_00=-1.9, SPF_HELO_NONE=0.001, URIBL_BLOCKED=0.001]\r\n\tautolearn=ham autolearn_force=no\r\nReceived: from mail.svuonline.org ([127.0.0.1])\r\n\tby localhost (mail.svuonline.org [127.0.0.1]) (amavisd-new, port 10024)\r\n\twith ESMTP id G0CkfRuSGjRX for <info@svuonline.org>;\r\n\tFri,  1 Jan 2021 11:17:07 +0200 (EET)\r\nReceived: from mailfilter.svuonline.org (unknown [10.1.15.115])\r\n\tby mail.svuonline.org (Postfix) with SMTP id 0DD07D5EDB\r\n\tfor <info@svuonline.org>; Fri,  1 Jan 2021 11:17:06 +0200 (EET)\r\nReceived: by mailfilter.svuonline.org (Postfix, from userid 500)\r\n\tid E8FFB80205; Fri,  1 Jan 2021 12:35:16 +0200 (EET)\r\nReceived: from viprelay.scs-net.org (viprelay.scs-net.org [213.178.225.17])\r\n\tby mailfilter.svuonline.org (Postfix) with ESMTP id E81678012E\r\n\tfor <info@svuonline.org>; Fri,  1 Jan 2021 12:35:15 +0200 (EET)\r\nReceived: by viprelay.scs-net.org (Postfix)\r\n\tid C5BE71AFC08; Fri,  1 Jan 2021 11:58:14 +0200 (EET)\r\nDate: Fri,  1 Jan 2021 11:58:14 +0200 (EET)\r\nFrom: MAILER-DAEMON@scs-net.org (Mail Delivery System)\r\nSubject: Undelivered Mail Returned to Sender\r\nTo: info@svuonline.org\r\nAuto-Submitted: auto-replied\r\nMIME-Version: 1.0\r\nContent-Type: multipart/report; report-type=delivery-status;\r\n\tboundary="4160D1AFC5C.1609495094/viprelay.scs-net.org"\r\nContent-Transfer-Encoding: 7bit\r\nMessage-Id: <20210101095814.C5BE71AFC08@viprelay.scs-net.org>\r\n\r\n'
+msg
+<pypff.message object at 0x7f2318ea3fc0>
+msg.transport_headers
+'Return-Path: <MAILER-DAEMON>\r\nDelivered-To: info@svuonline.org\r\nReceived: from localhost (localhost [127.0.0.1])\r\n\tby mail.svuonline.org (Postfix) with ESMTP id 36743D850A\r\n\tfor <info@svuonline.org>; Fri,  1 Jan 2021 11:17:08 +0200 (EET)\r\nX-Virus-Scanned: Debian amavisd-new at mail.svuonline.org\r\nX-Spam-Flag: NO\r\nX-Spam-Score: -1.898\r\nX-Spam-Level:\r\nX-Spam-Status: No, score=-1.898 tagged_above=-9999 required=6.31\r\n\ttests=[BAYES_00=-1.9, SPF_HELO_NONE=0.001, URIBL_BLOCKED=0.001]\r\n\tautolearn=ham autolearn_force=no\r\nReceived: from mail.svuonline.org ([127.0.0.1])\r\n\tby localhost (mail.svuonline.org [127.0.0.1]) (amavisd-new, port 10024)\r\n\twith ESMTP id G0CkfRuSGjRX for <info@svuonline.org>;\r\n\tFri,  1 Jan 2021 11:17:07 +0200 (EET)\r\nReceived: from mailfilter.svuonline.org (unknown [10.1.15.115])\r\n\tby mail.svuonline.org (Postfix) with SMTP id 0DD07D5EDB\r\n\tfor <info@svuonline.org>; Fri,  1 Jan 2021 11:17:06 +0200 (EET)\r\nReceived: by mailfilter.svuonline.org (Postfix, from userid 500)\r\n\tid E8FFB80205; Fri,  1 Jan 2021 12:35:16 +0200 (EET)\r\nReceived: from viprelay.scs-net.org (viprelay.scs-net.org [213.178.225.17])\r\n\tby mailfilter.svuonline.org (Postfix) with ESMTP id E81678012E\r\n\tfor <info@svuonline.org>; Fri,  1 Jan 2021 12:35:15 +0200 (EET)\r\nReceived: by viprelay.scs-net.org (Postfix)\r\n\tid C5BE71AFC08; Fri,  1 Jan 2021 11:58:14 +0200 (EET)\r\nDate: Fri,  1 Jan 2021 11:58:14 +0200 (EET)\r\nFrom: MAILER-DAEMON@scs-net.org (Mail Delivery System)\r\nSubject: Undelivered Mail Returned to Sender\r\nTo: info@svuonline.org\r\nAuto-Submitted: auto-replied\r\nMIME-Version: 1.0\r\nContent-Type: multipart/report; report-type=delivery-status;\r\n\tboundary="4160D1AFC5C.1609495094/viprelay.scs-net.org"\r\nContent-Transfer-Encoding: 7bit\r\nMessage-Id: <20210101095814.C5BE71AFC08@viprelay.scs-net.org>\r\n\r\n'
