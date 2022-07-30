@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from multiprocessing import Process
 import time
 from svuchatbot_mogodb.client import SingletonClient
+from svuchatbot_mogodb.client import get_collection
 
 
 class Extractor(ABC):
@@ -10,6 +11,7 @@ class Extractor(ABC):
         self.col_name = source[1]
         self.field_name = field_name
         self.n_cores = n_cores
+        self.col = get_collection(self.db_name, self.col_name)
 
     @abstractmethod
     def _do(self, ids):

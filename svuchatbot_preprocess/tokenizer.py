@@ -137,10 +137,3 @@ def tokenize(from_col, to_col, from_db="chatbot", to_db="chatbot", field_name="p
 #         print("The job took " + str(workTime) + " seconds to complete")
 
 
-class Tokenizer(Extractor):
-    def _do(self, ids):
-        col = get_collection(self.db_name, self.col_name)
-        cursor = col.find({"_id": {"$in": ids}})
-        for item in cursor:
-            item.update({"tokens": camle_based_tokenize_for_sentence(item[self.field_name])})
-            cursor.collection.replace_one({"_id": item["_id"]}, item)
