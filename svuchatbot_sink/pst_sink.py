@@ -12,7 +12,7 @@ class PST:
         self.db_name = db_name
         self.n_cores = n_cores
 
-    def __range(self, order, length):
+    def _range(self, order, length):
         r = int(length / self.n_cores)
         start = order * r
         if order == self.n_cores - 1:
@@ -21,7 +21,7 @@ class PST:
             end = start + r
         return start, end
 
-    def __do(self, s, e, folder_index, folder_name, folder):
+    def _do(self, s, e, folder_index, folder_name, folder):
         # pst = pypff.file()
         # pst.open(self.path)
         # root = pst.get_root_folder()
@@ -49,8 +49,8 @@ class PST:
         messages_count = folder.get_number_of_sub_messages()
         processes = []
         for i in range(self.n_cores):
-            s, e = self.__range(i, messages_count)
-            p = Process(target=self.__do, args=(s, e, folder_index, folder_name, folder))
+            s, e = self._range(i, messages_count)
+            p = Process(target=self._do, args=(s, e, folder_index, folder_name, folder))
             p.start()
             processes.append(p)
         for p in processes:
