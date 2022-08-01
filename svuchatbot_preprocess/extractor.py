@@ -17,7 +17,7 @@ class Extractor(ABC):
     def _do(self, ids):
         pass
 
-    def __range(self, order, length):
+    def _range(self, order, length):
         r = int(length / self.n_cores)
         start = order * r
         if order == self.n_cores - 1:
@@ -26,7 +26,7 @@ class Extractor(ABC):
             end = start + r
         return start, end
 
-    def work(self):
+    def work(self, do=None):
         startTime = time.time()
         client = SingletonClient()
         f_col = client[self.db_name][self.col_name]
@@ -34,9 +34,11 @@ class Extractor(ABC):
         field = "body"
         processes = []
         ids = [item["_id"] for item in f_col.find({}, ["_id"])]
+        if do is None:
+            do = self._do
         for i in range(self.n_cores):
-            s, e = self.__range(i, f_col.count_documents({}))
-            p = Process(target=self._do, args=(ids[s:e],))
+            s, e = self._range(i, f_col.count_documents({}))
+            p = Process(target=do, args=(ids[s:e],))
             p.start()
             processes.append(p)
         for p in processes:
@@ -44,3 +46,6 @@ class Extractor(ABC):
         endTime = time.time()
         workTime = endTime - startTime
         print("The job took " + str(workTime) + " seconds to complete")
+
+
+
