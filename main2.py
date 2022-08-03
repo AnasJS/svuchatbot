@@ -6,6 +6,7 @@
 # c2 = SingletonClient()
 # # c2.a = 6
 # # print(c.a)
+import os
 from os import cpu_count
 # from svuchatbot_preprocess.tokenizer import work
 from svuchatbot_preprocess.tokens_extractor import TokensExtractor
@@ -85,16 +86,11 @@ from svuchatbot_preprocess.tokens_extractor import TokensExtractor
 # ***********************************************************************************************
 
 from svuchatbot_features_managment.key_words_extractor import KeyWordExtractors
-
-kwe = KeyWordExtractors(
-    source=[
-        ("Bag-Of-Words", "1_gram_bagOfWords_reply"),
-        ("Most-Important-Tokens", "1_gram")],
-    target=[
-        ("TF-IDF", "1-Gram"),
-        ("Count-Vectors", "1-Gram"),
-        ("Weights", "1-Gram")
-    ],
-    min_weight=0.01,
-    ngram="1-Gram")
-kwe.work()
+for i in range(1, 6):
+    kwe = KeyWordExtractors(
+        source=("chatbot", "Sent-Mails-After-Parsing"),
+        cpu_count=os.cpu_count(),
+        field_name="replay-message",
+        min_weight=0.01,
+        ngram="{}-Gram".format(i))
+    kwe.work()
