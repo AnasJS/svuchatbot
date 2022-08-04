@@ -9,6 +9,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 from svuchatbot_config import db_connection_params
 from svuchatbot_mogodb.client import SingletonClient, get_collection
+from svuchatbot_preprocess.cleand_tokens_extractor import Elector
 from svuchatbot_preprocess.extractor import Extractor
 from arabicstopwords.arabicstopwords import stopwords_list
 
@@ -38,6 +39,8 @@ class KeyWordExtractors():
     def __tokenize(self):
         te = TokensExtractor(self.source, self.field_name, self.cpu_count, target=("", "tokens"))
         te.work()
+        e = Elector(source=self.source, field_name="tokens", n_cores=self.cpu_count)
+        e.work()
 
     def __extract_bag_of_word(self):
         boe = BagOfWordsExtractor(self.source, field_name="tokens", n_cores=self.cpu_count,

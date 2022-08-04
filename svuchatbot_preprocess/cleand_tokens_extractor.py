@@ -18,5 +18,6 @@ class Elector(Extractor):
         col = get_collection(self.db_name, self.col_name)
         cursor = col.find({"_id": {"$in": ids}})
         for item in cursor:
-            item.update({"cleaned_tokens": Elector.arabic_stopwords_based_filter_stopwords_for_sentence(item[self.field_name])})
+            cleaned_tokens = Elector.arabic_stopwords_based_filter_stopwords_for_sentence(item[self.field_name])
+            item.update({"tokens": cleaned_tokens})
             cursor.collection.replace_one({"_id": item["_id"]}, item)
