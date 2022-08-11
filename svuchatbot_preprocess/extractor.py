@@ -70,7 +70,7 @@ class Extractor(ABC):
         client = SingletonClient()
         f_col = client[self.db_name][self.col_name]
         # n_cores = os.cpu_count()
-        field = "body"
+        # field = "body"
         if do is None:
             do = self._do
         self.__workflow(f_col, do)

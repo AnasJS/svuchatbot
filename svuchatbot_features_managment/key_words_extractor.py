@@ -15,9 +15,11 @@ from arabicstopwords.arabicstopwords import stopwords_list
 
 from svuchatbot_preprocess.tokens_extractor import TokensExtractor
 from svuchatbot_preprocess.bag_of_words_extractor import BagOfWordsExtractor
+from svuchatbot_preprocess.orthographic_normalization import Normalizer
 
-class KeyWordExtractors():
-    def __init__(self, source, min_weight, field_name, cpu_count, ngram="1-Gram"):
+
+class KeyWordExtractors:
+    def __init__(self, source, min_weight, field_name, cpu_count, ngram="1-Gram", normalize=False):
         # super().__init__(source, field_name, n_cores)
         self.source = source
         # self.bow_col_name = source[0][1]
@@ -35,12 +37,24 @@ class KeyWordExtractors():
         #
         self.cpu_count = cpu_count
         self.field_name = field_name
+        self.normalize = normalize
+
+    def __correction(self):
+        if self.normalize:
+            n = Normalizer(source=(self.source[0], self.source[1]), n_cores= self.cpu_count, field_name="tokens", word=True)
+            n.work()
+            e = Elector(source=self.source, field_name="tokens", n_cores=self.cpu_count)
+            e.work()
 
     def __tokenize(self):
-        te = TokensExtractor(self.source, self.field_name, self.cpu_count, target=("", "tokens"))
-        te.work()
-        e = Elector(source=self.source, field_name="tokens", n_cores=self.cpu_count)
-        e.work()
+        col = get_collection(self.source[0], self.source[1])
+        if not "tokens" in col.find_one().keys():
+            te = TokensExtractor(self.source, self.field_name, self.cpu_count, target=("", "tokens"))
+            te.work()
+            e = Elector(source=self.source, field_name="tokens", n_cores=self.cpu_count)
+            e.work()
+            te = TokensExtractor(self.source, "tokens", self.cpu_count, target=("", "tokens"), type="morphological")
+            te.work()
 
     def __extract_bag_of_word(self):
         boe = BagOfWordsExtractor(self.source, field_name="tokens", n_cores=self.cpu_count,
@@ -86,6 +100,8 @@ class KeyWordExtractors():
     def work(self):
         print("Start extracting tokens")
         self.__tokenize()
+        print("start Normalizing")
+        self.__correction()
         print("start extract bag of words")
         self.__extract_bag_of_word()
         print("start create vector of counter")

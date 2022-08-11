@@ -41,11 +41,11 @@ from svuchatbot_preprocess.tokens_extractor import TokensExtractor
 # kwe = KeyWordExtractors(("chatbot", "cleaned_tokenized_mails"), field_name="body")
 # kwe.work()
 # **************************************************************************************************
-#
+
 # tokenizer = TokensExtractor(("chatbot", "Sent-Mails-After-Parsing"), "replay-message", cpu_count(),
 #                             target=("chatbot", "tokenized-reply"))
 # tokenizer.work()
-#
+
 # from svuchatbot_preprocess.bag_of_words_extractor import BagOfWordsExtractor
 # bow_replies = BagOfWordsExtractor(("chatbot", "Sent-Mails-After-Parsing"), field_name="tokenized-reply", n_cores=8,
 #                                   target=("Bag-Of-Words", "1_gram_bagOfWords_reply"))
@@ -84,13 +84,55 @@ from svuchatbot_preprocess.tokens_extractor import TokensExtractor
 #                        target=("Most-Important-Tokens","5_gram"), min_freq=50 )
 # fe.work()
 # ***********************************************************************************************
-
+# from svuchatbot_mogodb.client import get_collection, SingletonClient
+# col = get_collection("chatbot", "Mails-1")
+# for item in col.find():
+#     # item["tokens"] = None
+#     try:
+#         item.pop("tokenized-reply")
+#     except:
+#         pass
+#     try:
+#         item.pop("tokens")
+#     except:
+#         pass
+#     try:
+#         item.pop("cleaned_tokens")
+#     except:
+#         pass
+#     col.replace_one({"_id": item["_id"]}, item)
+# client = SingletonClient()
+# client.drop_database("TF-IDF")
+# client.drop_database("Weights")
+# client.drop_database("Bag-Of-Words")
+# ***********************************************************************************************
 from svuchatbot_features_managment.key_words_extractor import KeyWordExtractors
 for i in range(1, 6):
     kwe = KeyWordExtractors(
-        source=("chatbot", "Sent-Mails-After-Parsing"),
+        source=("chatbot", "Mails-1"),
         cpu_count=os.cpu_count(),
         field_name="replay-message",
         min_weight=0.01,
-        ngram="{}-Gram".format(i))
+        ngram="{}-Gram".format(i),
+        normalize=True
+    )
     kwe.work()
+
+from svuchatbot_helper.weight_for_tokens import get_weights_tokens
+for i in range(1, 6):
+    get_weights_tokens(source=("TF-IDF", "{}-Gram".format(i)), n=i)
+
+# # ***********************************************************************************************
+# tokenizer = TokensExtractor(("chatbot", "Mails-1"), "replay-message", cpu_count())
+# tokenizer.work()
+#
+# from svuchatbot_preprocess.cleand_tokens_extractor import Elector
+# elect = Elector(("chatbot", "Mails-1"), "tokens", cpu_count())
+# elect.work()
+#
+# from svuchatbot_preprocess.entities_extractor import EntitiesExtractor
+# ee = EntitiesExtractor(source=("chatbot", "Sent-Mails-After-Parsing"),
+#                        field_name="tokens",
+#                        n_cores=cpu_count()
+#                        )
+# ee.work()
