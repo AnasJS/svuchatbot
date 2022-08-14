@@ -1,55 +1,52 @@
-from svuchatbot_mogodb.client import get_collection
-import pandas as pd
-import numpy as np
-
 from svuchatbot_preprocess.extractor import Extractor
+from svuchatbot_mogodb.client import get_collection
+from camel_tools.morphology.analyzer import Analyzer
+from camel_tools.morphology.database import MorphologyDB
 
 
-class FeaturesExtractor(Extractor):
-    def __init__(self, source, field_name, n_cores, target, min_freq):
-        super().__init__(source, field_name, n_cores, based_on="columns", consecutive=True)
-        self.s_db_name = self.db_name
-        self.s_col_names = self.col_name
-        self.min_freq = min_freq
-        self.t_db_name = target[0]
-        self.t_col_name = target[1]
+class MorphologicalFeaturesExtractor(Extractor):
+    @staticmethod
+    def __analyze(tokens, analyser):
+        res = analyser.analyze_words(tokens)
 
-    def _do(self, features):
-        col = get_collection(self.s_db_name, self.col_name)
-        cursor = col.find({}, features)
-        bag_of_words_df = pd.DataFrame(list(cursor))[features]
-        feature_names = bag_of_words_df.columns
-        # bag_of_words_df = bag_of_words_df[feature_names]
-        word_cnts = np.asarray(
-            bag_of_words_df.sum(axis=0)).ravel().tolist()  # for each word in column, sum all row counts
-        # print("word_cnts")
-        # print(word_cnts)
-        df_cnts = pd.DataFrame({'word': bag_of_words_df.columns, 'count': word_cnts})
-        df_cnts = df_cnts.sort_values('count', ascending=False)
-        most_frequent_tokens_df = df_cnts[df_cnts['count'] > self.min_freq]
-        t_col = get_collection(self.t_db_name, self.t_col_name)
-        res = [iloc.to_dict() for iloc in most_frequent_tokens_df.iloc]
-        try:
-            t_col.insert_many(res)
-        except:
-            print(res)
+        assert len(res) == len(tokens), "not equal"
 
+        result = []
+        for r in res:
 
+            if len(r.analyses):
+                # print(r.analyses[0])
+                result.append(r.analyses[0])
+            else:
+                result.append({
+                "root": "",
+                "lex":"",
+                "prc0": "",
+                "prc1": "",
+                "prc2": "",
+                "prc3": "",
+                "pos":""
+                })
+        return {
+            "root": [r["root"] for r in result],
+            "lex": [r["lex"] for r in result],
+            "prc0": [r["prc0"] for r in result],
+            "prc1": [r["prc1"] for r in result],
+            "prc2": [r["prc2"] for r in result],
+            "prc3": [r["prc3"] for r in result],
+            "pos" : [r["pos"] for r in result]
+        }
 
+    def _do(self, ids):
+        col = get_collection(self.db_name, self.col_name)
+        cursor = col.find({"_id": {"$in": ids}})
+        db = MorphologyDB.builtin_db()
+        analyzer = Analyzer(db)
 
-    # def most_frequent_tokens(self, min_freq):
-    #     result = []
-    #     for col_name in self.s_col_names:
-    #         col = get_collection(self.s_db_name, col_name)
-    #         cursor = col.find({})
-    #         bag_of_words_df = pd.DataFrame(list(cursor))
-    #         feature_names = bag_of_words_df.columns[1:]
-    #         bag_of_words_df = bag_of_words_df[feature_names]
-    #         result.append(bag_of_words_df)
-    #     bag_of_all_words_df = pd.concat(result, axis=1)
-    #     word_cnts = np.asarray(
-    #         bag_of_all_words_df.sum(axis=0)).ravel().tolist()  # for each word in column, sum all row counts
-    #     df_cnts = pd.DataFrame({'word': bag_of_all_words_df.columns, 'count': word_cnts})
-    #     df_cnts = df_cnts.sort_values('count', ascending=False)
-    #     return df_cnts[df_cnts["count"] > min_freq]
+        for item in cursor:
+            result = MorphologicalFeaturesExtractor.__analyze(item[self.field_name], analyzer)
+            for k, v in result.items():
+                item.update({k: v})
+            cursor.collection.replace_one({"_id": item["_id"]}, item)
+
 

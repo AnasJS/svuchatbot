@@ -1,5 +1,5 @@
 import pandas as pd
-
+import numpy as np
 
 from svuchatbot_mogodb.client import get_collection
 
@@ -28,4 +28,11 @@ def get_weights_tokens(source, n):
     # f = open("tokens_{}_gram".format(n, n), "wt")
     # f.writelines(dfm.sort_values(ascending=False).__str__())
     # f.close()
-
+    return dff
+def get_weight_from_RTF(source):
+    n_col, n_db = source
+    col = get_collection(n_col, n_db)
+    col_arr = np
+    df = pd.DataFrame(list(col.find()))
+    columns = df.columns
+    df = df[columns.drop("_id")]

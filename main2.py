@@ -107,20 +107,32 @@ from svuchatbot_preprocess.tokens_extractor import TokensExtractor
 # client.drop_database("Bag-Of-Words")
 # ***********************************************************************************************
 from svuchatbot_features_managment.key_words_extractor import KeyWordExtractors
-for i in range(1, 6):
-    kwe = KeyWordExtractors(
-        source=("chatbot", "Mails-1"),
-        cpu_count=os.cpu_count(),
-        field_name="replay-message",
-        min_weight=0.01,
-        ngram="{}-Gram".format(i),
-        normalize=True
-    )
-    kwe.work()
+from svuchatbot_features_managment.root_based_bag_of_words_extractor import RootBasedBagOfWordsExtractor
+# for i in range(1, 2):
+#     kwe = KeyWordExtractors(
+#         source=("chatbot", "Mails-1"),
+#         cpu_count=os.cpu_count(),
+#         field_name="replay-message",
+#         min_weight=0.01,
+#         ngram="{}-Gram".format(i),
+#         normalize=True,
+#         prefix="simple1"
+#     )
+#     kwe.work()
+rbbowe = RootBasedBagOfWordsExtractor(
+    source=("chatbot", "Mails-1"),
+    cpu_count=os.cpu_count(),
+    field_name="replay-message",
+    min_weight=0.01,
+    ngram="{}-Gram".format(1),
+    normalize=True,
+    prefix="simple1"
+)
+rbbowe.work()
 
-from svuchatbot_helper.weight_for_tokens import get_weights_tokens
-for i in range(1, 6):
-    get_weights_tokens(source=("TF-IDF", "{}-Gram".format(i)), n=i)
+# from svuchatbot_helper.weight_for_tokens import get_weights_tokens
+# for i in range(1, 6):
+#     get_weights_tokens(source=("TF-IDF", "{}-Gram".format(i)), n=i)
 
 # # ***********************************************************************************************
 # tokenizer = TokensExtractor(("chatbot", "Mails-1"), "replay-message", cpu_count())
