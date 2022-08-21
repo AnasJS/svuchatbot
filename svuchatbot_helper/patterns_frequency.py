@@ -12,7 +12,7 @@ def get_pattern_freq(source):
         items = [item[field] for item in col.find({}, {field: 1, "_id": 0})]
         fields_req[field] = pd.Series(items).value_counts().sort_values(axis=0, ascending=False)
 
-    m_col = get_collection("chatbot", "Mails-1")
+    m_col = get_collection("chatbot", "Mails-3")
     t_col = get_collection("chatbot", "PatternsFrequency")
     for item in col.find():
         for field in fields:
@@ -28,5 +28,4 @@ def get_pattern_freq(source):
 # get_freq(("Patterns", "1-Gram"), "pos_pattern")
 # get_freq(("Patterns", "1-Gram"), "lex_pattern")
 # get_freq(("Patterns", "1-Gram"), "root_pattern")
-freq = get_pattern_freq(("Patterns", "1-Gram"))
-print(len(freq))
+
