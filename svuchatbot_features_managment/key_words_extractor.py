@@ -1,3 +1,4 @@
+from datetime import datetime
 
 import numpy as np
 import pandas as pd
@@ -20,7 +21,17 @@ from svuchatbot_features_managment.simple_tokens_extractor import SimpleTokensEx
 from svuchatbot_features_managment.morphology_based_tokens_extractor import MorphologyBasedTokensExtractor
 from svuchatbot_features_managment.tfidf_extractor import TFIDFExtractor
 
+class Definitions:
+    SIMPLETOKENIZATION = "simple_tokenization"
+    MORPHOLOGICALTOKENIZATION = "morphological_tokenization"
+    NORMALIZATION = "normalization"
+    STOPWORDSREMOVING = "remove_stopwords"
+    BAGOFWORDSEXTRACION = "bag_of_words_extraction"
+    FEATURESSETUP = "setup_features_names"
+    TFIDFEXTRACTION = "tfidf_extraction"
+
 class KeyWordExtractors:
+
     def __init__(self, source, min_weight, field_name, cpu_count, ngram="1-Gram",
                  normalize=False, prefix=None):
         # super().__init__(source, field_name, n_cores)
@@ -47,6 +58,16 @@ class KeyWordExtractors:
         else:
             self.prefix = ""
         self._reset_db()
+        self.pipe_dict = {
+            Definitions.SIMPLETOKENIZATION: self._simple_tokenize,
+            Definitions.MORPHOLOGICALTOKENIZATION: self._morphological_tokenize,
+            Definitions.NORMALIZATION: self._correction,
+            Definitions.STOPWORDSREMOVING: self._election,
+            Definitions.BAGOFWORDSEXTRACION: self._extract_bag_of_word,
+            Definitions.FEATURESSETUP: self._setup_features_names,
+            Definitions.TFIDFEXTRACTION: self._tfidf
+        }
+        self.pipe = []
 
     def _reset_db(self):
         col = get_collection(self.db_name, self.col_name)
@@ -81,10 +102,10 @@ class KeyWordExtractors:
 
     def _morphological_tokenize(self):
         col = get_collection(self.source[0], self.source[1])
-        if not self.prefix + "tokens" in col.find_one().keys():
-            te = MorphologyBasedTokensExtractor(self.source, self.field_name, self.cpu_count,
-                                       target=("", self.prefix + "tokens"))
-            te.work()
+        # if not self.prefix + "tokens" in col.find_one().keys():
+        te = MorphologyBasedTokensExtractor(self.source, self.prefix + "tokens", self.cpu_count,
+                                   target=("", self.prefix + "tokens"))
+        te.work()
 
     def _election(self):
         e = Elector(source=self.source, field_name=self.prefix+"tokens", n_cores=self.cpu_count)
@@ -137,20 +158,33 @@ class KeyWordExtractors:
         # col = get_collection("Weights", self.ngram)
         # col.insert_many([iloc.to_dict() for iloc in df_weights.iloc])
 
+    def get_pipe(self):
+        return self.pipe_dict.keys()
+
+    def set_pipe(self, pipe):
+        for step in pipe:
+            if step in self.pipe_dict.keys():
+                self.pipe.append(self.pipe_dict[step])
+
     def work(self):
-        print("Start extracting tokens")
-        self._simple_tokenize()
-        # self._election()
-        # self._morphological_tokenize()
-        print("start Normalizing")
-        # self._correction()
-        # self._election()
-        print("start extract bag of words")
-        self._extract_bag_of_word()
-        print("start create vector of counter")
-        self._setup_features_names()
-        print("start calculate tfidf")
-        self._tfidf()
+        if self.pipe is None or self.pipe == []:
+            print("Start extracting tokens")
+            self._simple_tokenize()
+            # self._election()
+            # self._morphological_tokenize()
+            print("start Normalizing")
+            # self._correction()
+            # self._election()
+            print("start extract bag of words")
+            self._extract_bag_of_word()
+            print("start create vector of counter")
+            self._setup_features_names()
+            print("start calculate tfidf")
+            self._tfidf()
+        else:
+            for step in self.pipe:
+                print(f"******************** start step {step.__name__} at {datetime.now().time()} ********************")
+                step()
 
 
 
