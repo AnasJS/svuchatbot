@@ -9,8 +9,9 @@ import pandas as pd
 from svuchatbot_helper.cleaner import StringCleaner
 from sklearn.preprocessing import StandardScaler
 
+
 class MyKmeans:
-    def __init__(self, source, field_name, n_clusters, intent_file_name, utter_file_name, n_gram):
+    def __init__(self, source, field_name, n_clusters, intent_file_name, utter_file_name, n_gram=1):
         # self.model = AffinityPropagation(damping=0.9)
         self.columns = []
         self.intent_file_name = intent_file_name
@@ -30,21 +31,35 @@ class MyKmeans:
         self.n_gram = n_gram
 
     def fetch(self):
-        bow_col = get_collection(self.BOW_db_name, self.BOW_col_name)
-        self.df_X = pd.DataFrame(bow_col.find({}))
-        columns = self.df_X.columns.tolist()
-        columns.remove("_id")
-        self.X = self.df_X[columns].values
-        self.columns = columns
+        if self.n_gram==1:
+            bow_col = get_collection(self.BOW_db_name, self.BOW_col_name)
+            self.df_X = pd.DataFrame(bow_col.find({}))
+            columns = self.df_X.columns.tolist()
+            columns.remove("_id")
+            self.X = self.df_X[columns].values
+            self.columns = columns
+        elif self.n_gram > 1:
+            dfs = []
+            # df3 = pd.concat([df1.set_index("_id"), df2.set_index("_id")], axis=1, join='inner').reset_index()
+
+            for i in range(1, self.n_gram+1):
+                bow_col = get_collection(self.BOW_db_name, "{}-Gram".format(i))
+                dfs.append(pd.DataFrame(bow_col.find({})).set_index("_id"))
+            self.df_X = pd.concat(dfs, axis=1, join='inner').reset_index()
+            columns = self.df_X.columns.tolist()
+            columns.remove("_id")
+            self.X = self.df_X[columns].values
+            self.columns = columns
 
     def standardization(self):
         scaler = StandardScaler()
         self.segmentation_std = scaler.fit_transform(self.df_X[self.columns])
 
     def calculate_pca(self):
+        self.segmentation_std = self.df_X[self.columns]
         self.pca = PCA()
         self.pca.fit(self.segmentation_std)
-        plt.figure(figsize=(10,8))
+        plt.figure(figsize=(10, 8))
         plt.plot(range(len(self.pca.explained_variance_ratio_)),
                  self.pca.explained_variance_ratio_.cumsum(),
                  )
@@ -57,12 +72,29 @@ class MyKmeans:
         self.pca.fit(self.segmentation_std)
         self.pca_scores = self.pca.transform(self.segmentation_std)
 
-    def kmeans_fit(self):
+    def kmeans_with_pca_fit(self):
         wcss = []
         for i in range(10,200, 5):
             kmeans_pca = KMeans(n_clusters= i, init="k-means++", random_state=420)
             kmeans_pca.fit(self.pca_scores)
             wcss.append(kmeans_pca.inertia_)
+        plt.figure(figsize=(10,8))
+        plt.plot(range(10,200,5), wcss)
+        plt.title("k-means with PCA clustering")
+        plt.xlabel("Number of clusters")
+        plt.ylabel("wcss")
+        plt.show()
+        self.k_means_clusters = int(input("Enter number of cluster"))
+        self.model = KMeans(n_clusters=self.k_means_clusters, init="k-means++", random_state=42)
+        self.model.fit(self.pca_scores)
+        self.df_X["tag"] = self.model.labels_
+
+    def kmeans_fit(self):
+        wcss = []
+        for i in range(10,200, 5):
+            kmeans = KMeans(n_clusters= i, init="k-means++", random_state=420)
+            kmeans.fit(self.df_X[self.columns])
+            wcss.append(kmeans.inertia_)
         plt.figure(figsize=(10,8))
         plt.plot(range(10,200,5), wcss)
         plt.title("k-means with PCA clustering")

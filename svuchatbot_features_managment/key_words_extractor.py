@@ -33,7 +33,7 @@ class Definitions:
 class KeyWordExtractors:
 
     def __init__(self, source, min_weight, field_name, cpu_count, ngram="1-Gram",
-                 normalize=False, prefix=None):
+                 normalize=False, prefix=None, reset_db=True):
         # super().__init__(source, field_name, n_cores)
         self.source = source
         self.db_name, self.col_name = self.source
@@ -57,7 +57,8 @@ class KeyWordExtractors:
             self.prefix = prefix+"-"
         else:
             self.prefix = ""
-        self._reset_db()
+        if reset_db:
+            self._reset_db()
         self.pipe_dict = {
             Definitions.SIMPLETOKENIZATION: self._simple_tokenize,
             Definitions.MORPHOLOGICALTOKENIZATION: self._morphological_tokenize,

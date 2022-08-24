@@ -23,7 +23,7 @@ class StringCleaner:
 
     def drop_meta_data_of_message(self):
         self.text = re.sub(
-            ".+\@[a-z]+.[a-z]+\) sent a message using the contact form at https://svuonline.org/en/contact-us.",
+            ".+\@[a-z]+.[a-z]+\) sent a message using the contact form\n? *at *\n? *https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*).",
             " ", self.text)
         self.text = re.sub("تم الإرسال من .*\r?\n?.*", " ", self.text)
         return self
