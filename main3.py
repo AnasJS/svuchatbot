@@ -18,4 +18,7 @@ from svuchatbot_preprocess.filter import Filter
 
 f = Filter(source=("chatbot", "Mails-3"),
            target=("chatbot", "Mails-4"))
-f.exclude_emails_containing_word("replay-message", "؟")
+f.exclude_emails_containing_word("replay-message", "؟").\
+      exclude_emails_containing_word("body", "كورونا").\
+      exclude_emails_containing_word("replay-message", "كورونا")
+    # finding_incomprehensible_words().\

@@ -1,5 +1,8 @@
 from svuchatbot_mogodb.client import get_collection
 from langdetect import detect
+import numpy as np
+import pandas as pd
+
 
 class Filter:
     def __init__(self, source: tuple, target: tuple):
@@ -25,6 +28,31 @@ class Filter:
                     # mails.append(item)
             except:
                 print("item: ", item[field])
+
+    def finding_incomprehensible_words(self):
+        cursor = self.t_col.find({"root": {"$in": [""]}})
+        words = []
+        for item in cursor:
+            tokens = np.asarray(item["simple-tokens"])
+            roots = np.asarray(item["root"])
+            for i in np.where(roots=="")[0].tolist():
+                try:
+                    if 0 < i < tokens.shape[0]-1:
+                        words.append((tokens[i-1], tokens[i], tokens[i+1]))
+                    elif i==0 :
+                        words.append(("", tokens[i], tokens[i+1]))
+                    elif i==tokens.shape[0]-1:
+                        words.append((tokens[i - 1], tokens[i], ""))
+                except Exception as e:
+                    print(i)
+                    print(tokens.shape[0])
+                    print(tokens)
+                    print(roots)
+                    print(e)
+                    print("*********************************")
+        df = pd.DataFrame(words, columns=["word0", "word1", "word2"])
+        df.to_csv("incomprehensible_words.csv")
+        return self
 
 
 
