@@ -20,5 +20,6 @@ f = Filter(source=("chatbot", "Mails-3"),
            target=("chatbot", "Mails-4"))
 f.exclude_emails_containing_word("replay-message", "؟").\
       exclude_emails_containing_word("body", "كورونا").\
-      exclude_emails_containing_word("replay-message", "كورونا")
-    # finding_incomprehensible_words().\
+      exclude_emails_containing_word("replay-message", "كورونا").\
+      exclude_emails_containing_word("replay-message", "يرجى الاطلاع وشكرا").\
+      finding_incomprehensible_words()
