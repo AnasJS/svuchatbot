@@ -12,6 +12,10 @@ from svuchatbot_preprocess.filter import Filter
 #            target=("chatbot", "Mails-2"))
 # f.exclude_emails_containing_word("replay-message", "الزميل")
 
-f = Filter(source=("chatbot", "Mails-2"),
-           target=("chatbot", "Mails-3"))
-f.exclude_emails_containing_word("replay-message", "الزميلة")
+# f = Filter(source=("chatbot", "Mails-2"),
+#            target=("chatbot", "Mails-3"))
+# f.exclude_emails_containing_word("replay-message", "الزميلة")
+
+f = Filter(source=("chatbot", "Mails-3"),
+           target=("chatbot", "Mails-4"))
+f.exclude_emails_containing_word("replay-message", "؟")
