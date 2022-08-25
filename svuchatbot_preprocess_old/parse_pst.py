@@ -11,9 +11,13 @@ def parse(from_col, to_col, from_db="PST", to_db="PST"):
     col = db[from_col]
     db_to = client[to_db]
     col_to = db_to[to_col]
-    patterns = [(r'\t*From: .*', "from"), (r'\t*To: .*', "to"), (r'\t*Subject: .*', 'subject'),
-                (r'\t*Sent: .*', 'sent'),
-                (r'\t*Cc: .*', 'cc'), (r'.+', 'Content')]
+    patterns = [(r'\t*From: ?.*', "from"), (r'\t*To: ?.*', "to"), (r'\t*Subject: ?.*', 'subject'),
+                (r'\t*Sent: ?.*', 'sent'),
+                (r'\t*Cc: ?.*', 'cc'), (r'.+', 'Content'),
+                # add arabic keys
+                (r'\t*من: ?.*', "from"),(r'\t*إلى: ?.*', "to"), (r'\t*الموضوع: ?.*', 'subject'),
+                (r'\t*تم الإرسال: ?.*', 'sent'),
+                ]
     grammar = '''
     From: {<from>}
     Sent: {<sent>}

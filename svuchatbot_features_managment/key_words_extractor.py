@@ -14,6 +14,7 @@ from svuchatbot_preprocess.cleand_tokens_extractor import Elector
 from svuchatbot_preprocess.extractor import Extractor
 from arabicstopwords.arabicstopwords import stopwords_list
 
+from svuchatbot_preprocess.special_words_extractor import SpecialWordExtraction
 from svuchatbot_preprocess.tokens_extractor import TokensExtractor
 from svuchatbot_preprocess.bag_of_words_extractor import BagOfWordsExtractor
 from svuchatbot_preprocess.orthographic_normalization import Normalizer
@@ -29,6 +30,7 @@ class Definitions:
     BAGOFWORDSEXTRACION = "bag_of_words_extraction"
     FEATURESSETUP = "setup_features_names"
     TFIDFEXTRACTION = "tfidf_extraction"
+    SPECIALWORDSEXTRACTION = "special_words_extraction"
 
 class KeyWordExtractors:
 
@@ -66,7 +68,8 @@ class KeyWordExtractors:
             Definitions.STOPWORDSREMOVING: self._election,
             Definitions.BAGOFWORDSEXTRACION: self._extract_bag_of_word,
             Definitions.FEATURESSETUP: self._setup_features_names,
-            Definitions.TFIDFEXTRACTION: self._tfidf
+            Definitions.TFIDFEXTRACTION: self._tfidf,
+            Definitions.SPECIALWORDSEXTRACTION: self._special_words_extraction
         }
         self.pipe = []
 
@@ -116,6 +119,11 @@ class KeyWordExtractors:
         boe = BagOfWordsExtractor(self.source, field_name=self.prefix+"tokens", n_cores=self.cpu_count,
                                   target=(self.prefix+"Bag-Of-Words", self.ngram), n_gram=int(self.ngram[0]))
         boe.work()
+
+    def _special_words_extraction(self):
+        swe = SpecialWordExtraction(self.source, field_name= self.field_name, n_cores=self.cpu_count,
+                                  target=("", self.prefix+"special_words"))
+        swe.work()
 
     def _setup_features_names(self):
         bow_col = get_collection(self.prefix+"Bag-Of-Words", self.ngram)

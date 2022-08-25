@@ -13,6 +13,7 @@ from os.path import join
 import numpy as np
 
 
+
 class TokensExtractor(Extractor, ABC):
     def __init__(self, source, field_name, n_cores, target=None, type="simple"):
         super().__init__(source, field_name, n_cores)
@@ -21,6 +22,7 @@ class TokensExtractor(Extractor, ABC):
             self.t_col_name = "tokens"
         else:
             self.t_col_name = target[1]
+
 
     @staticmethod
     def nltk_based_tokenize_for_sentence(sent):
@@ -44,6 +46,16 @@ class TokensExtractor(Extractor, ABC):
                 pass
         return res
 
+    @staticmethod
+    def special_words_tokenize_for_sentence(sent):
+        res = []
+        for word in simple_word_tokenize(sent):
+            try:
+                if word in TokensExtractor.special_words:
+                    res.append(word)
+            except:
+                pass
+        return res
     @staticmethod
     def camel_morphological_based_tokenize_for_sentence(tokens):
         msa_bw_tok = [w for w in TokensExtractor.msa_d3_tokenizer.tokenize(tokens)
