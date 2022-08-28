@@ -11,7 +11,7 @@ from svuchatbot_helper.read_stop_words import stopwords as o_stopwords
 from os import pardir
 from os.path import join
 import numpy as np
-
+import re
 
 
 class TokensExtractor(Extractor, ABC):
@@ -48,14 +48,15 @@ class TokensExtractor(Extractor, ABC):
 
     @staticmethod
     def special_words_tokenize_for_sentence(sent):
-        res = []
-        for word in simple_word_tokenize(sent):
+        res = set()
+        for word in TokensExtractor.special_words:
             try:
-                if word in TokensExtractor.special_words:
-                    res.append(word)
+                for w in re.findall(word, sent):
+                    res.add(TokensExtractor.special_words_dict[w])
             except:
                 pass
-        return res
+        return list(res)
+
     @staticmethod
     def camel_morphological_based_tokenize_for_sentence(tokens):
         msa_bw_tok = [w for w in TokensExtractor.msa_d3_tokenizer.tokenize(tokens)
