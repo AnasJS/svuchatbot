@@ -10,8 +10,9 @@ class Filter:
         self.t_db_name, self.t_col_name = target
         self.s_col = get_collection(self.s_db_name, self.s_col_name)
         self.t_col = get_collection(self.t_db_name, self.t_col_name)
-        self.t_col.delete_many({})
-        self.t_col.insert_many(self.s_col.find({}))
+        if source != target:
+            self.t_col.delete_many({})
+            self.t_col.insert_many(self.s_col.find({}))
 
     def exclude_emails_containing_word(self, field, word):
         self.t_col.delete_many({field: {"$regex": word}})

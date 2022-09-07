@@ -1,3 +1,5 @@
+import re
+
 from svuchatbot_mogodb.client import SingletonClient
 from nltk import RegexpParser, line_tokenize, RegexpTagger
 from nltk.tree.tree import Tree
@@ -13,49 +15,103 @@ class PSTParser:
 
     def set_grammar(self):
         self.patterns = [
-            (r'\t*>* *From: ?.*', "from"),
-            (r'\t*>* *To: ?.*', "to"),
-            (r'\t*>* *Subject: ?.*', 'subject'),
-            (r'\t*>* *Sent: ?.*', 'sent'),
-            (r'\t*>* *Date: ?.*', 'date'),
-            (r'\t*>* *Cc: ?.*', 'cc'),
-            (r'\t*>* *Bcc: ?.*', 'bcc'),
-
-
-
-            (r'\t*>* *المرسل|من: ?.*', "ar_from"),
-            (r'\t*>* *إلى|: ?.*', "ar_to"),
-            (r'\t*الموضوع>* *: ?.*', 'ar_subject'),
-            (r'\t*>* *تم الإرسال: ?.*', 'ar_sent'),
-            (r'\t*>* *التاريخ: ?.*', 'ar_date'),
-            (r'\t*>* *نسخة: ?.*', 'ar_cc'),
-            (r'\t*>* *-----Original Message-----', 'EN_ORIGINALMESSAGE'),
-            (r'\t*>* *-------- الرسالة الأصلية --------', 'AR_ORIGINALMESSAGE'),
-            (r'\t*>* *---------- الرسالة المعاد توجيهها ----------', 'AR_FORWORDEDMESSAGE'),
-            (r'\t*>* *---------- Forwarded message ----------', 'EN_FORWORDEDMESSAGE'),
+            (r'\t*(> ?)* *From: ?.*', "from"),
+            (r'\t*(> ?)* *FROM: ?.*', "from"),
+            (r'\t*(> ?)* *To: ?.*', "to"),
+            (r'\t*(> ?)* *TO: ?.*', "to"),
+            (r'\t*(> ?)* *Subject: ?.*', 'subject'),
+            (r'\t*(> ?)* *SUBJECT: ?.*', 'subject'),
+            (r'\t*(> ?)* *Sent: ?.*', 'sent'),
+            (r'\t*(> ?)* *SENT: ?.*', 'sent'),
+            (r'\t*(> ?)* *Date: ?.*', 'date'),
+            (r'\t*(> ?)* *DATE: ?.*', 'date'),
+            (r'\t*(> ?)* *Cc: ?.*', 'cc'),
+            (r'\t*(> ?)* *CC: ?.*', 'cc'),
+            (r'\t*(> ?)* *BCC: ?.*', 'bcc'),
+            (r'\t*(> ?)* *Bcc: ?.*', 'bcc'),
+            (r'\t*(> ?)* *المرسل|من: ?.*', "ar_from"),
+            (r'\t*(> ?)* *إلى|: ?.*', "ar_to"),
+            (r'\t*(> ?)* *الموضوع: ?.*', 'ar_subject'),
+            (r'\t*(> ?)* *تم الإرسال: ?.*', 'ar_sent'),
+            (r'\t*(> ?)* *التاريخ: ?.*', 'ar_date'),
+            (r'\t*(> ?)* *نسخة: ?.*', 'ar_cc'),
+            (r'\t*(> ?)* *-+ ?Original [mM]essage ?-+', 'EN_ORIGINALMESSAGE'),
+            (r'\t*(> ?)* *-+ ?Originalnachricht ?-+', 'GE_ORIGINALMESSAGE'),
+            (r'\t*(> ?)* *-+ ?الرسالة الأساسية ?-+', 'AR_ORIGINALMESSAGE'),
+            (r'\t*(> ?)* *-+ ?الرسالة الأصلية ?-+', 'AR_ORIGINALMESSAGE'),
+            (r'\t*(> ?)* *-+ ?الرسالة المعاد توجيهها ?-+', 'AR_FORWORDEDMESSAGE'),
+            (r'\t*(> ?)* *-+ ?الرسالة المُعاد توجيهها ?-+', 'AR_FORWORDEDMESSAGE'),
+            (r'\t*(> ?)* *-+ ?رسالة مُعاد توجيهها ?-+', 'AR_FORWORDEDMESSAGE'),
+            (r'\t*(> ?)* *-+ ?Forwarded [Mm]essage ?-+', 'EN_FORWORDEDMESSAGE'),
             # (r'---- info كتب ----', 'AR_InfoWrite'),
-            (r'\t*>* *---- info كتب ----', 'AR_InfoWrite'),
+            (r'\t*(> ?)* *-+ ?info كتب ?-+', 'AR_InfoWrite'),
+            (r'\t*(> ?)* *-+ ?.*[Ss]ent a message using.*', 'SENTFROM'),
+            (r'\t*(> ?)* *-+ ?.*مرسل من','AR_SENTFROM'),
+            (r'\t*(> ?)* *-+ ?.*مُرسل من','AR_SENTFROM'),
+            (r'\t*(> ?)* *-+ ?.*أُرسلت من','AR_SENTFROM'),
+            (r'\t*(> ?)* *-+ ?.*[sS]ent [Ff]rom.*','SENTUSING'),
             (r'.+', 'Content'),
-
         ]
-        #
-
         self.grammar = '''
-            ORIGINALMESSAGE: {<EN_ORIGINALMESSAGE|AR_ORIGINALMESSAGE>}
-            FORWORDEDMESSAGE: {<AR_FORWORDEDMESSAGE|EN_FORWORDEDMESSAGE>}
-            From: {<from|ar_from>}
-            Sent: {<sent|ar_sent>}
-            Date: {<date|ar_date>}
-            Subject: {<subject|ar_subject>}
-            To: {<to|ar_to><Content>*}
-            CC: {<cc|ar_cc><Content>*}
-            BCC: {<bcc><Content>*}
-            Header: {<ORIGINALMESSAGE|FORWORDEDMESSAGE>?<From><Sent>?<To><CC>?<BCC>?<Date>?<Subject>}
-            Body: {<Content>+}
-            Email: {<Header><Body>?}
-            ShortEmail: {<AR_InfoWrite><Body>}
-            Payload: {<Body><Email|ShortEmail>+}
-            '''
+                    ORIGINALMESSAGE: {<EN_ORIGINALMESSAGE|AR_ORIGINALMESSAGE|GE_ORIGINALMESSAGE>}
+                    FORWORDEDMESSAGE: {<AR_FORWORDEDMESSAGE|EN_FORWORDEDMESSAGE>}
+                    From: {<from|ar_from>}
+                    Sent: {<sent|ar_sent>}
+                    Date: {<date|ar_date>}
+                    Subject: {<subject|ar_subject>}
+                    To: {<to|ar_to><Content>*}
+                    CC: {<cc|ar_cc><Content>*}
+                    BCC: {<bcc><Content>*}
+                    Header: {<ORIGINALMESSAGE|FORWORDEDMESSAGE>?<From><Sent>?<To><CC>?<BCC>?<Date>?<Subject>}
+                    Body: {<Content>+}
+                    Email: {<Header><Body>?}
+                    ShortEmail: {<AR_InfoWrite><Body>}
+                    Payload: {<Body><Email|ShortEmail>+}
+                    '''
+        # self.patterns = [
+        #     (r'\t*>* *From: ?.*', "from"),
+        #     (r'\t*>* *To: ?.*', "to"),
+        #     (r'\t*>* *Subject: ?.*', 'subject'),
+        #     (r'\t*>* *Sent: ?.*', 'sent'),
+        #     (r'\t*>* *Date: ?.*', 'date'),
+        #     (r'\t*>* *Cc: ?.*', 'cc'),
+        #     (r'\t*>* *Bcc: ?.*', 'bcc'),
+        #
+        #
+        #
+        #     (r'\t*>* *المرسل|من: ?.*', "ar_from"),
+        #     (r'\t*>* *إلى|: ?.*', "ar_to"),
+        #     (r'\t*الموضوع>* *: ?.*', 'ar_subject'),
+        #     (r'\t*>* *تم الإرسال: ?.*', 'ar_sent'),
+        #     (r'\t*>* *التاريخ: ?.*', 'ar_date'),
+        #     (r'\t*>* *نسخة: ?.*', 'ar_cc'),
+        #     (r'\t*>* *-----Original Message-----', 'EN_ORIGINALMESSAGE'),
+        #     (r'\t*>* *-------- الرسالة الأصلية --------', 'AR_ORIGINALMESSAGE'),
+        #     (r'\t*>* *---------- الرسالة المعاد توجيهها ----------', 'AR_FORWORDEDMESSAGE'),
+        #     (r'\t*>* *---------- Forwarded message ----------', 'EN_FORWORDEDMESSAGE'),
+        #     # (r'---- info كتب ----', 'AR_InfoWrite'),
+        #     (r'\t*>* *---- info كتب ----', 'AR_InfoWrite'),
+        #     (r'.+', 'Content'),
+        #
+        # ]
+        # #
+        #
+        # self.grammar = '''
+        #     ORIGINALMESSAGE: {<EN_ORIGINALMESSAGE|AR_ORIGINALMESSAGE>}
+        #     FORWORDEDMESSAGE: {<AR_FORWORDEDMESSAGE|EN_FORWORDEDMESSAGE>}
+        #     From: {<from|ar_from>}
+        #     Sent: {<sent|ar_sent>}
+        #     Date: {<date|ar_date>}
+        #     Subject: {<subject|ar_subject>}
+        #     To: {<to|ar_to><Content>*}
+        #     CC: {<cc|ar_cc><Content>*}
+        #     BCC: {<bcc><Content>*}
+        #     Header: {<ORIGINALMESSAGE|FORWORDEDMESSAGE>?<From><Sent>?<To><CC>?<BCC>?<Date>?<Subject>}
+        #     Body: {<Content>+}
+        #     Email: {<Header><Body>?}
+        #     ShortEmail: {<AR_InfoWrite><Body>}
+        #     Payload: {<Body><Email|ShortEmail>+}
+        #     '''
 
     def parse(self):
         client = SingletonClient()
@@ -68,7 +124,8 @@ class PSTParser:
         cp = RegexpParser(self.grammar)
         for document in col.find():
             try:
-                line_tokens = line_tokenize(document["content"])
+                content = re.sub('[\u202b\u200f\u202a\u202b]','',document["content"])
+                line_tokens = line_tokenize(content)
                 regexp_tags = regexp_tagger.tag(line_tokens)
                 col_to.insert_one(self.parse_message(regexp_tags, cp))
             except Exception as e:
@@ -105,6 +162,7 @@ class PSTParser:
             body = self.parse_body(email[1])
             return {**header, **body}
         elif email.label() == "ShortEmail":
+
             header = {}
             body = self.parse_body(email[1])
             return {**header, **body}

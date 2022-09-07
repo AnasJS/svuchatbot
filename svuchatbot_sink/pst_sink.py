@@ -41,7 +41,8 @@ class PST:
                     "sent_time": msg.delivery_time,
                 }
                 col.insert_one(document)
-            except:
+            except Exception as e:
+                print(e)
                 continue
 
     def __work(self, parent, folder_index, folder_name, folder):

@@ -1,0 +1,5 @@
+class Definitions :
+    PSTDBNAME = "PST"
+    SENTCOLLECTIONNAME = "Sent"
+    PARSSEDEMAILSCOLLECTIONNAME = "Sent-Mails-After-Parsing"
+    PARSSEDEMAILSDBNAME = "SVU"
