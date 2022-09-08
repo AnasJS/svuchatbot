@@ -20,7 +20,7 @@ class SentimentExtractor(Extractor):
         # print(id(sa))
         for item in cursor:
             try:
-                item.update({"sentiments": SentimentExtractor.camel_based_sentiment_analyser_for_sentence(
+                item.update({self.field_name+"_sentiments": SentimentExtractor.camel_based_sentiment_analyser_for_sentence(
                     item[self.field_name], sa)})
                 cursor.collection.replace_one({"_id": item["_id"]}, item)
             except Exception as e:

@@ -15,6 +15,12 @@ class EntitiesExtractor(Extractor):
         cursor = col.find({"_id": {"$in": ids}})
         ner = NERecognizer.pretrained()
         # cursor = col.find({"_id": {"$in": ids}})
-        for item in cursor:
-            item.update({"entities": EntitiesExtractor.extract_entities_for_sentence(item[self.field_name], ner)})
-            cursor.collection.replace_one({"_id": item["_id"]}, item)
+        if self.field_name is list:
+            for item in cursor:
+                tmp = set([w for field in self.field_name for w in item[field]])
+                item.update({"entities": EntitiesExtractor.extract_entities_for_sentence(tmp, ner)})
+                cursor.collection.replace_one({"_id": item["_id"]}, item)
+        else:
+            for item in cursor:
+                item.update({"entities": EntitiesExtractor.extract_entities_for_sentence(item[self.field_name], ner)})
+                cursor.collection.replace_one({"_id": item["_id"]}, item)

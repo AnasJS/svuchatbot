@@ -41,7 +41,8 @@ class PST:
                     "sent_time": msg.delivery_time,
                 }
                 col.insert_one(document)
-            except:
+            except Exception as e:
+                print(e)
                 continue
 
     def __work(self, parent, folder_index, folder_name, folder):
@@ -85,7 +86,8 @@ class PST:
         root.get_number_of_sub_items()
         top_folder = root.get_sub_folder(1)
         # print(top_folder.label)
-        for f_index, f_name in zip([1, 2, 3, 7, 8], ["Inbox", "Output", "Sent", "Draft", "Junk"]):
+        # for f_index, f_name in zip([1, 2, 3, 7, 8], ["Inbox", "Output", "Sent", "Draft", "Junk"]):
+        for f_index, f_name in zip([ 3], ["Sent"]):
             print("start sink {}".format(f_name))
             self.__work(top_folder, f_index, f_name, top_folder.get_sub_folder(f_index))
         end_time = time.time()
