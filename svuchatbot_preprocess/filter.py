@@ -3,6 +3,7 @@ from langdetect import detect
 import numpy as np
 import pandas as pd
 
+from svuchatbot_helper.cleaner import StringCleaner
 
 class Filter:
     def __init__(self, source: tuple, target: tuple):
@@ -18,17 +19,21 @@ class Filter:
         self.t_col.delete_many({field: {"$regex": word}})
         return self
 
+    def exclude_empty_emails(self, field):
+        self.t_col.delete_many({field: "" })
+        return self
 
     def exclude_emails_writen_in_foreign_language(self, field):
         cursor = self.t_col.find()
         # mails = []
         for item in cursor:
             try:
-                if detect(item[field]) == 'ar':
+                if detect(item[field]) != 'ar':
                     self.t_col.delete_one({"_id": item["_id"]})
                     # mails.append(item)
             except:
                 print("item: ", item[field])
+        return self
 
     def finding_incomprehensible_words(self):
         cursor = self.t_col.find({"root": {"$in": [""]}})
@@ -54,6 +59,37 @@ class Filter:
         df = pd.DataFrame(words, columns=["word0", "word1", "word2"])
         df.to_csv("incomprehensible_words.csv")
         return self
+
+    def exclude_duplicated(self, field):
+        cursor = self.t_col.find()
+        df = pd.DataFrame([d for d in cursor])
+        df_target = df[field]
+        df.drop(df[df_target.duplicated()].index, inplace=True)
+        self.t_col.delete_many({})
+        self.t_col.insert_many([d.to_dict() for d in df.iloc])
+        return self
+
+    def correct_sentences(self, field, sents, replacements):
+        cursor = self.t_col.find()
+        sc = StringCleaner("")
+        for item in cursor:
+            try:
+                sc.text = item[field]
+                for sent, rep in zip(sents, replacements):
+                    sc.correct_word(sent, rep)
+                    item[field] = sc.text
+                    self.t_col.update_one({"_id": item["_id"]}, item)
+            except:
+                print("item: ", item[field])
+        return self
+
+
+
+
+
+
+
+
 
 
 

@@ -21,7 +21,7 @@ from svuchatbot_preprocess.orthographic_normalization import Normalizer
 from svuchatbot_features_managment.simple_tokens_extractor import SimpleTokensExtractor
 from svuchatbot_features_managment.morphology_based_tokens_extractor import MorphologyBasedTokensExtractor
 from svuchatbot_features_managment.tfidf_extractor import TFIDFExtractor
-
+from svuchatbot_const.db.definitions import Definitions as DB_Definitions
 class Definitions:
     SIMPLETOKENIZATION = "simple_tokenization"
     MORPHOLOGICALTOKENIZATION = "morphological_tokenization"
@@ -77,27 +77,27 @@ class KeyWordExtractors:
         col = get_collection(self.db_name, self.col_name)
         for item in col.find():
             try:
-                item.pop(self.prefix+"tokens")
+                item.pop(self.prefix+DB_Definitions.TOKENSFIELDNAME)
             except:
                 pass
             col.replace_one({"_id": item["_id"]}, item)
         client = SingletonClient()
-        client.drop_database(self.prefix+"TF-IDF")
-        client.drop_database(self.prefix+"Weights")
-        client.drop_database(self.prefix+"Bag-Of-Words")
+        client.drop_database(self.prefix+DB_Definitions.TFIDFDBNAME)
+        client.drop_database(self.prefix+DB_Definitions.WEIGHTSDBNAME)
+        client.drop_database(self.prefix+DB_Definitions.BAGOFWORDSDBNAME)
 
     def _correction(self):
         if self.normalize:
             n = Normalizer(source=(self.source[0], self.source[1]), n_cores= self.cpu_count,
-                           field_name=self.prefix+"tokens", word=True)
+                           field_name=self.prefix+DB_Definitions.TOKENSFIELDNAME, word=True)
             n.work()
             # e = Elector(source=self.source, field_name=self.prefix+"tokens", n_cores=self.cpu_count)
             # e.work()
 
     def _simple_tokenize(self):
         col = get_collection(self.source[0], self.source[1])
-        if not self.prefix+"tokens" in col.find_one().keys():
-            te = SimpleTokensExtractor(self.source, self.field_name, self.cpu_count, target=("", self.prefix+"tokens"))
+        if not self.prefix+DB_Definitions.TOKENSFIELDNAME in col.find_one().keys():
+            te = SimpleTokensExtractor(self.source, self.field_name, self.cpu_count, target=("", self.prefix+DB_Definitions.TOKENSFIELDNAME))
             te.work()
             # e = Elector(source=self.source, field_name="tokens", n_cores=self.cpu_count)
             # e.work()
@@ -107,26 +107,26 @@ class KeyWordExtractors:
     def _morphological_tokenize(self):
         col = get_collection(self.source[0], self.source[1])
         # if not self.prefix + "tokens" in col.find_one().keys():
-        te = MorphologyBasedTokensExtractor(self.source, self.prefix + "tokens", self.cpu_count,
-                                   target=("", self.prefix + "tokens"))
+        te = MorphologyBasedTokensExtractor(self.source, self.prefix + DB_Definitions.TOKENSFIELDNAME, self.cpu_count,
+                                   target=("", self.prefix + DB_Definitions.TOKENSFIELDNAME))
         te.work()
 
     def _election(self):
-        e = Elector(source=self.source, field_name=self.prefix+"tokens", n_cores=self.cpu_count)
+        e = Elector(source=self.source, field_name=self.prefix+DB_Definitions.TOKENSFIELDNAME, n_cores=self.cpu_count)
         e.work()
 
     def _extract_bag_of_word(self):
-        boe = BagOfWordsExtractor(self.source, field_name=self.prefix+"tokens", n_cores=self.cpu_count,
-                                  target=(self.prefix+"Bag-Of-Words", self.ngram), n_gram=int(self.ngram[0]))
+        boe = BagOfWordsExtractor(self.source, field_name=self.prefix+DB_Definitions.TOKENSFIELDNAME, n_cores=self.cpu_count,
+                                  target=(self.prefix+DB_Definitions.BAGOFWORDSDBNAME, self.ngram), n_gram=int(self.ngram[0]))
         boe.work()
 
     def _special_words_extraction(self):
         swe = SpecialWordExtraction(self.source, field_name= self.field_name, n_cores=self.cpu_count,
-                                  target=("", self.prefix+"special_words"))
+                                  target=("", self.prefix+DB_Definitions.SPECIALWORDSFIELDNAME))
         swe.work()
 
     def _setup_features_names(self):
-        bow_col = get_collection(self.prefix+"Bag-Of-Words", self.ngram)
+        bow_col = get_collection(self.prefix+DB_Definitions.BAGOFWORDSDBNAME, self.ngram)
         bow = bow_col.find({})
         bow = list(bow)
         feature_names = list(bow_col.find_one().keys())
@@ -140,8 +140,8 @@ class KeyWordExtractors:
         tfidf = TFIDFExtractor(self.bag_of_words,
                                self.ngram,
                                self.feature_names,
-                               tfidf_db_name=self.prefix+"TF-IDF",
-                               weights_db_name=self.prefix+"Weights")
+                               tfidf_db_name=self.prefix+DB_Definitions.TFIDFDBNAME,
+                               weights_db_name=self.prefix+DB_Definitions.WEIGHTSDBNAME)
         tfidf.work()
         # transformer = TfidfTransformer()
         # tfidf = transformer.fit_transform(self.bag_of_words)

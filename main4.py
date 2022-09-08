@@ -1,4 +1,4 @@
-# from svuchatbot_features_managment.features_extractor import FeaturesExtractor
+from svuchatbot_features_managment.features_extractor import FeaturesExtractor
 # from svuchatbot_features_managment.simple_tokens_extractor import SimpleTokensExtractor
 # from os import cpu_count
 # ste = SimpleTokensExtractor(source=("chatbot", "Mails-1"),

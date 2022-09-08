@@ -206,7 +206,10 @@ contact form at https://svuonline.org/en/node/120.
 
 ليش مافي رد نهائيا
 '''
-line_tokens = line_tokenize(re.sub('[\u202b\u200f\u202a\u202b]','',c))
+e = '''claude chahood (cchahood@gmail.com) sent a message using the contact form at https://svuonline.org/en/contact-us.
+الرجاء تدقيق طلبي
+رقمي الجامعي هو 97729'''
+line_tokens = line_tokenize(re.sub('[\u202b\u200f\u202a\u202b]','',e))
 # line_tokens = line_tokenize(document["content"])
 regexp_tags = regexp_tagger.tag(line_tokens)
 for rt in regexp_tags:

@@ -1,5 +1,7 @@
 import re
 import os
+from os import curdir
+from os.path import join
 
 
 class StringCleaner:
@@ -20,6 +22,9 @@ class StringCleaner:
     def drop_special_word(self, word):
         self.text = re.sub(word, " ", self.text)
         return self
+
+    def correct_word(self, word, replacement):
+        self.text = re.sub(word, replacement, self.text)
 
     def drop_meta_data_of_message(self):
         self.text = re.sub(
