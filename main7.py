@@ -61,15 +61,19 @@ def main():
                 Definitions.FEATURESSETUP,
                 Definitions.TFIDFEXTRACTION,
             ])
-        kwe.work()
+        # kwe.work()
 
-    # FE = FeaturesExtraction(steps=[
-    #     Steps.EXTRACTSIMPLETOKENSFROMANSWER,
-    #     Steps.EXTRACTSIMPLETOKENSFROMQUESTION,
-    #     Steps.EXTRACTSENTIMENTFROMQUESTIONS,
-    #     Steps.EXTRACTENTITIESFROMANSWERS
-    # ])
-    # FE.run()
+    FE = FeaturesExtraction(steps=[
+        # Steps.EXTRACTSIMPLETOKENSFROMANSWER,
+        # Steps.EXTRACTSIMPLETOKENSFROMQUESTION,
+        # Steps.EXTRACTSENTIMENTFROMQUESTIONS,
+        # Steps.EXTRACTENTITIESFROMANSWERS
+        Steps.EXTRACTSPECIALWORDSFROMQUESTION,
+        Steps.REPLACESPECIALWORDSFROMQUESTION,
+        Steps.EXTRACTSPECIALWORDSFROMANSWER,
+        Steps.REPLACESPECIALWORDSFROMANSWER,
+    ])
+    FE.run()
 
 
 if __name__ == '__main__':

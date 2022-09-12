@@ -15,9 +15,9 @@ import re
 
 
 class TokensExtractor(Extractor, ABC):
-    def __init__(self, source, field_name, n_cores, target=None, type="simple"):
+    def __init__(self, source, field_name, n_cores, target=None, type_="simple"):
         super().__init__(source, field_name, n_cores)
-        self.type = type
+        self.type = type_
         if target is None:
             self.t_col_name = "tokens"
         else:
@@ -52,7 +52,7 @@ class TokensExtractor(Extractor, ABC):
         for word in TokensExtractor.special_words:
             try:
                 for w in re.findall(word, sent):
-                    res.add(TokensExtractor.special_words_dict[w])
+                    res.add((TokensExtractor.special_words_dict[w], w))
             except:
                 pass
         return list(res)

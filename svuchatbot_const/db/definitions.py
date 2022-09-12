@@ -22,3 +22,5 @@ class Definitions :
     QUESTIONFIELDNAME = "body"
     ANSWERFIELDNAME = "replay-message"
     SPECIALWORDSFIELDNAME = "special-words"
+    SPECIALWORDSFIELDNAMEFROMQUESTION = "special-words-question"
+    SPECIALWORDSFIELDNAMEFROMANSWER = "special-words-answer"

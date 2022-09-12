@@ -3,10 +3,10 @@ from svuchatbot_preprocess.tokens_extractor import TokensExtractor
 import pandas as pd
 import os
 class SpecialWordExtraction(TokensExtractor):
-    # def __init__(self, source, field_name, n_cores,f_path= None, target=None, n_gram=1):
-    #     super().__init__(source, field_name, n_cores)
+    # def __init__(self, source, field_name, n_cores, target=None, replace=False):
+    #     super().__init__(source, field_name, n_cores, target)
+        # TokensExtractor.replace_special_words = replace
 
-    #todo correct by using reqular exprestion
     def _tokenizer(self):
         f_path = os.path.join( os.getcwd(), 'data', "Specializations_of_the_Syrian_Virtual_University.csv" )
         df = pd.read_csv(f_path, names=["name0", "name1", "name2", "name3"])

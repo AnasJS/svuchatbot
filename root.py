@@ -8,6 +8,7 @@ from svuchatbot_preprocess.sentiment_extractor import SentimentExtractor
 from svuchatbot_preprocess.entities_extractor import EntitiesExtractor
 from svuchatbot_preprocess.simple_worker import SimpleWorker
 from svuchatbot_preprocess.special_words_extractor import SpecialWordExtraction
+from svuchatbot_preprocess.special_words_replacment import SpecialWordsReplacement
 from svuchatbot_sink.pst_sink import PST
 from os import cpu_count, curdir, pardir
 from svuchatbot_parsing.parse_pst import PSTParser
@@ -42,6 +43,12 @@ class Steps:
     REMOVEEMPTYQUESTION = "remove_empty_questions"
     CORRECTSENTENCES = "correct_sentences"
     DROPSENTENCES = "drop_sentences"
+    REPLACESPECIALWORDS = "replace_special_words"
+    EXTRACTSPECIALWORDS = "extract_special_words"
+    REPLACESPECIALWORDSFROMQUESTION = "replace_special_words_from_question"
+    EXTRACTSPECIALWORDSFROMQUESTION = "extract_special_words_from_question"
+    REPLACESPECIALWORDSFROMANSWER = "replace_special_words_from_answer"
+    EXTRACTSPECIALWORDSFROMANSWER = "extract_special_words_from_answer"
 
     #
 
@@ -68,6 +75,7 @@ class PreProcess:
             Steps.REMOVEGREETINGSENTINCESESFROMQUESTIONS: "",
             Steps.CORRECTSENTENCES: self.correct_sentences,
             Steps.DROPSENTENCES: self.drop_sentences,
+
         }
         self.steps = []
         for step in steps:
@@ -242,6 +250,11 @@ class FeaturesExtraction:
             Steps.EXTRACTSIMPLETOKENSFROMQUESTION: self.extract_question_simple_tokens,
             Steps.EXTRACTSENTIMENTFROMQUESTIONS: self.extract_sentiment_from_questions,
             Steps.EXTRACTENTITIESFROMANSWERS: self.extract_entities_from_answers,
+            Steps.EXTRACTSPECIALWORDSFROMQUESTION: self.extract_special_words_from_question,
+            Steps.REPLACESPECIALWORDSFROMQUESTION: self.replace_special_words_from_question,
+            Steps.REPLACESPECIALWORDSFROMANSWER: self.replace_special_words_from_answer,
+            Steps.EXTRACTSPECIALWORDSFROMANSWER: self.extract_special_words_from_answer,
+
         }
         self.steps = []
         for step in steps:
@@ -307,14 +320,47 @@ class FeaturesExtraction:
                                )
         ee.work()
 
-
-    def extract_special_words(self):
+    @staticmethod
+    def extract_special_words_from_question():
         swe = SpecialWordExtraction(source=(DB_Definitions.PARSSEDEMAILSDBNAME,
                                             DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
-                                    field_name= DB_Definitions.QUESTIONFIELDNAME,
+                                    field_name=DB_Definitions.QUESTIONFIELDNAME,
                                     n_cores=cpu_count(),
-                                    target=("", self.prefix+DB_Definitions.SPECIALWORDSFIELDNAME))
+                                    target=("", DB_Definitions.SPECIALWORDSFIELDNAMEFROMQUESTION),
+                                    )
         swe.work()
+
+    @staticmethod
+    def replace_special_words_from_question():
+        swr = SpecialWordsReplacement(
+            source=(DB_Definitions.PARSSEDEMAILSDBNAME,
+                    DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
+            field_name=DB_Definitions.QUESTIONFIELDNAME,
+            n_cores=cpu_count(),
+            from_field_name=DB_Definitions.SPECIALWORDSFIELDNAMEFROMQUESTION
+        )
+        swr.work()
+
+    @staticmethod
+    def extract_special_words_from_answer():
+        swe = SpecialWordExtraction(source=(DB_Definitions.PARSSEDEMAILSDBNAME,
+                                            DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
+                                    field_name=DB_Definitions.ANSWERFIELDNAME,
+                                    n_cores=cpu_count(),
+                                    target=("", DB_Definitions.SPECIALWORDSFIELDNAMEFROMANSWER),
+                                    )
+        swe.work()
+
+    @staticmethod
+    def replace_special_words_from_answer():
+        swr = SpecialWordsReplacement(
+            source=(DB_Definitions.PARSSEDEMAILSDBNAME,
+                    DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
+            field_name=DB_Definitions.ANSWERFIELDNAME,
+            n_cores=cpu_count(),
+            from_field_name=DB_Definitions.SPECIALWORDSFIELDNAMEFROMANSWER
+        )
+        swr.work()
 
     @staticmethod
     def extract_morphological_patterns():
