@@ -7,9 +7,7 @@
 # # c2.a = 6
 # # print(c.a)
 import os
-from os import cpu_count
 # from svuchatbot_preprocess.tokenizer import work
-from svuchatbot_preprocess.tokens_extractor import TokensExtractor
 # from svuchatbot_preprocess.tokenizer import Tokenizer
 # from_col="Sent-Mails-After-Parsing",to_col="tokenized_mails", from_db="chatbot", to_db="chatbot", field_name="body"
 # t = Tokenizer(("chatbot", "Sent-Mails-After-Parsing"), ("chatbot","tokenized_mails_1"), field="body")
@@ -106,8 +104,8 @@ from svuchatbot_preprocess.tokens_extractor import TokensExtractor
 # client.drop_database("Weights")
 # client.drop_database("Bag-Of-Words")
 # ***********************************************************************************************
-from svuchatbot_features_managment.key_words_extractor import KeyWordExtractors
-from svuchatbot_features_managment.root_based_bag_of_words_extractor import RootBasedBagOfWordsExtractor
+from src.svuchatbot_features_managment import KeyWordExtractors
+
 for i in range(1, 2):
     kwe = KeyWordExtractors(
         source=("chatbot", "Mails-3"),

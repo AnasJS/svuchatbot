@@ -1,4 +1,4 @@
-from svuchatbot_preprocess.extractor import Extractor
+from src.svuchatbot_preprocess.extractor import Extractor
 from camel_tools.ner import NERecognizer
 
 

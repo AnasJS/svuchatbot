@@ -1,4 +1,4 @@
-from svuchatbot_preprocess.fetching import read_intents
+from src.svuchatbot_preprocess import read_intents
 
 def read_intents_arabic():
     for d in read_intents():

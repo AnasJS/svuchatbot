@@ -2,9 +2,9 @@ import re
 
 from bson import ObjectId
 
-from svuchatbot_mogodb.client import SingletonClient
+from src.svuchatbot_mogodb import SingletonClient
 from nltk import RegexpParser, line_tokenize, RegexpTagger
-from nltk.tree.tree import Tree
+
 patterns = [
             (r'\t*(> ?)* *From: ?.*', "from"),
             (r'\t*(> ?)* *FROM: ?.*', "from"),

@@ -1,4 +1,4 @@
-from svuchatbot_preprocess.filter import Filter
+from src.svuchatbot_preprocess import Filter
 #
 # f = Filter(source=("chatbot", "Sent-Mails-After-Parsing"),
 #            target=("chatbot", "Mails"))

@@ -1,18 +1,13 @@
-from svuchatbot_mogodb.client import SingletonClient
-from svuchatbot_config.database import db_connection_params
-import email
-from email.parser import BytesParser, Parser
-import email
-from email.parser import BytesParser, Parser
+from email.parser import BytesParser
 from email.policy import default
-from os import listdir, getcwd, walk
-from os.path import isfile, join, dirname, abspath, basename
-from svuchatbot_mogodb.client import SingletonClient
+from os import listdir
+from os.path import join
+from src.svuchatbot_mogodb import SingletonClient
 import os
-from svuchatbot_config.database import db_connection_params
+from src.svuchatbot_config import db_connection_params
 from bs4 import BeautifulSoup
 from langdetect import detect
-from aspose import email, util
+
 
 def read_intents(lang='arabic', collection_name='arabic_intents'):
     db_client = SingletonClient()

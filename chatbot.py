@@ -1,10 +1,11 @@
 from svuchatbot_training.train import train_intents
-from svuchatbot_helper.data_repository import bag_of_words
-from svuchatbot_preprocess.fetching import read_intents
+from src.svuchatbot_helper.data_repository import bag_of_words
+from src.svuchatbot_preprocess import read_intents
 import numpy
 from time import sleep
 import random
-from svuchatbot_preprocess import stemming
+
+
 def chat():
     #todo remove words && data
     data = read_intents()

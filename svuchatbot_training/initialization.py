@@ -1,7 +1,7 @@
 import numpy
 
-from svuchatbot_preprocess.fetching import read_intents
-from svuchatbot_preprocess.stemming import stem_conllection
+from src.svuchatbot_preprocess import read_intents
+from src.svuchatbot_preprocess import stem_conllection
 
 
 def init_intents():

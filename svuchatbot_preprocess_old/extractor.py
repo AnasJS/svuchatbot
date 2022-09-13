@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from multiprocessing import Process
 import time
-from svuchatbot_mogodb.client import SingletonClient
-from svuchatbot_mogodb.client import get_collection
+from src.svuchatbot_mogodb import SingletonClient
+from src.svuchatbot_mogodb.client import get_collection
 
 
 class Extractor(ABC):

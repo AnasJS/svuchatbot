@@ -1,24 +1,12 @@
-from pprint import pprint
-
-import wordcloud
-
-import nltk
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import arabic_reshaper
-from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer, TfidfTransformer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 
 from sklearn.metrics.pairwise import cosine_similarity
 
-from svuchatbot_config import db_connection_params
-from svuchatbot_mogodb.client import SingletonClient
-from svuchatbot_preprocess.bag_of_word import accumulate_phrases
-from sklearn.cluster import KMeans
-from sklearn.decomposition import NMF, LatentDirichletAllocation
-from sklearn.decomposition import PCA
-from sklearn.manifold import MDS
-from svuchatbot_preprocess.bag_of_word import nltk_based_accumulate_clean_phrases
+from src.svuchatbot_config import db_connection_params
+from src.svuchatbot_mogodb import SingletonClient
+
 
 def build_vectorizer(sentences, vocab=None, min_df=0.0, max_df=1.0,
                      ngram_range=(1, 1)):  # for a 2-gram use: ngram_range=(1,2)
