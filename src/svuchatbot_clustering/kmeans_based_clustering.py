@@ -142,6 +142,14 @@ class MyKmeans:
                 )
             intent_dict[cluster.__str__()] = intent
             utter_dict[cluster.__str__()] = utter
+        for k, v in intent_dict.items():
+            print(k)
+            for vv in v:
+                print(f"\t{vv}")
+        for k, v in utter_dict.items():
+            print(k)
+            for vv in v:
+                print(f"\t{vv}")
 
         yaml.dump(intent_dict, open(self.intent_file_name, "wt"), allow_unicode=True)
         yaml.dump(utter_dict, open(self.utter_file_name, "wt"), allow_unicode=True)

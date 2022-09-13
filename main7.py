@@ -5,8 +5,9 @@ from src.svuchatbot_features_managment.key_words_extractor import KeyWordExtract
 
 
 def main():
-    pp = PreProcess(steps=[
-        Steps.READPSTFILE,
+    pp = PreProcess()
+    pp.transform([
+        # Steps.READPSTFILE,
         Steps.PARSEEMAILS,
         Steps.REMOVENONARABICANSWERS,
         Steps.REMOVENONARABICQUESTIONS,
@@ -22,12 +23,11 @@ def main():
         Steps.PARSECCFIELD,
         Steps.PARSEBCCFIELD,
         Steps.PARSEDATEFIELD,
-
     ])
     #
     #
     # pp.run()
-
+    #
 
     for i in range(1, 6):
         kwe = KeyWordExtractors(
@@ -52,7 +52,7 @@ def main():
                 Definitions.BAGOFWORDSEXTRACION,
                 Definitions.FEATURESSETUP,
                 Definitions.TFIDFEXTRACTION,
-                Definitions.SPECIALWORDSEXTRACTION
+                # Definitions.SPECIALWORDSEXTRACTION
 
             ])
         elif 1 < i <= 5:
@@ -63,7 +63,8 @@ def main():
             ])
         kwe.work()
 
-    FE = FeaturesExtraction(steps=[
+    FE = FeaturesExtraction()
+    FE.transform([
         # Steps.EXTRACTSIMPLETOKENSFROMANSWER,
         # Steps.EXTRACTSIMPLETOKENSFROMQUESTION,
         # Steps.EXTRACTSENTIMENTFROMQUESTIONS,
@@ -73,7 +74,15 @@ def main():
         Steps.EXTRACTSPECIALWORDSFROMANSWER,
         Steps.REPLACESPECIALWORDSFROMANSWER,
     ])
-    FE.run()
+    # FE.run()
+
+    ec = EmailsClustering()
+    ec.transform(
+        [
+            Steps.KMEANSBASEDCLUSTERING,
+        ]
+    )
+    ec.run()
 
 
 if __name__ == '__main__':

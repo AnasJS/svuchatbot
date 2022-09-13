@@ -14,9 +14,11 @@ from src.svuchatbot_mogodb.client import get_collection
 from datetime import datetime
 from os.path import join
 import pandas as pd
+from src.svuchatbot_clustering.kmeans_based_clustering import MyKmeans
+from abc import ABC, abstractmethod
 from src.svuchatbot_const.db.definitions import Definitions as DB_Definitions
 from src.svuchatbot_features_managment.key_words_extractor import KeyWordExtractors, Definitions
-
+from src.svuchatbot_helper.utils import get_project_root
 
 class Steps:
     READPSTFILE = "read_pst_file"
@@ -47,19 +49,39 @@ class Steps:
     EXTRACTSPECIALWORDSFROMQUESTION = "extract_special_words_from_question"
     REPLACESPECIALWORDSFROMANSWER = "replace_special_words_from_answer"
     EXTRACTSPECIALWORDSFROMANSWER = "extract_special_words_from_answer"
+    KMEANSBASEDCLUSTERING = "split_emails_based_on_kmeans_clustering"
 
     #
 
 
-class PreProcess:
-    def __init__(self, steps):
+class Workflow(ABC):
+    def __init__(self):
+        self.steps_dict = {}
+        self.steps = []
+        self.set_available_methods()
 
+    def transform(self, steps):
+        for step in steps:
+            if step in self.steps_dict.keys():
+                self.steps.append(self.steps_dict[step])
+
+    def run(self):
+        for step in self.steps:
+            print(f'********** {step.__name__} starts now at {datetime.now()} **********')
+            step()
+
+    @abstractmethod
+    def set_available_methods(self):
+        self.steps_dict = {}
+
+
+class PreProcess(Workflow):
+    def set_available_methods(self):
         self.steps_dict = {
             Steps.READPSTFILE: self.read_pst_file,
             Steps.PARSEEMAILS: self.parse_emails,
             Steps.PARSEFROMFIELD: self.parse_from,
             Steps.PARSETOFIELD: self.parse_to,
-            # Steps.PARSESENTFIELD: self.parse_sent,
             Steps.PARSESUBJECTFIELD: self.parse_subject,
             Steps.PARSEDATEFIELD: self.parse_date,
             Steps.PARSECCFIELD: self.parse_cc,
@@ -73,21 +95,11 @@ class PreProcess:
             Steps.REMOVEGREETINGSENTINCESESFROMQUESTIONS: "",
             Steps.CORRECTSENTENCES: self.correct_sentences,
             Steps.DROPSENTENCES: self.drop_sentences,
-
         }
-        self.steps = []
-        for step in steps:
-            if step in self.steps_dict.keys():
-                self.steps.append(self.steps_dict[step])
-
-    def run(self):
-        for step in self.steps:
-            print(f'{step.__name__} start at {datetime.now()}')
-            step()
 
     @staticmethod
     def read_pst_file():
-        p = join(curdir, 'data', 'info@svuonline.org.pst')
+        p = join(get_project_root(), 'data', 'info@svuonline.org.pst')
         pst_sink = PST(p, DB_Definitions.PSTDBNAME, 1)
         pst_sink.sink()
 
@@ -220,7 +232,7 @@ class PreProcess:
                            DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
                    target=(DB_Definitions.PARSSEDEMAILSDBNAME,
                            DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME))
-        fpath = join(__package__, pardir, "assets", "sentence_to_remove.txt")
+        fpath = join(get_project_root(), "assets", "sentence_to_remove.txt")
         file = open(fpath, "rt")
         sents = file.readlines()
         reps = ["" for i in sents]
@@ -233,7 +245,7 @@ class PreProcess:
                            DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
                    target=(DB_Definitions.PARSSEDEMAILSDBNAME,
                            DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME))
-        fpath = join(__package__, pardir,  "assets", "Correct_Words.csv")
+        fpath = join(get_project_root(),  "assets", "Correct_Words.csv")
         df = pd.read_csv(fpath, header=None)
         sents = df[0]
         reps = df[1]
@@ -241,8 +253,8 @@ class PreProcess:
             correct_sentences(DB_Definitions.ANSWERFIELDNAME, sents, reps)
 
 
-class FeaturesExtraction:
-    def __init__(self, steps):
+class FeaturesExtraction(Workflow):
+    def set_available_methods(self):
         self.steps_dict = {
             Steps.EXTRACTSIMPLETOKENSFROMANSWER: self.extract_answer_simple_tokens,
             Steps.EXTRACTSIMPLETOKENSFROMQUESTION: self.extract_question_simple_tokens,
@@ -254,15 +266,6 @@ class FeaturesExtraction:
             Steps.EXTRACTSPECIALWORDSFROMANSWER: self.extract_special_words_from_answer,
 
         }
-        self.steps = []
-        for step in steps:
-            if step in self.steps_dict.keys():
-                self.steps.append(self.steps_dict[step])
-
-    def run(self):
-        for step in self.steps:
-            print(f'{step.__name__} start at {datetime.now()}')
-            step()
 
     @staticmethod
     def extract_question_simple_tokens():
@@ -302,7 +305,6 @@ class FeaturesExtraction:
 
     @staticmethod
     def extract_sentiment_from_questions():
-
         se = SentimentExtractor((DB_Definitions.PARSSEDEMAILSDBNAME,
                                  DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
                                 DB_Definitions.QUESTIONSIMPLETOKENSFIELDNAME, cpu_count())
@@ -362,7 +364,6 @@ class FeaturesExtraction:
 
     @staticmethod
     def extract_morphological_patterns():
-
         pe = PatternExtractor(source=(DB_Definitions.PARSSEDEMAILSDBNAME,
                                       DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
                               target=(DB_Definitions.PATTERNSDBNAME,
@@ -389,3 +390,31 @@ class FeaturesExtraction:
         # print(len(freq))
         assert len(emails_ids) == len(ids), "There is an error in get_pattern_freq"
         add_tag()
+
+
+class EmailsClustering(Workflow):
+    def set_available_methods(self):
+        self.steps_dict = {
+            Steps.KMEANSBASEDCLUSTERING: self.split_emails_based_on_kmeans_clustering,
+        }
+
+    @staticmethod
+    def split_emails_based_on_kmeans_clustering():
+        k = MyKmeans(
+            source=(
+                (DB_Definitions.PARSSEDEMAILSDBNAME,
+                 DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
+                (DB_Definitions.BAGOFWORDSDBNAME,
+                 DB_Definitions.BAGOFWORDSCOLLECTIONNAME1GRAM)),
+            field_name=DB_Definitions.ANSWERFIELDNAME,
+            n_clusters=30,
+            utter_file_name=f"utter__{datetime.now().strftime('%m_%d_%Y__%H_%M_%S')}.yml",
+            intent_file_name=f"intent__{datetime.now().strftime('%m_%d_%Y__%H_%M_%S')}.yml",
+            n_gram=5
+        )
+        k.fetch()
+        # k.standardization()
+        k.calculate_pca()
+        k.kmeans_with_pca_fit()
+        # k.fit()
+        k.to_yaml()

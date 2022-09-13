@@ -51,8 +51,9 @@ class KeyWordExtractors:
             self.prefix = prefix+"-"
         else:
             self.prefix = ""
-        if reset_db:
-            self._reset_db()
+        self.reset_db = reset_db
+        # if reset_db:
+        #     self._reset_db()
         self.pipe_dict = {
             Definitions.SIMPLETOKENIZATION: self._simple_tokenize,
             Definitions.MORPHOLOGICALTOKENIZATION: self._morphological_tokenize,
@@ -168,6 +169,8 @@ class KeyWordExtractors:
                 self.pipe.append(self.pipe_dict[step])
 
     def work(self):
+        if self.reset_db:
+            self._reset_db()
         if self.pipe is None or self.pipe == []:
             print("Start extracting tokens")
             self._simple_tokenize()
