@@ -1,4 +1,3 @@
-from svuchatbot_features_managment.features_extractor import FeaturesExtractor
 # from svuchatbot_features_managment.simple_tokens_extractor import SimpleTokensExtractor
 # from os import cpu_count
 # ste = SimpleTokensExtractor(source=("chatbot", "Mails-1"),
@@ -28,10 +27,10 @@ from svuchatbot_features_managment.features_extractor import FeaturesExtractor
 # ******************************************************************************************
 from os import cpu_count
 
-from svuchatbot_clustering.simple import add_tag
-from svuchatbot_features_managment.pattern_extractor import PatternExtractor
-from svuchatbot_generator.intentions_generator import IntentionsGenerator
-from svuchatbot_helper.patterns_frequency import get_pattern_freq
+from src.svuchatbot_clustering.simple import add_tag
+from src.svuchatbot_features_managment import PatternExtractor
+from src.svuchatbot_generator.intentions_generator import IntentionsGenerator
+from src.svuchatbot_helper import get_pattern_freq
 
 pe = PatternExtractor(source=("chatbot", "Mails-3"),
                       target=("Patterns", "1-Gram"),
@@ -40,7 +39,7 @@ pe = PatternExtractor(source=("chatbot", "Mails-3"),
                       n_cores=cpu_count(),
                       field_name="simple-tokens")
 pe.work()
-from svuchatbot_mogodb.client import get_collection
+from src.svuchatbot_mogodb import get_collection
 col = get_collection("Patterns", "1-Gram")
 emails_ids = set([item["email_id"] for item in col.find({},{"email_id":1,"_id":0})])
 col = get_collection("chatbot","Mails-3")

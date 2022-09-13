@@ -1,27 +1,11 @@
-from pprint import pprint
-
-from svuchatbot_config import db_connection_params
-from svuchatbot_mogodb.client import SingletonClient
+from src.svuchatbot_config import db_connection_params
+from src.svuchatbot_mogodb import SingletonClient
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.probability import FreqDist
 from collections import Counter
 from langdetect import detect
-from svuchatbot_preprocess.tokenizer import nltk_based_tokenize_for_sentence, camle_based_tokenize_for_sentence
-from svuchatbot_preprocess.stopwords import nltk_based_filter_stopwords_for_sentence, \
-arabic_stopwords_based_filter_stopwords_for_sentence
-from camel_tools.utils.normalize import normalize_alef_ar
-from camel_tools.utils.normalize import normalize_alef_bw
-from camel_tools.utils.normalize import normalize_alef_hsb
-
-from camel_tools.utils.normalize import normalize_alef_ar
-from camel_tools.utils.normalize import normalize_alef_ar
-from camel_tools.utils.normalize import normalize_alef_ar
-
-from camel_tools.utils.dediac import dediac_ar
-from camel_tools.utils.normalize import normalize_alef_maksura_ar
-from camel_tools.utils.normalize import normalize_alef_ar
-from camel_tools.utils.normalize import normalize_teh_marbuta_ar
-from camel_tools.utils.normalize import normalize_unicode
+from src.svuchatbot_preprocess.tokens_extractor import TokensExtractor
+# from src.svuchatbot_preprocess import nltk_based_filter_stopwords_for_sentence
 from camel_tools.tokenizers.word import simple_word_tokenize
 
 
@@ -91,8 +75,8 @@ def nltk_based_accumulate_clean_phrases(col="analysed"):
     sents = accumulate_phrases(col=col)
     tokenised_sentences = sents.copy()
     for item in tokenised_sentences:
-        item["tokens"]= nltk_based_tokenize_for_sentence(item["payload"])
-        item["cleaned_tokens"]=nltk_based_filter_stopwords_for_sentence(item["tokens"])
+        item["tokens"]= TokensExtractor.nltk_based_tokenize_for_sentence(item["payload"])
+        item["cleaned_tokens"]=TokensExtractor.nltk_based_filter_stopwords_for_sentence(item["tokens"])
         # {message_id:nltk_based_tokenize_for_sentence(payload) for message_id,payload in sents.items()}
         # cleand_tokenized_sentences = {message_id: nltk_based_filter_stopwords_for_sentence(tokens) for message_id,tokens in tokenised_sentences.items()}
     return tokenised_sentences

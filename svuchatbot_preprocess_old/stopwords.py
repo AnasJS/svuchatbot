@@ -1,17 +1,12 @@
-import camel_tools
-
 # import the dediacritization tool
 # from camel_tools.utils.dediac import dediac_ar
 # print(dediac_ar("الحَمدُ للًَهِ" ))
 
-from nltk.corpus import stopwords
-from pprint import pprint
 # from svuchatbot_preprocess.bag_of_word import camel_based_bag,nltk_based_bag
 from nltk.corpus import stopwords
 import arabicstopwords.arabicstopwords as stp
 
-from svuchatbot_config import db_connection_params
-from svuchatbot_mogodb.client import SingletonClient
+from src.svuchatbot_mogodb import SingletonClient
 
 
 def nltk_based_filter_stopwords_for_sentence(sent):

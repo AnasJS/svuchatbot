@@ -1,15 +1,8 @@
-from pprint import pprint
-import pandas as pd
-
-from camel_tools.tokenizers.word import simple_word_tokenize
 from camel_tools.ner import NERecognizer
 
-from svuchatbot_config import db_connection_params
-from svuchatbot_mogodb.client import SingletonClient
-from svuchatbot_preprocess.bag_of_word import nltk_based_accumulate_clean_phrases
-from svuchatbot_preprocess.morphology_analysis import camel_based_morphology_analysing
-from camel_tools.morphology.database import MorphologyDB
-from camel_tools.morphology.analyzer import Analyzer
+from src.svuchatbot_mogodb import SingletonClient
+from src.svuchatbot_preprocess.tokens_extractor import TokensExtractor
+# from src.svuchatbot_preprocess import nltk_based_accumulate_clean_phrases
 
 
 def extract_entities_for_sentence(sent, ner):
@@ -35,7 +28,7 @@ def extract_entities(from_col="mails",to_col="entities", from_db="chatbot", to_d
 
 
 def extract_entities_from_emails(from_col="mails", to_col="mails_with_extracted_entities"):
-    items = nltk_based_accumulate_clean_phrases(from_col)
+    items = TokensExtractor.nltk_based_accumulate_clean_phrases(from_col)
     #todo enhancment entities extraction based on morphological analyser
     # sentences = [camel_based_morphology_analysing(sent)[0]["stem"] for sent in sentences]
     entities = []

@@ -1,6 +1,6 @@
 import os
 
-from svuchatbot_features_managment.key_words_extractor import KeyWordExtractors, Definitions
+from src.svuchatbot_features_managment import KeyWordExtractors, Definitions
 
 kwe = KeyWordExtractors(
         source=("chatbot", "Mails-4"),

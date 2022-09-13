@@ -1,7 +1,7 @@
 from headerparser import scan_string
-from svuchatbot_mogodb.client import SingletonClient
-from svuchatbot_config import db_connection_params
-from collections import Counter
+from src.svuchatbot_mogodb import SingletonClient
+
+
 def parse(from_col="Inbox"):
     client = SingletonClient()
     db = client["PST"]

@@ -1,7 +1,7 @@
 from os import cpu_count
-from svuchatbot_const.db.definitions import Definitions as DB_Definitions
-from root import PreProcess, Steps, FeaturesExtraction
-from svuchatbot_features_managment.key_words_extractor import KeyWordExtractors, Definitions
+from src.svuchatbot_const.db.definitions import Definitions as DB_Definitions
+from src.root import PreProcess, Steps, FeaturesExtraction
+from src.svuchatbot_features_managment.key_words_extractor import KeyWordExtractors, Definitions
 
 
 def main():
@@ -61,7 +61,7 @@ def main():
                 Definitions.FEATURESSETUP,
                 Definitions.TFIDFEXTRACTION,
             ])
-        # kwe.work()
+        kwe.work()
 
     FE = FeaturesExtraction(steps=[
         # Steps.EXTRACTSIMPLETOKENSFROMANSWER,

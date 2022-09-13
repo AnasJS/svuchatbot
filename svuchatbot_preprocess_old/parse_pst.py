@@ -1,6 +1,4 @@
-import sys
-
-from svuchatbot_mogodb.client import SingletonClient
+from src.svuchatbot_mogodb import SingletonClient
 from nltk import RegexpParser, line_tokenize, RegexpTagger
 from nltk.tree.tree import Tree
 
