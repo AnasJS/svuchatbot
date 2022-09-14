@@ -1,5 +1,5 @@
-from svuchatbot_preprocess.extractor import Extractor
-from svuchatbot_mogodb.client import get_collection
+from src.svuchatbot_preprocess.extractor import Extractor
+from src.svuchatbot_mogodb.client import get_collection
 from nltk.corpus import stopwords
 import arabicstopwords.arabicstopwords as stp
 

@@ -1,8 +1,6 @@
-import os
-
 # from svuchatbot_clustering.kmeans_based_clustering import MyKmeans
-from svuchatbot_clustering.kmeans_based_clustering import MyKmeans
-from svuchatbot_features_managment.key_words_extractor import KeyWordExtractors, Definitions
+from src.svuchatbot_clustering.kmeans_based_clustering import MyKmeans
+
 #
 # for i in range(1, 6):
 #     kwe = KeyWordExtractors(

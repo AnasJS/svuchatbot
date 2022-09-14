@@ -1,8 +1,8 @@
 from langdetect import detect
-from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.tokenize import word_tokenize
 from camel_tools.tokenizers.word import simple_word_tokenize
-from svuchatbot_mogodb.client import get_collection
-from svuchatbot_preprocess.extractor import Extractor
+from src.svuchatbot_mogodb import get_collection
+from src.svuchatbot_preprocess import Extractor
 
 
 class TokensExtractor(Extractor):

@@ -1,4 +1,4 @@
-from svuchatbot_parsing.parse_pst import PSTParser
+from src.svuchatbot_parsing.parse_pst import PSTParser
 
 print("*********************************** start fetching mails *********************************")
 # insert_emails_into_db("mails")

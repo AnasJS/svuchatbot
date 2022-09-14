@@ -1,12 +1,13 @@
 from os import cpu_count
-from svuchatbot_const.db.definitions import Definitions as DB_Definitions
-from root import PreProcess, Steps, FeaturesExtraction
-from svuchatbot_features_managment.key_words_extractor import KeyWordExtractors, Definitions
+from src.svuchatbot_const.db.definitions import Definitions as DB_Definitions
+from src.root import PreProcess, Steps, FeaturesExtraction
+from src.svuchatbot_features_managment.key_words_extractor import KeyWordExtractors, Definitions
 
 
 def main():
-    pp = PreProcess(steps=[
-        Steps.READPSTFILE,
+    pp = PreProcess()
+    pp.transform([
+        # Steps.READPSTFILE,
         Steps.PARSEEMAILS,
         Steps.REMOVENONARABICANSWERS,
         Steps.REMOVENONARABICQUESTIONS,
@@ -22,12 +23,11 @@ def main():
         Steps.PARSECCFIELD,
         Steps.PARSEBCCFIELD,
         Steps.PARSEDATEFIELD,
-
     ])
     #
     #
     # pp.run()
-
+    #
 
     for i in range(1, 6):
         kwe = KeyWordExtractors(
@@ -52,7 +52,7 @@ def main():
                 Definitions.BAGOFWORDSEXTRACION,
                 Definitions.FEATURESSETUP,
                 Definitions.TFIDFEXTRACTION,
-                Definitions.SPECIALWORDSEXTRACTION
+                # Definitions.SPECIALWORDSEXTRACTION
 
             ])
         elif 1 < i <= 5:
@@ -63,13 +63,26 @@ def main():
             ])
         kwe.work()
 
-    # FE = FeaturesExtraction(steps=[
-    #     Steps.EXTRACTSIMPLETOKENSFROMANSWER,
-    #     Steps.EXTRACTSIMPLETOKENSFROMQUESTION,
-    #     Steps.EXTRACTSENTIMENTFROMQUESTIONS,
-    #     Steps.EXTRACTENTITIESFROMANSWERS
-    # ])
+    FE = FeaturesExtraction()
+    FE.transform([
+        # Steps.EXTRACTSIMPLETOKENSFROMANSWER,
+        # Steps.EXTRACTSIMPLETOKENSFROMQUESTION,
+        # Steps.EXTRACTSENTIMENTFROMQUESTIONS,
+        # Steps.EXTRACTENTITIESFROMANSWERS
+        Steps.EXTRACTSPECIALWORDSFROMQUESTION,
+        Steps.REPLACESPECIALWORDSFROMQUESTION,
+        Steps.EXTRACTSPECIALWORDSFROMANSWER,
+        Steps.REPLACESPECIALWORDSFROMANSWER,
+    ])
     # FE.run()
+
+    ec = EmailsClustering()
+    ec.transform(
+        [
+            Steps.KMEANSBASEDCLUSTERING,
+        ]
+    )
+    ec.run()
 
 
 if __name__ == '__main__':

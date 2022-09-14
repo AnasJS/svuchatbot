@@ -1,12 +1,7 @@
 from langdetect import detect
-from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.tokenize import word_tokenize
 from camel_tools.tokenizers.word import simple_word_tokenize
-from multiprocessing import Pool, Manager, Process, Queue
-import time
-import os
-from svuchatbot_config import db_connection_params
-from svuchatbot_mogodb.client import SingletonClient, get_collection
-from svuchatbot_preprocess.extractor import Extractor
+from src.svuchatbot_mogodb import SingletonClient
 
 
 def nltk_based_tokenize_for_sentence(sent):

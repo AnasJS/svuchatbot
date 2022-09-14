@@ -1,12 +1,9 @@
-from svuchatbot_config import db_connection_params
-from svuchatbot_mogodb.client import SingletonClient
-from svuchatbot_preprocess.Methodology import extract_key_words
-from svuchatbot_preprocess.exrtract_entities import extract_entities_from_emails,extract_entities
-from svuchatbot_preprocess.fetching import insert_emails_into_db,filtering,find_pairs
-from svuchatbot_preprocess.sentiment_analyser import camel_based_sentiment_analyser
-from svuchatbot_preprocess.stopwords import remove_stop_words
-from svuchatbot_preprocess.tokenizer import tokenize
-from svuchatbot_preprocess.parse_pst import parse
+from src.svuchatbot_config import db_connection_params
+from src.svuchatbot_mogodb import SingletonClient
+from src.svuchatbot_preprocess_old.extract_entities import extract_entities
+from src.svuchatbot_preprocess.tokens_extractor import  TokensExtractor #camel_based_sentiment_analyser
+from src.svuchatbot_preprocess import remove_stop_words
+from src.svuchatbot_preprocess import tokenize
 
 print("*********************************** start fetching mails *********************************")
 # insert_emails_into_db("mails")
@@ -25,7 +22,7 @@ remove_stop_words(from_col="tokenized_mails", to_col="cleaned_tokenized_mails", 
 print("*********************************** start extracting entities *********************************")
 extract_entities(from_col="cleaned_tokenized_mails", to_col="mails_and_entities", from_db="chatbot", to_db="chatbot")
 print("*********************************** start extracting sentiments *********************************")
-camel_based_sentiment_analyser(from_col="mails_and_entities", to_col="mails_and_sentiments", from_db="chatbot", to_db="chatbot",field_name="body")
+TokensExtractor.camel_based_sentiment_analyser(from_col="mails_and_entities", to_col="mails_and_sentiments", from_db="chatbot", to_db="chatbot",field_name="body")
 # print("*********************************** start calculate tfidf *********************************")
 # extract_key_words(from_col = "mails_and_sentiments", to_col="tfidf", from_db="chatbot", to_db="chatbot")
 

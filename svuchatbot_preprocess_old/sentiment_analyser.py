@@ -1,8 +1,6 @@
 from camel_tools.sentiment import SentimentAnalyzer
 
-from svuchatbot_config import db_connection_params
-from svuchatbot_mogodb.client import SingletonClient
-from svuchatbot_preprocess.bag_of_word import nltk_based_accumulate_clean_phrases
+from src.svuchatbot_mogodb import SingletonClient
 
 
 def camel_based_sentiment_analyser_for_sentence(sent,sa):
