@@ -1,6 +1,6 @@
 from os import cpu_count
 from src.svuchatbot_const.db.definitions import Definitions as DB_Definitions
-from src.root import PreProcess, Steps, FeaturesExtraction
+from src.root import PreProcess, Steps, FeaturesExtraction, EmailsClustering
 from src.svuchatbot_features_managment.key_words_extractor import KeyWordExtractors, Definitions
 
 
@@ -13,6 +13,7 @@ def main():
         Steps.REMOVENONARABICQUESTIONS,
         Steps.REMOVEEMPTYQUESTION,
         Steps.REMOVEDUPLICATEDQUESTIONS, #173 emails
+        Steps.REMOVEEMAILSCONTAINSQUESTIONINREPLAY,
         Steps.CORRECTSENTENCES,
         Steps.DROPSENTENCES,
         Steps.REMOVEFORWARDEDEMAILS,
@@ -26,10 +27,10 @@ def main():
     ])
     #
     #
-    # pp.run()
+    pp.run()
     #
 
-    for i in range(1, 6):
+    for i in range(1, 3):
         kwe = KeyWordExtractors(
             source=(DB_Definitions.PARSSEDEMAILSDBNAME,
                     DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
@@ -74,7 +75,7 @@ def main():
         Steps.EXTRACTSPECIALWORDSFROMANSWER,
         Steps.REPLACESPECIALWORDSFROMANSWER,
     ])
-    # FE.run()
+    FE.run()
 
     ec = EmailsClustering()
     ec.transform(

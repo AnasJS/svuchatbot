@@ -8,10 +8,14 @@ from src.svuchatbot_mogodb.client import get_collection
 import pandas as pd
 from src.svuchatbot_helper.cleaner import StringCleaner
 from sklearn.preprocessing import StandardScaler
+from src.svuchatbot_const.db.definitions import Definitions as DB_DEFINITIONS
+from src.svuchatbot_helper.read_specializations import get_specializations
+import numpy as np
 
 
 class MyKmeans:
-    def __init__(self, source, field_name, n_clusters, intent_file_name, utter_file_name, n_gram=1):
+    def __init__(self, source, field_name, n_clusters, intent_file_name, utter_file_name, n_gram=1,
+                 specializations_from_questions=True, specializations_from_answers=True):
         # self.model = AffinityPropagation(damping=0.9)
         self.columns = []
         self.intent_file_name = intent_file_name
@@ -29,11 +33,63 @@ class MyKmeans:
         if os.path.exists(self.intent_file_name):
             os.remove(self.intent_file_name)
         self.n_gram = n_gram
+        self.specializations_from_questions = specializations_from_questions
+        self.specializations_from_answers = specializations_from_answers
+
+    def fetch_specializations(self):
+        col = get_collection(self.mails_db_name, self.mails_col_name)
+
+        cursor = col.find({},
+                          {
+                              DB_DEFINITIONS.SPECIALWORDSFIELDNAMEFROMANSWER: 1,
+                              DB_DEFINITIONS.SPECIALWORDSFIELDNAMEFROMANSWER: 1,
+                          })
+        specializations = get_specializations()
+        spec_nikname = specializations["name0"].values.tolist()
+        res = []
+        for item in cursor:
+            sw = np.zeros(len(spec_nikname)).reshape((1, -1))
+            sw_df = pd.DataFrame(np.append(item["_id"], sw).reshape(1,-1), columns=["_id"] + spec_nikname)
+            if self.specializations_from_answers:
+                for spw in item[DB_DEFINITIONS.SPECIALWORDSFIELDNAMEFROMANSWER]:
+                    sw_df[spw[0]] += 1
+            if self.specializations_from_questions:
+                for spw in item[DB_DEFINITIONS.SPECIALWORDSFIELDNAMEFROMQUESTION]:
+                    sw_df[spw[0]] += 1
+            res.append(sw_df.values.ravel())
+        # container = np.array(res).reshape(col.count_documents({}), len(spec_nikname)+1)
+        df = pd.DataFrame(res, columns=["_id"] + spec_nikname).set_index("_id")
+        return df
 
     def fetch(self):
-        if self.n_gram==1:
+        dfs = []
+        if self.specializations_from_answers or self.specializations_from_questions:
+            spw_df = self.fetch_specializations()
+            print(spw_df)
+            dfs.append(spw_df)
+        for i in range(1, self.n_gram + 1):
+            bow_col = get_collection(self.BOW_db_name, "{}-Gram".format(i))
+            dfs.append(pd.DataFrame(bow_col.find({})).set_index("_id"))
+        self.df_X = pd.concat(dfs, axis=1, join='inner').reset_index()
+        columns = self.df_X.columns.tolist()
+        columns.remove("_id")
+        self.X = self.df_X[columns].values
+        self.columns = columns
+        print(self.df_X.head(5))
+        print(self.columns)
+
+    def fetch_old(self):
+        if self.n_gram == 1:
             bow_col = get_collection(self.BOW_db_name, self.BOW_col_name)
             self.df_X = pd.DataFrame(bow_col.find({}))
+            if self.specializations_from_answers or self.specializations_from_questions:
+                spw_df = get_specializations()
+                self.df_X = pd.concat(
+                    [
+                        self.df_X.set_index("_id"),
+                        spw_df.set_index("_id")
+                    ],
+                    axis=1, join='inner').reset_index()
             columns = self.df_X.columns.tolist()
             columns.remove("_id")
             self.X = self.df_X[columns].values
@@ -41,8 +97,10 @@ class MyKmeans:
         elif self.n_gram > 1:
             dfs = []
             # df3 = pd.concat([df1.set_index("_id"), df2.set_index("_id")], axis=1, join='inner').reset_index()
-
-            for i in range(1, self.n_gram+1):
+            if self.specializations_from_answers or self.specializations_from_questions:
+                spw_df = get_specializations()
+                dfs.append(spw_df)
+            for i in range(1, self.n_gram + 1):
                 bow_col = get_collection(self.BOW_db_name, "{}-Gram".format(i))
                 dfs.append(pd.DataFrame(bow_col.find({})).set_index("_id"))
             self.df_X = pd.concat(dfs, axis=1, join='inner').reset_index()
@@ -68,18 +126,18 @@ class MyKmeans:
         plt.ylabel("Cumulative Explained Variance")
         plt.show()
         self.feature_number = int(input("Enter the number of feature"))
-        self.pca = PCA(n_components= self.feature_number)
+        self.pca = PCA(n_components=self.feature_number)
         self.pca.fit(self.segmentation_std)
         self.pca_scores = self.pca.transform(self.segmentation_std)
 
     def kmeans_with_pca_fit(self):
         wcss = []
-        for i in range(10,200, 5):
-            kmeans_pca = KMeans(n_clusters= i, init="k-means++", random_state=420)
+        for i in range(10, 200, 5):
+            kmeans_pca = KMeans(n_clusters=i, init="k-means++", random_state=420)
             kmeans_pca.fit(self.pca_scores)
             wcss.append(kmeans_pca.inertia_)
-        plt.figure(figsize=(10,8))
-        plt.plot(range(10,200,5), wcss)
+        plt.figure(figsize=(10, 8))
+        plt.plot(range(10, 200, 5), wcss)
         plt.title("k-means with PCA clustering")
         plt.xlabel("Number of clusters")
         plt.ylabel("wcss")
@@ -91,12 +149,12 @@ class MyKmeans:
 
     def kmeans_fit(self):
         wcss = []
-        for i in range(10,200, 5):
-            kmeans = KMeans(n_clusters= i, init="k-means++", random_state=420)
+        for i in range(10, 200, 5):
+            kmeans = KMeans(n_clusters=i, init="k-means++", random_state=420)
             kmeans.fit(self.df_X[self.columns])
             wcss.append(kmeans.inertia_)
-        plt.figure(figsize=(10,8))
-        plt.plot(range(10,200,5), wcss)
+        plt.figure(figsize=(10, 8))
+        plt.plot(range(10, 200, 5), wcss)
         plt.title("k-means with PCA clustering")
         plt.xlabel("Number of clusters")
         plt.ylabel("wcss")

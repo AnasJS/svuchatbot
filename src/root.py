@@ -1,5 +1,6 @@
 from src.svuchatbot_clustering.simple import add_tag
 from src.svuchatbot_features_managment.pattern_extractor import PatternExtractor
+from src.svuchatbot_helper.cleaner import StringCleaner
 from src.svuchatbot_helper.patterns_frequency import get_pattern_freq
 from src.svuchatbot_preprocess.filter import Filter
 from src.svuchatbot_preprocess.sentiment_extractor import SentimentExtractor
@@ -50,6 +51,7 @@ class Steps:
     REPLACESPECIALWORDSFROMANSWER = "replace_special_words_from_answer"
     EXTRACTSPECIALWORDSFROMANSWER = "extract_special_words_from_answer"
     KMEANSBASEDCLUSTERING = "split_emails_based_on_kmeans_clustering"
+    REMOVEEMAILSCONTAINSQUESTIONINREPLAY= "remove_emails_contain_question_in_replay"
 
     #
 
@@ -67,7 +69,14 @@ class Workflow(ABC):
 
     def run(self):
         for step in self.steps:
-            print(f'********** {step.__name__} starts now at {datetime.now()} **********')
+            print("\t\t\t/\t\t\t\t****\t\t\t\t\\\n")
+            print("\t\t/\t\t\t\t****************\t\t\t\\\n")
+            print("\t/\t\t\t******************************\t\t\t\\\n")
+            print(f'/\t\t Step:  {step.__name__}\t\t\t\t\t\t\\')
+            print(f'\\\t\t starts now at {datetime.now()}\t\t/')
+            print("\t\t\n\\\t\t\t******************************\t\t\t/\n")
+            print("\t\t\\\t\t\t\t****************\t\t\t/\n")
+            print("\t\t\t\\\t\t\t\t****\t\t\t\t/\n")
             step()
 
     @abstractmethod
@@ -95,6 +104,8 @@ class PreProcess(Workflow):
             Steps.REMOVEGREETINGSENTINCESESFROMQUESTIONS: "",
             Steps.CORRECTSENTENCES: self.correct_sentences,
             Steps.DROPSENTENCES: self.drop_sentences,
+            Steps.REMOVEEMAILSCONTAINSQUESTIONINREPLAY: self.remove_emails_contain_question_in_replay,
+
         }
 
     @staticmethod
@@ -228,14 +239,34 @@ class PreProcess(Workflow):
 
     @staticmethod
     def drop_sentences():
-        f = Filter(source=(DB_Definitions.PARSSEDEMAILSDBNAME,
-                           DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
-                   target=(DB_Definitions.PARSSEDEMAILSDBNAME,
-                           DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME))
         fpath = join(get_project_root(), "assets", "sentence_to_remove.txt")
         file = open(fpath, "rt")
         sents = file.readlines()
         reps = ["" for i in sents]
+        # def do(field, item, col):
+        #         sc = StringCleaner("")
+        #         try:
+        #             sc.text = item[field]
+        #             for sent, rep in zip(sents, replacements):
+        #                 sc.correct_word(sent, rep)
+        #                 item[field] = sc.text
+        #                 col.replace_one({"_id": item["_id"]}, item)
+        #         except Exception as e:
+        #             pass
+        #     sw=SimpleWorker(
+        #         source=(DB_Definitions.PARSSEDEMAILSDBNAME,
+        #                 DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
+        #         n_cores=cpu_count(),
+        #         field_name=DB_Definitions.QUESTIONFIELDNAME,
+        #         do=do
+        #     )
+        #     sw.work()
+
+        f = Filter(source=(DB_Definitions.PARSSEDEMAILSDBNAME,
+                           DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
+                   target=(DB_Definitions.PARSSEDEMAILSDBNAME,
+                           DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME))
+
         f.correct_sentences(DB_Definitions.QUESTIONFIELDNAME, sents, reps). \
             correct_sentences(DB_Definitions.ANSWERFIELDNAME, sents, reps)
 
@@ -251,6 +282,15 @@ class PreProcess(Workflow):
         reps = df[1]
         f.correct_sentences(DB_Definitions.QUESTIONFIELDNAME, sents, reps). \
             correct_sentences(DB_Definitions.ANSWERFIELDNAME, sents, reps)
+
+    @staticmethod
+    def remove_emails_contain_question_in_replay():
+        f = Filter(source=(DB_Definitions.PARSSEDEMAILSDBNAME,
+                           DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
+                   target=(DB_Definitions.PARSSEDEMAILSDBNAME,
+                           DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME))
+        f.exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "؟")#.\
+            # exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "?")
 
 
 class FeaturesExtraction(Workflow):
@@ -410,7 +450,9 @@ class EmailsClustering(Workflow):
             n_clusters=30,
             utter_file_name=f"utter__{datetime.now().strftime('%m_%d_%Y__%H_%M_%S')}.yml",
             intent_file_name=f"intent__{datetime.now().strftime('%m_%d_%Y__%H_%M_%S')}.yml",
-            n_gram=5
+            n_gram=2,
+            # specializations_from_answers=False,
+            specializations_from_questions=False
         )
         k.fetch()
         # k.standardization()
