@@ -224,10 +224,12 @@ class PreProcess(Workflow):
             exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "الزميل"). \
             exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "الزميلة"). \
             exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "يرجى الاطلاع وشكرا"). \
+            exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "يرجى الرد و شكرا"). \
             exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "الزملاء"). \
             exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "الزميل"). \
             exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "الزميلة"). \
-            exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "يرجى الاطلاع وشكرا")
+            exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "يرجى الاطلاع وشكرا").\
+            exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "يرجى الرد و شكرا")
 
     @staticmethod
     def remove_duplicated_questions():
