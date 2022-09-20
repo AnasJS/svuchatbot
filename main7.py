@@ -7,7 +7,7 @@ from src.svuchatbot_features_managment.key_words_extractor import KeyWordExtract
 def main():
     pp = PreProcess()
     pp.transform([
-        # Steps.READPSTFILE,
+        Steps.READPSTFILE,
         Steps.PARSEEMAILS,
         Steps.REMOVENONARABICANSWERS,
         Steps.REMOVENONARABICQUESTIONS,
@@ -15,6 +15,7 @@ def main():
         Steps.REMOVEDUPLICATEDQUESTIONS, #173 emails
         Steps.REMOVEEMAILSCONTAINSQUESTIONINREPLAY,
         Steps.CORRECTSENTENCES,
+        #todo replace more than space with one space
         Steps.DROPSENTENCES,
         Steps.REMOVEFORWARDEDEMAILS,
         Steps.REMOVEEMAILSRELATEDTOCORONA,

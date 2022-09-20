@@ -42,7 +42,7 @@ class Steps:
     REMOVEFORWARDEDEMAILS = "remove_forwarded_emails"
     REMOVEGREETINGSENTINCESESFROMQUESTIONS = ""
     REMOVEEMPTYQUESTION = "remove_empty_questions"
-    CORRECTSENTENCES = "correct_sentences"
+    CORRECTWORDS = "correct_words"
     DROPSENTENCES = "drop_sentences"
     REPLACESPECIALWORDS = "replace_special_words"
     EXTRACTSPECIALWORDS = "extract_special_words"
@@ -72,7 +72,7 @@ class Workflow(ABC):
             print("\t\t\t/\t\t\t\t****\t\t\t\t\\\n")
             print("\t\t/\t\t\t\t****************\t\t\t\\\n")
             print("\t/\t\t\t******************************\t\t\t\\\n")
-            print(f'/\t\t Step:  {step.__name__}\t\t\t\t\t\t\\')
+            print(f'/\t\t Step:  {step.__name__}\t\t\t\t\t\t\t\t\\')
             print(f'\\\t\t starts now at {datetime.now()}\t\t/')
             print("\t\t\n\\\t\t\t******************************\t\t\t/\n")
             print("\t\t\\\t\t\t\t****************\t\t\t/\n")
@@ -102,7 +102,7 @@ class PreProcess(Workflow):
             Steps.REMOVEEMPTYQUESTION: self.remove_empty_questions,
             Steps.REMOVEDUPLICATEDQUESTIONS: self.remove_duplicated_questions,
             Steps.REMOVEGREETINGSENTINCESESFROMQUESTIONS: "",
-            Steps.CORRECTSENTENCES: self.correct_sentences,
+            Steps.CORRECTWORDS: self.correct_words,
             Steps.DROPSENTENCES: self.drop_sentences,
             Steps.REMOVEEMAILSCONTAINSQUESTIONINREPLAY: self.remove_emails_contain_question_in_replay,
 
@@ -273,7 +273,7 @@ class PreProcess(Workflow):
             correct_sentences(DB_Definitions.ANSWERFIELDNAME, sents, reps)
 
     @staticmethod
-    def correct_sentences():
+    def correct_words():
         f = Filter(source=(DB_Definitions.PARSSEDEMAILSDBNAME,
                            DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
                    target=(DB_Definitions.PARSSEDEMAILSDBNAME,
@@ -462,3 +462,4 @@ class EmailsClustering(Workflow):
         k.kmeans_with_pca_fit()
         # k.fit()
         k.to_yaml()
+        k.update_db()

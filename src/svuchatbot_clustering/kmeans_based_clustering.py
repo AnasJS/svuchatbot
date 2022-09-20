@@ -49,7 +49,7 @@ class MyKmeans:
         res = []
         for item in cursor:
             sw = np.zeros(len(spec_nikname)).reshape((1, -1))
-            sw_df = pd.DataFrame(np.append(item["_id"], sw).reshape(1,-1), columns=["_id"] + spec_nikname)
+            sw_df = pd.DataFrame(np.append(item["_id"], sw).reshape(1, -1), columns=["_id"] + spec_nikname)
             if self.specializations_from_answers:
                 for spw in item[DB_DEFINITIONS.SPECIALWORDSFIELDNAMEFROMANSWER]:
                     sw_df[spw[0]] += 1
@@ -116,6 +116,7 @@ class MyKmeans:
     def calculate_pca(self):
         self.segmentation_std = self.df_X[self.columns]
         self.pca = PCA()
+        print(self.segmentation_std)
         self.pca.fit(self.segmentation_std)
         plt.figure(figsize=(10, 8))
         plt.plot(range(len(self.pca.explained_variance_ratio_)),
@@ -129,6 +130,7 @@ class MyKmeans:
         self.pca = PCA(n_components=self.feature_number)
         self.pca.fit(self.segmentation_std)
         self.pca_scores = self.pca.transform(self.segmentation_std)
+        print(self.pca_scores)
 
     def kmeans_with_pca_fit(self):
         wcss = []
@@ -146,6 +148,25 @@ class MyKmeans:
         self.model = KMeans(n_clusters=self.k_means_clusters, init="k-means++", random_state=42)
         self.model.fit(self.pca_scores)
         self.df_X["tag"] = self.model.labels_
+
+    def update_db(self):
+        col = get_collection(self.mails_db_name, self.mails_col_name)
+        cursor = col.find({})
+        # df_X_new = self.df_X.copy(deep=True)
+        # df_X_new = df_X_new.set_index("_id")
+        # df_X_new = df_X_new["tag"]
+        df_X_new  = pd.DataFrame()
+        df_X_new["_id"] = self.df_X["_id"]
+        df_X_new["tag"] = self.df_X["tag"]
+        df_X_new = df_X_new.set_index("_id")
+
+        mails_df = pd.DataFrame(cursor).set_index("_id")
+        res_df = pd.merge(mails_df, df_X_new, left_index=True, right_index=True)
+        err_msg = f"update db after k-means clustering : There is an error in shape " \
+                  f"{res_df.shape}, {mails_df.shape}, {df_X_new.shape}"
+        assert res_df.shape[0] == mails_df.shape[0] == df_X_new.shape[0], err_msg
+        col.delete_many({})
+        col.insert_many([iloc.to_dict() for iloc in res_df.reset_index().iloc])
 
     def kmeans_fit(self):
         wcss = []

@@ -135,5 +135,5 @@ dmypy.json
 .idea/*
 data/*
 *.yml
-*.csv
+#*.csv
 *.png
