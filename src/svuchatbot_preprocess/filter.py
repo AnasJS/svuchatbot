@@ -3,7 +3,11 @@ from langdetect import detect
 import numpy as np
 import pandas as pd
 
+import re
+
 from src.svuchatbot_helper.cleaner import StringCleaner
+from src.svuchatbot_preprocess.simple_worker import SimpleWorker
+
 
 class Filter:
     def __init__(self, source: tuple, target: tuple):
@@ -71,6 +75,28 @@ class Filter:
 
     def correct_sentences(self, field, sents, replacements):
         cursor = self.t_col.find()
+        sc = StringCleaner("")
+        for item in cursor:
+            try:
+                sc.text = item[field]
+                for sent, rep in zip(sents, replacements):
+                    sc.correct_word(sent, rep)
+                    item[field] = sc.text
+                    self.t_col.replace_one({"_id": item["_id"]}, item)
+            except Exception as e:
+                print(e, "item: ", item[field])
+        return self
+
+
+    def correct_sentencesv2(self, field, sents, replacements):
+        def __do(field,item,col):
+            # re.sub(word, replacement, self.text)
+            pass
+
+        cursor = self.t_col.find()
+        # sw = SimpleWorker((DB_Definitions.PARSSEDEMAILSDBNAME,
+        #                    DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME), key, cpus, do)
+        # sw.work()
         sc = StringCleaner("")
         for item in cursor:
             try:

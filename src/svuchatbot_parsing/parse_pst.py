@@ -20,6 +20,24 @@ class PSTParser:
 
 
     def set_grammar(self):
+
+        #todo
+        #add On Mon, 21 Jan 2019 11:26 am Syrian virtual university
+        #       <info@svuonline.org <mailto:info@svuonline.org>  wrote:
+        #بتاريخ الأربعاء، 27 فبراير 2019، جاء من info <info@svuonline.org
+        # <mailto:info@svuonline.org> >:
+        # ss = '''في الأحد، ٣ مارس ٢٠١٩ ١١:٢٢ info <info@svuonline.org
+        # <mailto:info@svuonline.org> > كتب:'''
+        # ss = '''في الثلاثاء، 5 مارس 2019 في 11:33 ص تمت كتابة ما يلي بواسطة info
+        # <info@svuonline.org <mailto:info@svuonline.org> >:'''
+        # ss='''بتاريخ 4 يونيو، 2017 8:39 م، جاء من Diana Kassar
+        # <dianakassar2016@gmail.com>:'''
+        # s='''بتاريخ ٢١/٠٣/٢٠١٨ ٩:٠٧ م، كتب "Haitham Alhammoud"
+        # <haithum93@gmail.com>:'''
+        # (
+        # r'.*(السبت|الأحد|الاثنين|الثلاثاء|الأربعاء|الخميس|الجمعة), [0-9]{1,2} (يناير|فبراير|مارس|أبريل|إبريل|مايو|يونيو|يوليو|أغسطس|سبتمبر|أكتوبر|نوفمبر|ديسمبر	), [0-9]{4} [0-9]{2}:[0-9]{2}.*',
+        # 'AR_InfoWrite'),
+
         self.patterns = [
             (r'\t*(> ?)* *From: ?.*', "from"),
             (r'\t*(> ?)* *FROM: ?.*', "from"),
@@ -50,14 +68,30 @@ class PSTParser:
             (r'\t*(> ?)* *-+ ?رسالة مُعاد توجيهها ?-+', 'AR_FORWORDEDMESSAGE'),
             (r'\t*(> ?)* *-+ ?Forwarded [Mm]essage ?-+', 'EN_FORWORDEDMESSAGE'),
             # (r'---- info كتب ----', 'AR_InfoWrite'),
-            (r'\t*(> ?)* *-+ ?info كتب ?-+', 'AR_InfoWrite'),
-            (r'\t*(> ?)* *-+ ?.*[Ss]ent a message using.*', 'SENTFROM'),
-            (r'\t*(> ?)* *-+ ?.*مرسل من','AR_SENTFROM'),
-            (r'\t*(> ?)* *-+ ?.*مُرسل من','AR_SENTFROM'),
-            (r'\t*(> ?)* *-+ ?.*أُرسلت من','AR_SENTFROM'),
-            (r'\t*(> ?)* *-+ ?.*[sS]ent [Ff]rom.*','SENTUSING'),
+            (r'\t*(> ?)* *-+ ?.*info كتب.* ?-+', 'AR_InfoWrite'),
+            (r'.*info <info@svuonline.org> كتب.*', 'AR_InfoWrite'),
+            (r'.*جاء من.*بتاريخ.*', 'AR_InfoWrite'),
+            (r'.*.كتب.*بتاريخ.*', 'AR_InfoWrite'),
+            (r'.*كتب/كتبت svu.*', 'AR_InfoWrite'),
+            (r'info (<info@svuonline.org)?.*', 'AR_InfoWrite'),
+            (r'.*تمت كتابة ما يلي بواسطة.*', 'AR_InfoWrite'),
+            (r'.*wrote:.*', 'AR_InfoWrite'),
+            (r'On (Mon|Tue|Wed|Thu|Fri|Sat|Sun), [0-9]{1,2} (Jan|Mar|Feb|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) [0-9]{4} [0-9]{2}:[0-9]{2}.*', 'AR_InfoWrite'),
+                        (
+            r'.*في (السبت|الأحد|الاثنين|الثلاثاء|الأربعاء|الخميس|الجمعة)، [٠-٩]{1,2} (يناير|فبراير|مارس|أبريل|إبريل|مايو|يونيو|يوليو|أغسطس|سبتمبر|أكتوبر|نوفمبر|ديسمبر|كانون الثاني|شباط|نيسان|حزيران|تموز|آذار|آب|أيار|أيلول|تشرين الأول|تشرين الثاني|كانون الأول|أكتوبر)،? [٠-٩]{4} [٠-٩]{1,2}:[٠-٩]{1,2}.*',
+            'AR_InfoWrite'),
+
+            (r'.*كتب:.*', 'AR_InfoWrite'),
+            (r'\t*(> ?)* * ?.*[Ss]ent a message using.*', 'SENTFROM'),
+            (r'\t*(> ?)* * ?.*مرسل من','AR_SENTFROM'),
+            (r'\t*(> ?)* * ?.*مُرسل من','AR_SENTFROM'),
+            (r'\t*(> ?)* * ?.*أُرسلت من','AR_SENTFROM'),
+            (r'\t*(> ?)* * ?.*[sS]ent [Ff]rom.*','SENTUSING'),
             (r'.+', 'Content'),
         ]
+        s='''
+في الأحد، ٣ مارس ٢٠١٩ ١١:٢٢ info <info@svuonline.org
+<mailto:info@svuonline.org> > كتب:'''
         self.grammar = '''
                     ORIGINALMESSAGE: {<EN_ORIGINALMESSAGE|AR_ORIGINALMESSAGE|GE_ORIGINALMESSAGE>}
                     FORWORDEDMESSAGE: {<AR_FORWORDEDMESSAGE|EN_FORWORDEDMESSAGE>}
@@ -71,7 +105,7 @@ class PSTParser:
                     Header: {<ORIGINALMESSAGE|FORWORDEDMESSAGE>?<From><Sent>?<To><CC>?<BCC>?<Date>?<Subject>}
                     Body: {<Content>+}
                     Email: {<Header><Body>?}
-                    ShortEmail: {<AR_InfoWrite><Body>}
+                    ShortEmail: {<AR_InfoWrite>+<Body>}
                     Payload: {<Body><Email|ShortEmail>+}
                     '''
         # self.patterns = [
