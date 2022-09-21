@@ -15,6 +15,7 @@ from src.svuchatbot_mogodb.client import get_collection
 from datetime import datetime
 from os.path import join
 import pandas as pd
+import re
 from src.svuchatbot_clustering.kmeans_based_clustering import MyKmeans
 from abc import ABC, abstractmethod
 from src.svuchatbot_const.db.definitions import Definitions as DB_Definitions
@@ -52,6 +53,7 @@ class Steps:
     EXTRACTSPECIALWORDSFROMANSWER = "extract_special_words_from_answer"
     KMEANSBASEDCLUSTERING = "split_emails_based_on_kmeans_clustering"
     REMOVEEMAILSCONTAINSQUESTIONINREPLAY= "remove_emails_contain_question_in_replay"
+    SHORTENINIGSPACES = "shortening_spaces"
 
     #
 
@@ -105,6 +107,7 @@ class PreProcess(Workflow):
             Steps.CORRECTWORDS: self.correct_words,
             Steps.DROPSENTENCES: self.drop_sentences,
             Steps.REMOVEEMAILSCONTAINSQUESTIONINREPLAY: self.remove_emails_contain_question_in_replay,
+            Steps.SHORTENINIGSPACES: self.shortening_spaces,
 
         }
 
@@ -293,6 +296,25 @@ class PreProcess(Workflow):
                            DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME))
         f.exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "؟")#.\
             # exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "?")
+
+    @staticmethod
+    def shortening_spaces():
+        def __do(field_name, item, col):
+            item[field_name] = re.sub("  +", " ", item[field_name])
+            col.replace_one({"_id": item["_id"]}, item)
+        sw = SimpleWorker(source=(DB_Definitions.PARSSEDEMAILSDBNAME,
+                                  DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
+                          field_name=DB_Definitions.ANSWERFIELDNAME,
+                          n_cores=cpu_count(),
+                          do=__do)
+        sw.work()
+        sw = SimpleWorker(source=(DB_Definitions.PARSSEDEMAILSDBNAME,
+                                  DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
+                          field_name=DB_Definitions.QUESTIONFIELDNAME,
+                          n_cores=cpu_count(),
+                          do=__do)
+        sw.work()
+
 
 
 class FeaturesExtraction(Workflow):
