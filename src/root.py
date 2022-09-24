@@ -248,24 +248,23 @@ class PreProcess(Workflow):
         file = open(fpath, "rt")
         sents = file.readlines()
         reps = ["" for i in sents]
-        # def do(field, item, col):
-        #         sc = StringCleaner("")
-        #         try:
-        #             sc.text = item[field]
-        #             for sent, rep in zip(sents, replacements):
-        #                 sc.correct_word(sent, rep)
-        #                 item[field] = sc.text
-        #                 col.replace_one({"_id": item["_id"]}, item)
-        #         except Exception as e:
-        #             pass
-        #     sw=SimpleWorker(
-        #         source=(DB_Definitions.PARSSEDEMAILSDBNAME,
-        #                 DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
-        #         n_cores=cpu_count(),
-        #         field_name=DB_Definitions.QUESTIONFIELDNAME,
-        #         do=do
-        #     )
-        #     sw.work()
+
+        # def __do(field, item, col):
+        #         text = item[field]
+        #         for sent, rep in zip(sents, reps):
+        #             text = re.sub(sent, rep, text)
+        #         item[field] = text
+        #         col.replace_one({"_id": item["_id"]}, item)
+        # sw = SimpleWorker(
+        #     source=(DB_Definitions.PARSSEDEMAILSDBNAME,
+        #             DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
+        #     n_cores=cpu_count(),
+        #     field_name=DB_Definitions.QUESTIONFIELDNAME,
+        #     do=__do
+        # )
+        # sw.work()
+        # sw.field_name = DB_Definitions.ANSWERFIELDNAME
+        # sw.work()
 
         f = Filter(source=(DB_Definitions.PARSSEDEMAILSDBNAME,
                            DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
