@@ -15,6 +15,7 @@ def main():
         # Steps.REMOVEEMPTYQUESTION,
         # Steps.REMOVEDUPLICATEDQUESTIONS, #173 emails
         # Steps.REMOVEEMAILSCONTAINSQUESTIONINREPLAY,
+        Steps.DROPEMOJIS,
         Steps.CORRECTWORDS,
         # # todo replace more than space with one space
         Steps.DROPSENTENCES,

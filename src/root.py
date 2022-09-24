@@ -21,6 +21,7 @@ from abc import ABC, abstractmethod
 from src.svuchatbot_const.db.definitions import Definitions as DB_Definitions
 from src.svuchatbot_features_managment.key_words_extractor import KeyWordExtractors, Definitions
 from src.svuchatbot_helper.utils import get_project_root
+from emoji import emoji_list
 
 class Steps:
     READPSTFILE = "read_pst_file"
@@ -54,6 +55,7 @@ class Steps:
     KMEANSBASEDCLUSTERING = "split_emails_based_on_kmeans_clustering"
     REMOVEEMAILSCONTAINSQUESTIONINREPLAY= "remove_emails_contain_question_in_replay"
     SHORTENINIGSPACES = "shortening_spaces"
+    DROPEMOJIS = "drop_emojis"
 
     #
 
@@ -108,6 +110,7 @@ class PreProcess(Workflow):
             Steps.DROPSENTENCES: self.drop_sentences,
             Steps.REMOVEEMAILSCONTAINSQUESTIONINREPLAY: self.remove_emails_contain_question_in_replay,
             Steps.SHORTENINIGSPACES: self.shortening_spaces,
+            Steps.DROPEMOJIS: self.drop_emojis,
 
         }
 
@@ -312,6 +315,21 @@ class PreProcess(Workflow):
                           field_name=DB_Definitions.QUESTIONFIELDNAME,
                           n_cores=cpu_count(),
                           do=__do)
+        sw.work()
+
+    @staticmethod
+    def drop_emojis():
+        def __do(fld, itm, col):
+            for e in emoji_list(itm[fld]):
+                itm[fld] = itm[fld][:e["match_start"]]+itm[fld][:e["match_end"]]
+            col.replace_one({"_id": itm["_id"]}, itm)
+
+        sw = SimpleWorker((DB_Definitions.PARSSEDEMAILSDBNAME,
+                           DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
+                          DB_Definitions.QUESTIONFIELDNAME,
+                          cpu_count(),
+                          __do
+                          )
         sw.work()
 
 

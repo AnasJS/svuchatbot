@@ -117,7 +117,7 @@ class Filter:
             sw = SimpleWorker((DB_Definitions.PARSSEDEMAILSDBNAME,
                                DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
                               field,
-                              1,
+                              cpu_count(),
                               __do,
                               fltr={field: {"$regex": sent.strip()}})
             sw.work()
