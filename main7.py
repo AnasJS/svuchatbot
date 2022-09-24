@@ -8,13 +8,13 @@ def main():
     pp = PreProcess()
     pp.transform([
         # Steps.READPSTFILE,
-        # Steps.PARSEEMAILS,
-        # Steps.SHORTENINIGSPACES,
-        # Steps.REMOVENONARABICANSWERS,
-        # Steps.REMOVENONARABICQUESTIONS,
-        # Steps.REMOVEEMPTYQUESTION,
-        # Steps.REMOVEDUPLICATEDQUESTIONS, #173 emails
-        # Steps.REMOVEEMAILSCONTAINSQUESTIONINREPLAY,
+        Steps.PARSEEMAILS,
+        Steps.SHORTENINIGSPACES,
+        Steps.REMOVENONARABICANSWERS,
+        Steps.REMOVENONARABICQUESTIONS,
+        Steps.REMOVEEMPTYQUESTION,
+        Steps.REMOVEDUPLICATEDQUESTIONS, #173 emails
+        Steps.REMOVEEMAILSCONTAINSQUESTIONINREPLAY,
         Steps.DROPEMOJIS,
         Steps.CORRECTWORDS,
         # # todo replace more than space with one space
@@ -29,7 +29,7 @@ def main():
         Steps.PARSEDATEFIELD,
     ])
 
-    # pp.run()
+    pp.run()
     #
 
     for i in range(1, 3):
