@@ -319,16 +319,24 @@ class PreProcess(Workflow):
 
     @staticmethod
     def drop_emojis():
-        def __do(fld, itm, col):
-            for e in emoji_list(itm[fld]):
-                itm[fld] = itm[fld][:e["match_start"]]+itm[fld][:e["match_end"]]
+        def __doo(fld, itm, col):
+            # pass
+            print(len(emoji_list(itm[fld])))
+            if len(emoji_list(itm[fld])) > 0:
+                print(itm[fld])
+                res = emoji_list(itm[fld])
+                res.reverse()
+                for e in res:
+                    itm[fld] = itm[fld][:e["match_start"]]+itm[fld][e["match_end"]:]
+                print(itm[fld])
+            #     print("********************************************************************************************")
             col.replace_one({"_id": itm["_id"]}, itm)
 
         sw = SimpleWorker((DB_Definitions.PARSSEDEMAILSDBNAME,
                            DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
                           DB_Definitions.QUESTIONFIELDNAME,
                           cpu_count(),
-                          __do
+                          __doo
                           )
         sw.work()
 
@@ -491,7 +499,7 @@ class EmailsClustering(Workflow):
             n_clusters=30,
             utter_file_name=f"utter__{datetime.now().strftime('%m_%d_%Y__%H_%M_%S')}.yml",
             intent_file_name=f"intent__{datetime.now().strftime('%m_%d_%Y__%H_%M_%S')}.yml",
-            n_gram=2,
+            n_gram=1,
             # specializations_from_answers=False,
             specializations_from_questions=False
         )
