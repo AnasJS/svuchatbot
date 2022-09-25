@@ -11,5 +11,8 @@ langdetect~=1.0.9
 pandas~=1.4.3
 scikit-learn~=1.1.1
 matplotlib~=3.5.2
-wordcloud~=1.8.2.2
 headerparser~=0.4.0
+emoji~=2.0.0
+libpff-python
+Arabic-Stopwords
+pylint
