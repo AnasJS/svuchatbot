@@ -56,6 +56,7 @@ class Steps:
     REMOVEEMAILSCONTAINSQUESTIONINREPLAY= "remove_emails_contain_question_in_replay"
     SHORTENINIGSPACES = "shortening_spaces"
     DROPEMOJIS = "drop_emojis"
+    ExtractShortQuestion = "extract_short_question"
 
     #
 
@@ -319,16 +320,24 @@ class PreProcess(Workflow):
 
     @staticmethod
     def drop_emojis():
-        def __do(fld, itm, col):
-            for e in emoji_list(itm[fld]):
-                itm[fld] = itm[fld][:e["match_start"]]+itm[fld][:e["match_end"]]
+        def __doo(fld, itm, col):
+            # pass
+            print(len(emoji_list(itm[fld])))
+            if len(emoji_list(itm[fld])) > 0:
+                print(itm[fld])
+                res = emoji_list(itm[fld])
+                res.reverse()
+                for e in res:
+                    itm[fld] = itm[fld][:e["match_start"]]+itm[fld][e["match_end"]:]
+                print(itm[fld])
+            #     print("********************************************************************************************")
             col.replace_one({"_id": itm["_id"]}, itm)
 
         sw = SimpleWorker((DB_Definitions.PARSSEDEMAILSDBNAME,
                            DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
                           DB_Definitions.QUESTIONFIELDNAME,
                           cpu_count(),
-                          __do
+                          __doo
                           )
         sw.work()
 
@@ -345,6 +354,7 @@ class FeaturesExtraction(Workflow):
             Steps.REPLACESPECIALWORDSFROMQUESTION: self.replace_special_words_from_question,
             Steps.REPLACESPECIALWORDSFROMANSWER: self.replace_special_words_from_answer,
             Steps.EXTRACTSPECIALWORDSFROMANSWER: self.extract_special_words_from_answer,
+            Steps.ExtractShortQuestion: self.extract_short_question,
 
         }
 
@@ -472,6 +482,21 @@ class FeaturesExtraction(Workflow):
         assert len(emails_ids) == len(ids), "There is an error in get_pattern_freq"
         add_tag()
 
+    @staticmethod
+    def extract_short_question():
+        def __doo(fld, itm, col):
+            ptrn = "هل [\w* ]*؟?"
+            itm["questions"] =re.findall(ptrn,itm[fld] )
+            col.replace_one({"_id":itm["_id"]}, itm)
+
+        sw = SimpleWorker(
+            source=(DB_Definitions.PARSSEDEMAILSDBNAME,
+                    DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
+            field_name=DB_Definitions.QUESTIONFIELDNAME,
+            n_cores=cpu_count(),
+            do=__doo)
+        sw.work()
+
 
 class EmailsClustering(Workflow):
     def set_available_methods(self):
@@ -491,7 +516,7 @@ class EmailsClustering(Workflow):
             n_clusters=30,
             utter_file_name=f"utter__{datetime.now().strftime('%m_%d_%Y__%H_%M_%S')}.yml",
             intent_file_name=f"intent__{datetime.now().strftime('%m_%d_%Y__%H_%M_%S')}.yml",
-            n_gram=2,
+            n_gram=1,
             # specializations_from_answers=False,
             specializations_from_questions=False
         )

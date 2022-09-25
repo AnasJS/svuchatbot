@@ -1,0 +1,34 @@
+@startuml classes_src
+set namespaceSeparator none
+class "BagOfWordsExtractor" as src.svuchatbot_preprocess.bag_of_words_extractor.BagOfWordsExtractor {
+}
+class "Elector" as src.svuchatbot_preprocess.cleand_tokens_extractor.Elector {
+}
+class "EntitiesExtractor" as src.svuchatbot_preprocess.entities_extractor.EntitiesExtractor {
+}
+class "Extractor" as src.svuchatbot_preprocess.extractor.Extractor {
+}
+class "Filter" as src.svuchatbot_preprocess.filter.Filter {
+}
+class "Normalizer" as src.svuchatbot_preprocess.orthographic_normalization.Normalizer {
+}
+class "SentimentExtractor" as src.svuchatbot_preprocess.sentiment_extractor.SentimentExtractor {
+}
+class "SimpleWorker" as src.svuchatbot_preprocess.simple_worker.SimpleWorker {
+}
+class "SpecialWordExtraction" as src.svuchatbot_preprocess.special_words_extractor.SpecialWordExtraction {
+}
+class "SpecialWordsReplacement" as src.svuchatbot_preprocess.special_words_replacment.SpecialWordsReplacement {
+}
+class "TokensExtractor" as src.svuchatbot_preprocess.tokens_extractor.TokensExtractor {
+}
+src.svuchatbot_preprocess.bag_of_words_extractor.BagOfWordsExtractor --|> src.svuchatbot_preprocess.extractor.Extractor
+src.svuchatbot_preprocess.cleand_tokens_extractor.Elector --|> src.svuchatbot_preprocess.extractor.Extractor
+src.svuchatbot_preprocess.entities_extractor.EntitiesExtractor --|> src.svuchatbot_preprocess.extractor.Extractor
+src.svuchatbot_preprocess.orthographic_normalization.Normalizer --|> src.svuchatbot_preprocess.extractor.Extractor
+src.svuchatbot_preprocess.sentiment_extractor.SentimentExtractor --|> src.svuchatbot_preprocess.extractor.Extractor
+src.svuchatbot_preprocess.simple_worker.SimpleWorker --|> src.svuchatbot_preprocess.extractor.Extractor
+src.svuchatbot_preprocess.special_words_extractor.SpecialWordExtraction --|> src.svuchatbot_preprocess.tokens_extractor.TokensExtractor
+src.svuchatbot_preprocess.special_words_replacment.SpecialWordsReplacement --|> src.svuchatbot_preprocess.extractor.Extractor
+src.svuchatbot_preprocess.tokens_extractor.TokensExtractor --|> src.svuchatbot_preprocess.extractor.Extractor
+@enduml
