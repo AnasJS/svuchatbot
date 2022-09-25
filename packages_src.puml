@@ -1,0 +1,37 @@
+@startuml packages_src
+set namespaceSeparator none
+package "src.svuchatbot_preprocess" as src.svuchatbot_preprocess {
+}
+package "src.svuchatbot_preprocess.bag_of_words_extractor" as src.svuchatbot_preprocess.bag_of_words_extractor {
+}
+package "src.svuchatbot_preprocess.cleand_tokens_extractor" as src.svuchatbot_preprocess.cleand_tokens_extractor {
+}
+package "src.svuchatbot_preprocess.entities_extractor" as src.svuchatbot_preprocess.entities_extractor {
+}
+package "src.svuchatbot_preprocess.extractor" as src.svuchatbot_preprocess.extractor {
+}
+package "src.svuchatbot_preprocess.filter" as src.svuchatbot_preprocess.filter {
+}
+package "src.svuchatbot_preprocess.orthographic_normalization" as src.svuchatbot_preprocess.orthographic_normalization {
+}
+package "src.svuchatbot_preprocess.sentiment_extractor" as src.svuchatbot_preprocess.sentiment_extractor {
+}
+package "src.svuchatbot_preprocess.simple_worker" as src.svuchatbot_preprocess.simple_worker {
+}
+package "src.svuchatbot_preprocess.special_words_extractor" as src.svuchatbot_preprocess.special_words_extractor {
+}
+package "src.svuchatbot_preprocess.special_words_replacment" as src.svuchatbot_preprocess.special_words_replacment {
+}
+package "src.svuchatbot_preprocess.tokens_extractor" as src.svuchatbot_preprocess.tokens_extractor {
+}
+src.svuchatbot_preprocess.bag_of_words_extractor --> src.svuchatbot_preprocess.extractor
+src.svuchatbot_preprocess.cleand_tokens_extractor --> src.svuchatbot_preprocess.extractor
+src.svuchatbot_preprocess.entities_extractor --> src.svuchatbot_preprocess.extractor
+src.svuchatbot_preprocess.filter --> src.svuchatbot_preprocess.simple_worker
+src.svuchatbot_preprocess.orthographic_normalization --> src.svuchatbot_preprocess.extractor
+src.svuchatbot_preprocess.sentiment_extractor --> src.svuchatbot_preprocess.extractor
+src.svuchatbot_preprocess.simple_worker --> src.svuchatbot_preprocess.extractor
+src.svuchatbot_preprocess.special_words_extractor --> src.svuchatbot_preprocess.tokens_extractor
+src.svuchatbot_preprocess.special_words_replacment --> src.svuchatbot_preprocess.extractor
+src.svuchatbot_preprocess.tokens_extractor --> src.svuchatbot_preprocess.extractor
+@enduml

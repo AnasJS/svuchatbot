@@ -76,7 +76,10 @@ class PSTParser:
             (r'info (<info@svuonline.org)?.*', 'AR_InfoWrite'),
             (r'.*تمت كتابة ما يلي بواسطة.*', 'AR_InfoWrite'),
             (r'.*wrote:.*', 'AR_InfoWrite'),
-            (r'On (Mon|Tue|Wed|Thu|Fri|Sat|Sun), [0-9]{1,2} (Jan|Mar|Feb|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) [0-9]{4} [0-9]{2}:[0-9]{2}.*', 'AR_InfoWrite'),
+            (r'\t*On (Mon|Tue|Wed|Thu|Fri|Sat|Sun), [0-9]{1,2} (Jan|Mar|Feb|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) [0-9]{4} [0-9]{2}:[0-9]{2}.*', 'AR_InfoWrite'),
+            (
+                r'\t*On (Mon|Tue|Wed|Thu|Fri|Sat|Sun), (Jan|Mar|Feb|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) [0-9]{1,2}, [0-9]{4}, [0-9]{1,2}:[0-9]{1,2}.*',
+                'AR_InfoWrite'),
                         (
             r'.*في (السبت|الأحد|الاثنين|الثلاثاء|الأربعاء|الخميس|الجمعة)، [٠-٩]{1,2} (يناير|فبراير|مارس|أبريل|إبريل|مايو|يونيو|يوليو|أغسطس|سبتمبر|أكتوبر|نوفمبر|ديسمبر|كانون الثاني|شباط|نيسان|حزيران|تموز|آذار|آب|أيار|أيلول|تشرين الأول|تشرين الثاني|كانون الأول|أكتوبر)،? [٠-٩]{4} [٠-٩]{1,2}:[٠-٩]{1,2}.*',
             'AR_InfoWrite'),

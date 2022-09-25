@@ -43,8 +43,11 @@ patterns = [
     (r'.*تمت كتابة ما يلي بواسطة.*', 'AR_InfoWrite'),
     (r'.*wrote:.*', 'AR_InfoWrite'),
     (
-    r'On (Mon|Tue|Wed|Thu|Fri|Sat|Sun), [0-9]{1,2} (Jan|Mar|Feb|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) [0-9]{4} [0-9]{2}:[0-9]{2}.*',
+    r'\t*On (Mon|Tue|Wed|Thu|Fri|Sat|Sun), [0-9]{1,2} (Jan|Mar|Feb|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) [0-9]{4} [0-9]{2}:[0-9]{2}.*',
     'AR_InfoWrite'),
+    (
+        r'\t*On (Mon|Tue|Wed|Thu|Fri|Sat|Sun), (Jan|Mar|Feb|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) [0-9]{1,2}, [0-9]{4}, [0-9]{1,2}:[0-9]{1,2}.*',
+        'AR_InfoWrite'),
 (r'في (السبت|الأحد|الاثنين|الثلاثاء|الأربعاء|الخميس|الجمعة)، [٠-٩]{1,2} (يناير|فبراير|مارس|أبريل|إبريل|مايو|يونيو|يوليو|أغسطس|سبتمبر|أكتوبر|نوفمبر|ديسمبر)،? [٠-٩]{4} [٠-٩]{1,2}:[٠-٩]{1,2}.*', 'AR_InfoWrite'),
 
 
@@ -59,7 +62,7 @@ patterns = [
 grammar = '''
                    ORIGINALMESSAGE: {<EN_ORIGINALMESSAGE|AR_ORIGINALMESSAGE|GE_ORIGINALMESSAGE>}
                    FORWORDEDMESSAGE: {<AR_FORWORDEDMESSAGE|EN_FORWORDEDMESSAGE>}
-                   From: {<from|ar_from>}
+                   From: {<from|ar_from><Content>*}
                    Sent: {<sent|ar_sent>}
                    Date: {<date|ar_date>}
                    Subject: {<subject|ar_subject>}
@@ -402,13 +405,57 @@ Subject: Re: مساعدة
 الوصول هل بامكانكم المساعدة وشكرا 
 
 '''
-line_tokens = line_tokenize(re.sub('[\u202b\u200f\u202a\u202b]','',i))
+j='''يرجى مراجعة قسم شؤون الطلاب أو التواصل مع منسق البرنامج عن طريق الايميل 
+
+ 
+
+ 
+
+From: Mirna Mony [mailto:mirnamony37429@gmail.com] 
+Sent: Friday, July 3, 2020 10:28 PM
+To: info <info@svuonline.org>
+Subject: Re: FW: مرحبا أنا ميرنا الحلبي نجحت السنة الماضة 2018_2019 ب
+الثالث الثانوي الأدبي وبدي سجل بالجامعة فيي سجل هي لسنة او لا؟
+
+ 
+
+مرحبا أنا قدمت عالمفاضلة عالمعهد التقاني لإدارة الأعمال وكل الأوراق
+عملتا ليش ما نزل أسمي بين المقبولين؟؟؟؟ 
+
+ 
+
+On Mon, Jun 29, 2020, 11:13 AM info <info@svuonline.org
+<mailto:info@svuonline.org> > wrote:
+
+	ستصدر نتائج المفاضلة الشهر القادم
+
+	وسيتم الاعلان عنها على الموقع بشكل رسمي 
+
+	 
+
+	From: Mirna Mony [mailto:mirnamony37429@gmail.com
+<mailto:mirnamony37429@gmail.com> ] 
+	Sent: Monday, June 29, 2020 10:38 AM
+	To: info <info@svuonline.org <mailto:info@svuonline.org> >
+	Subject: Re: FW: مرحبا أنا ميرنا الحلبي نجحت السنة الماضة
+2018_2019 ب الثالث الثانوي الأدبي وبدي سجل بالجامعة فيي سجل هي لسنة او
+لا؟
+
+	 
+
+	 متى سيتم إعلان نتائج مفاضلة خريف 2020 للطلاب المتقدمين الى
+برامج الإجازات؟؟؟ 
+
+	 
+'''
+line_tokens = line_tokenize(re.sub('[\u202b\u200f\u202a\u202b]','',j))
 # line_tokens = line_tokenize(document["content"])
 regexp_tags = regexp_tagger.tag(line_tokens)
 for rt in regexp_tags:
     print(rt)
 print("***********************")
 result = cp.parse(regexp_tags)
-# result.pretty_print()
-# result.draw()
+print(type(result))
+result.pretty_print()
+result.draw()
 a="-------- Original message --------"
