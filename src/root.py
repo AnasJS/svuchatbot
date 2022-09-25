@@ -56,6 +56,7 @@ class Steps:
     REMOVEEMAILSCONTAINSQUESTIONINREPLAY= "remove_emails_contain_question_in_replay"
     SHORTENINIGSPACES = "shortening_spaces"
     DROPEMOJIS = "drop_emojis"
+    ExtractShortQuestion = "extract_short_question"
 
     #
 
@@ -353,6 +354,7 @@ class FeaturesExtraction(Workflow):
             Steps.REPLACESPECIALWORDSFROMQUESTION: self.replace_special_words_from_question,
             Steps.REPLACESPECIALWORDSFROMANSWER: self.replace_special_words_from_answer,
             Steps.EXTRACTSPECIALWORDSFROMANSWER: self.extract_special_words_from_answer,
+            Steps.ExtractShortQuestion: self.extract_short_question,
 
         }
 
@@ -479,6 +481,21 @@ class FeaturesExtraction(Workflow):
         # print(len(freq))
         assert len(emails_ids) == len(ids), "There is an error in get_pattern_freq"
         add_tag()
+
+    @staticmethod
+    def extract_short_question():
+        def __doo(fld, itm, col):
+            ptrn = "هل [\w* ]*؟?"
+            itm["questions"] =re.findall(ptrn,itm[fld] )
+            col.replace_one({"_id":itm["_id"]}, itm)
+
+        sw = SimpleWorker(
+            source=(DB_Definitions.PARSSEDEMAILSDBNAME,
+                    DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
+            field_name=DB_Definitions.QUESTIONFIELDNAME,
+            n_cores=cpu_count(),
+            do=__doo)
+        sw.work()
 
 
 class EmailsClustering(Workflow):
