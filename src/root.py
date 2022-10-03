@@ -22,6 +22,8 @@ from src.svuchatbot_const.db.definitions import Definitions as DB_Definitions
 from src.svuchatbot_features_managment.key_words_extractor import KeyWordExtractors, Definitions
 from src.svuchatbot_helper.utils import get_project_root
 from emoji import emoji_list
+import pandas as pd
+
 
 class Steps:
     READPSTFILE = "read_pst_file"
@@ -53,7 +55,7 @@ class Steps:
     REPLACESPECIALWORDSFROMANSWER = "replace_special_words_from_answer"
     EXTRACTSPECIALWORDSFROMANSWER = "extract_special_words_from_answer"
     KMEANSBASEDCLUSTERING = "split_emails_based_on_kmeans_clustering"
-    REMOVEEMAILSCONTAINSQUESTIONINREPLAY= "remove_emails_contain_question_in_replay"
+    REMOVEEMAILSCONTAINSQUESTIONINREPLAY = "remove_emails_contain_question_in_replay"
     SHORTENINIGSPACES = "shortening_spaces"
     DROPEMOJIS = "drop_emojis"
     ExtractShortQuestion = "extract_short_question"
@@ -235,7 +237,7 @@ class PreProcess(Workflow):
             exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "الزملاء"). \
             exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "الزميل"). \
             exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "الزميلة"). \
-            exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "يرجى الاطلاع وشكرا").\
+            exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "يرجى الاطلاع وشكرا"). \
             exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "يرجى الرد و شكرا")
 
     @staticmethod
@@ -284,7 +286,7 @@ class PreProcess(Workflow):
                            DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
                    target=(DB_Definitions.PARSSEDEMAILSDBNAME,
                            DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME))
-        fpath = join(get_project_root(),  "assets", "Correct_Words.csv")
+        fpath = join(get_project_root(), "assets", "Correct_Words.csv")
         df = pd.read_csv(fpath, header=None)
         sents = df[0]
         reps = df[1]
@@ -297,14 +299,15 @@ class PreProcess(Workflow):
                            DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
                    target=(DB_Definitions.PARSSEDEMAILSDBNAME,
                            DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME))
-        f.exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "؟")#.\
-            # exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "?")
+        f.exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "؟")  # .\
+        # exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "?")
 
     @staticmethod
     def shortening_spaces():
         def __do(field_name, item, col):
             item[field_name] = re.sub("  +", " ", item[field_name])
             col.replace_one({"_id": item["_id"]}, item)
+
         sw = SimpleWorker(source=(DB_Definitions.PARSSEDEMAILSDBNAME,
                                   DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
                           field_name=DB_Definitions.ANSWERFIELDNAME,
@@ -328,7 +331,7 @@ class PreProcess(Workflow):
                 res = emoji_list(itm[fld])
                 res.reverse()
                 for e in res:
-                    itm[fld] = itm[fld][:e["match_start"]]+itm[fld][e["match_end"]:]
+                    itm[fld] = itm[fld][:e["match_start"]] + itm[fld][e["match_end"]:]
                 print(itm[fld])
             #     print("********************************************************************************************")
             col.replace_one({"_id": itm["_id"]}, itm)
@@ -340,7 +343,6 @@ class PreProcess(Workflow):
                           __doo
                           )
         sw.work()
-
 
 
 class FeaturesExtraction(Workflow):
@@ -484,10 +486,16 @@ class FeaturesExtraction(Workflow):
 
     @staticmethod
     def extract_short_question():
+        df = pd.read_csv(join(get_project_root(), 'assets', 'questions_words'), names=['qw'])
+        question_words = df["qw"].tolist()
+
         def __doo(fld, itm, col):
-            ptrn = "هل [\w* ]*؟?"
-            itm["questions"] =re.findall(ptrn,itm[fld] )
-            col.replace_one({"_id":itm["_id"]}, itm)
+            res = []
+            for qw in question_words:
+                ptrn = qw + " [\w* ]*؟?"
+                res = re.findall(ptrn, itm[fld])
+            itm["questions"] = res
+            col.replace_one({"_id": itm["_id"]}, itm)
 
         sw = SimpleWorker(
             source=(DB_Definitions.PARSSEDEMAILSDBNAME,
