@@ -126,7 +126,7 @@ class MyKmeans:
         plt.xlabel("Number of Components")
         plt.ylabel("Cumulative Explained Variance")
         plt.show()
-        self.feature_number = int(input("Enter the number of feature"))
+        self.feature_number = int(input("Enter the number of components"))
         self.pca = PCA(n_components=self.feature_number)
         self.pca.fit(self.segmentation_std)
         self.pca_scores = self.pca.transform(self.segmentation_std)
