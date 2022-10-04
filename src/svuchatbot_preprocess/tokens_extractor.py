@@ -17,7 +17,6 @@ class TokensExtractor(Extractor, ABC):
         else:
             self.t_col_name = target[1]
 
-
     @staticmethod
     def nltk_based_tokenize_for_sentence(sent):
         res = []
@@ -62,7 +61,7 @@ class TokensExtractor(Extractor, ABC):
     def _tokenizer(self):
         pass
 
-    def _do(self, ids):
+    def do(self, ids):
         col = get_collection(self.db_name, self.col_name)
         cursor = col.find({"_id": {"$in": ids}})
         # if self.type == "simple":

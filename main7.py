@@ -7,7 +7,7 @@ from src.svuchatbot_features_managment.key_words_extractor import KeyWordExtract
 def main():
     # pp = PreProcess()
     # pp.transform([
-    #     # Steps.READPSTFILE,
+    #     Steps.READPSTFILE,
     #     Steps.PARSEEMAILS,
     #     Steps.SHORTENINIGSPACES,
     #     Steps.REMOVENONARABICANSWERS,
@@ -30,9 +30,9 @@ def main():
     # ])
     #
     # pp.run()
-    #
 
-    # for i in range(1, 3):
+    #
+    # for i in range(1, 5):
     #     kwe = KeyWordExtractors(
     #         source=(DB_Definitions.PARSSEDEMAILSDBNAME,
     #                 DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
@@ -65,29 +65,38 @@ def main():
     #             Definitions.TFIDFEXTRACTION,
     #         ])
     #     kwe.work()
-    #
-    FE = FeaturesExtraction()
-    FE.transform([
-    #     # Steps.EXTRACTSIMPLETOKENSFROMANSWER,
-    #     # Steps.EXTRACTSIMPLETOKENSFROMQUESTION,
-    #     # Steps.EXTRACTSENTIMENTFROMQUESTIONS,
-    #     # Steps.EXTRACTENTITIESFROMANSWERS
-    #     Steps.EXTRACTSPECIALWORDSFROMQUESTION,
-    #     Steps.REPLACESPECIALWORDSFROMQUESTION,
-    #     Steps.EXTRACTSPECIALWORDSFROMANSWER,
-    #     Steps.REPLACESPECIALWORDSFROMANSWER,
-          Steps.ExtractShortQuestion
-    ])
-    FE.run()
-    #
-    # ec = EmailsClustering()
-    # ec.transform(
-    #     [
-    #         Steps.KMEANSBASEDCLUSTERING,
-    #     ]
-    # )
-    # ec.run()
+    # #
+    # FE = FeaturesExtraction()
+    # FE.transform([
+        # Steps.EXTRACTSIMPLETOKENSFROMANSWER,
+        # Steps.EXTRACTSIMPLETOKENSFROMQUESTION,
+        # Steps.EXTRACTSENTIMENTFROMQUESTIONS,
+        # Steps.EXTRACTENTITIESFROMANSWERS,
+
+
+        # Steps.EXTRACTSPECIALWORDSFROMQUESTION,
+        # Steps.REPLACESPECIALWORDSFROMQUESTION,
+        # Steps.EXTRACTSPECIALWORDSFROMANSWER,
+        # Steps.REPLACESPECIALWORDSFROMANSWER,
+        # Steps.EXTRACTMORPHOLOGICALFEATURES,
+        # Steps.NORMALIZEQUESTIONTOKEN,
+        # Steps.NORMALIZEANSWERTOKEN,
+        # Steps.EXTRACTMORPHOLOGICALPATTERNS,
+        # Steps.ExtractShortQuestion
+    # ])
+    # FE.run()
+
+    ec = EmailsClustering()
+    ec.transform(
+        [
+            Steps.KMEANSBASEDCLUSTERING,
+        ]
+    )
+    ec.run()
 
 
 if __name__ == '__main__':
+
+
+    # mp.set_start_method('spwan')
     main()

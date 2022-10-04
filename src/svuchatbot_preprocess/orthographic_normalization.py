@@ -8,7 +8,7 @@ class Normalizer(Extractor):
         super().__init__(source, field_name, n_cores)
         self.word = word
 
-    def _do(self, ids):
+    def do(self, ids):
         col = get_collection(self.db_name, self.col_name)
         cursor = col.find({"_id": {"$in": ids}})
         if not self.word:

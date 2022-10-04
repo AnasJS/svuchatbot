@@ -37,7 +37,7 @@ class MorphologicalFeaturesExtractor(Extractor):
             "pos" : [r["pos"] for r in result]
         }
 
-    def _do(self, ids):
+    def do(self, ids):
         col = get_collection(self.db_name, self.col_name)
         cursor = col.find({"_id": {"$in": ids}})
         db = MorphologyDB.builtin_db()

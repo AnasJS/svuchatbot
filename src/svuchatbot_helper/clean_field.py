@@ -5,7 +5,7 @@ col = get_collection(DB_Definitions.PARSSEDEMAILSDBNAME, DB_Definitions.PARSSEDE
 for item in col.find():
 
     try:
-        item.pop(DB_Definitions.SIMPLETOKENSFIELDNAME)
+        # item.pop(DB_Definitions.SIMPLETOKENSFIELDNAME)
         item.pop(DB_Definitions.QUESTIONSIMPLETOKENSFIELDNAME)
         item.pop(DB_Definitions.ANSWERSIMPLETOKENSFIELDNAME)
         col.replace_one({"_id": item["_id"]}, item)
