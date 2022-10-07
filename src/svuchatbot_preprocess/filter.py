@@ -110,7 +110,8 @@ class Filter:
 
             def __do(fld, itm, col):
                 # print(itm[fld])
-                itm[fld] = re.sub(sent.strip(), rep, itm[fld])
+                itm[fld] = re.sub(sent, rep, itm[fld])
+                # itm[fld] = re.sub(sent.strip(), rep, itm[fld])
                 # print(itm[fld])
                 # print("*******************************")
                 col.replace_one({"_id": itm["_id"]}, itm)
