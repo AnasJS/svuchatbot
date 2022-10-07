@@ -28,6 +28,9 @@ from emoji import emoji_list
 import pandas as pd
 
 
+def strip(word):
+    return word.strip()
+
 class Steps:
     READPSTFILE = "read_pst_file"
     PARSEEMAILS = "parse_emails"
@@ -260,7 +263,7 @@ class PreProcess(Workflow):
     def drop_sentences():
         fpath = join(get_project_root(), "assets", "sentence_to_remove.txt")
         file = open(fpath, "rt")
-        sents = file.readlines()
+        sents = [sent.strip() for sent in file.readlines()]
         reps = ["" for i in sents]
 
         # def __do(field, item, col):
@@ -288,6 +291,7 @@ class PreProcess(Workflow):
         f.correct_sentences(DB_Definitions.QUESTIONFIELDNAME, sents, reps). \
             correct_sentences(DB_Definitions.ANSWERFIELDNAME, sents, reps)
 
+
     @staticmethod
     def correct_words():
         f = Filter(source=(DB_Definitions.PARSSEDEMAILSDBNAME,
@@ -296,7 +300,7 @@ class PreProcess(Workflow):
                            DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME))
         fpath = join(get_project_root(), "assets", "Correct_Words.csv")
         df = pd.read_csv(fpath, header=None)
-        sents = " " + df[0]
+        sents = " " + df[0].apply(strip)
         reps = df[1]
         f.correct_sentences(DB_Definitions.QUESTIONFIELDNAME, sents, reps). \
             correct_sentences(DB_Definitions.ANSWERFIELDNAME, sents, reps)
