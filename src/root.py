@@ -510,14 +510,20 @@ class FeaturesExtraction(Workflow):
 
     @staticmethod
     def extract_short_question():
-        df = pd.read_csv(join(get_project_root(), 'assets', 'questions_words'), names=['qw'])
+        df = pd.read_csv(join(get_project_root(), 'assets', 'questions_words.csv'), names=['qw'])
         question_words = df["qw"].tolist()
 
         def __doo(fld, itm, col):
             res = []
+            word_ptrn = '\w+'
+            ques_mark = '?'
+            dot_mark = '.'
             for qw in question_words:
-                ptrn = qw + " [\w* ]*؟?"
-                res += re.findall(ptrn, itm[fld])
+                ptrn= f'^{qw} [\w+ *]+ ?[.؟]?|\W{qw} [\w+ *]+ ?[.؟]?'
+
+                # ptrn = qw + " [\w* ]*؟?.?"
+                tmp = re.sub('\n', ' ', itm[fld])
+                res += re.findall(ptrn, tmp)
             itm["questions"] = res
             col.replace_one({"_id": itm["_id"]}, itm)
 
