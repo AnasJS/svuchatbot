@@ -2,10 +2,16 @@ import pypff
 import time
 from src.svuchatbot_mogodb.client import get_collection
 from multiprocessing import Process
+import multiprocessing as mp
+
+
+def work(pst):
+    pst.do()
 
 
 class PST:
     def __init__(self, f_path, db_name, n_cores):
+        # mp.set_start_method("spawn", force=True)
         self.path = f_path
         self.db_name = db_name
         self.n_cores = n_cores
@@ -19,7 +25,7 @@ class PST:
             end = start + r
         return start, end
 
-    def _do(self, s, e, folder_index, folder_name, folder):
+    def do(self, s, e, folder_index, folder_name, folder):
         # pst = pypff.file()
         # pst.open(self.path)
         # root = pst.get_root_folder()
@@ -49,7 +55,7 @@ class PST:
         processes = []
         for i in range(self.n_cores):
             s, e = self._range(i, messages_count)
-            p = Process(target=self._do, args=(s, e, folder_index, folder_name, folder))
+            p = Process(target=self.do, args=(s, e, folder_index, folder_name, folder))
             p.start()
             processes.append(p)
         for p in processes:

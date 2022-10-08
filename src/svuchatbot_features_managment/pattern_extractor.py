@@ -54,7 +54,7 @@ class PatternExtractor(Extractor):
 
             return 0,max_length
 
-    def _do(self, ids):
+    def do(self, ids):
         col = get_collection(self.db_name, self.col_name)
         t_col = get_collection(self.t_db_name, self.t_col_name)
         cursor = col.find({"_id": {"$in": ids}})

@@ -1,8 +1,11 @@
 from src.svuchatbot_clustering.simple import add_tag
+from src.svuchatbot_features_managment.features_extractor import MorphologicalFeaturesExtractor
 from src.svuchatbot_features_managment.pattern_extractor import PatternExtractor
+from src.svuchatbot_features_managment.simple_tokens_extractor import SimpleTokensExtractor
 from src.svuchatbot_helper.cleaner import StringCleaner
 from src.svuchatbot_helper.patterns_frequency import get_pattern_freq
 from src.svuchatbot_preprocess.filter import Filter
+from src.svuchatbot_preprocess.orthographic_normalization import Normalizer
 from src.svuchatbot_preprocess.sentiment_extractor import SentimentExtractor
 from src.svuchatbot_preprocess.entities_extractor import EntitiesExtractor
 from src.svuchatbot_preprocess.simple_worker import SimpleWorker
@@ -22,6 +25,11 @@ from src.svuchatbot_const.db.definitions import Definitions as DB_Definitions
 from src.svuchatbot_features_managment.key_words_extractor import KeyWordExtractors, Definitions
 from src.svuchatbot_helper.utils import get_project_root
 from emoji import emoji_list
+import pandas as pd
+
+
+def strip(word):
+    return word.strip()
 
 class Steps:
     READPSTFILE = "read_pst_file"
@@ -50,13 +58,18 @@ class Steps:
     EXTRACTSPECIALWORDS = "extract_special_words"
     REPLACESPECIALWORDSFROMQUESTION = "replace_special_words_from_question"
     EXTRACTSPECIALWORDSFROMQUESTION = "extract_special_words_from_question"
+    EXTRACTMORPHOLOGICALFEATURES = "extract_morphological_features"
+    EXTRACTMORPHOLOGICALPATTERNS = "extract_morphological_patterns"
     REPLACESPECIALWORDSFROMANSWER = "replace_special_words_from_answer"
     EXTRACTSPECIALWORDSFROMANSWER = "extract_special_words_from_answer"
     KMEANSBASEDCLUSTERING = "split_emails_based_on_kmeans_clustering"
-    REMOVEEMAILSCONTAINSQUESTIONINREPLAY= "remove_emails_contain_question_in_replay"
+    REMOVEEMAILSCONTAINSQUESTIONINREPLAY = "remove_emails_contain_question_in_replay"
     SHORTENINIGSPACES = "shortening_spaces"
     DROPEMOJIS = "drop_emojis"
     ExtractShortQuestion = "extract_short_question"
+    NORMALIZEANSWERTOKEN= "normalize_answer_token"
+    NORMALIZEQUESTIONTOKEN= "normalize_question_token"
+
 
     #
 
@@ -235,7 +248,7 @@ class PreProcess(Workflow):
             exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "الزملاء"). \
             exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "الزميل"). \
             exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "الزميلة"). \
-            exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "يرجى الاطلاع وشكرا").\
+            exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "يرجى الاطلاع وشكرا"). \
             exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "يرجى الرد و شكرا")
 
     @staticmethod
@@ -250,7 +263,7 @@ class PreProcess(Workflow):
     def drop_sentences():
         fpath = join(get_project_root(), "assets", "sentence_to_remove.txt")
         file = open(fpath, "rt")
-        sents = file.readlines()
+        sents = [sent.strip() for sent in file.readlines()]
         reps = ["" for i in sents]
 
         # def __do(field, item, col):
@@ -278,15 +291,16 @@ class PreProcess(Workflow):
         f.correct_sentences(DB_Definitions.QUESTIONFIELDNAME, sents, reps). \
             correct_sentences(DB_Definitions.ANSWERFIELDNAME, sents, reps)
 
+
     @staticmethod
     def correct_words():
         f = Filter(source=(DB_Definitions.PARSSEDEMAILSDBNAME,
                            DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
                    target=(DB_Definitions.PARSSEDEMAILSDBNAME,
                            DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME))
-        fpath = join(get_project_root(),  "assets", "Correct_Words.csv")
+        fpath = join(get_project_root(), "assets", "Correct_Words.csv")
         df = pd.read_csv(fpath, header=None)
-        sents = df[0]
+        sents = " " + df[0].apply(strip)
         reps = df[1]
         f.correct_sentences(DB_Definitions.QUESTIONFIELDNAME, sents, reps). \
             correct_sentences(DB_Definitions.ANSWERFIELDNAME, sents, reps)
@@ -297,14 +311,15 @@ class PreProcess(Workflow):
                            DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
                    target=(DB_Definitions.PARSSEDEMAILSDBNAME,
                            DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME))
-        f.exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "؟")#.\
-            # exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "?")
+        f.exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "؟")  # .\
+        # exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "?")
 
     @staticmethod
     def shortening_spaces():
         def __do(field_name, item, col):
             item[field_name] = re.sub("  +", " ", item[field_name])
             col.replace_one({"_id": item["_id"]}, item)
+
         sw = SimpleWorker(source=(DB_Definitions.PARSSEDEMAILSDBNAME,
                                   DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
                           field_name=DB_Definitions.ANSWERFIELDNAME,
@@ -328,7 +343,7 @@ class PreProcess(Workflow):
                 res = emoji_list(itm[fld])
                 res.reverse()
                 for e in res:
-                    itm[fld] = itm[fld][:e["match_start"]]+itm[fld][e["match_end"]:]
+                    itm[fld] = itm[fld][:e["match_start"]] + itm[fld][e["match_end"]:]
                 print(itm[fld])
             #     print("********************************************************************************************")
             col.replace_one({"_id": itm["_id"]}, itm)
@@ -342,7 +357,6 @@ class PreProcess(Workflow):
         sw.work()
 
 
-
 class FeaturesExtraction(Workflow):
     def set_available_methods(self):
         self.steps_dict = {
@@ -354,45 +368,53 @@ class FeaturesExtraction(Workflow):
             Steps.REPLACESPECIALWORDSFROMQUESTION: self.replace_special_words_from_question,
             Steps.REPLACESPECIALWORDSFROMANSWER: self.replace_special_words_from_answer,
             Steps.EXTRACTSPECIALWORDSFROMANSWER: self.extract_special_words_from_answer,
+            Steps.EXTRACTMORPHOLOGICALFEATURES: self.extract_morphological_features,
+            Steps.EXTRACTMORPHOLOGICALPATTERNS: self.extract_morphological_patterns,
             Steps.ExtractShortQuestion: self.extract_short_question,
+            Steps.NORMALIZEQUESTIONTOKEN: self.normalize_question_token,
+            Steps.NORMALIZEANSWERTOKEN: self.normalize_answer_token
 
         }
 
     @staticmethod
     def extract_question_simple_tokens():
-        kwe = KeyWordExtractors(
+        ste = SimpleTokensExtractor(
             source=(DB_Definitions.PARSSEDEMAILSDBNAME,
                     DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
-            cpu_count=cpu_count(),
             field_name=DB_Definitions.QUESTIONFIELDNAME,
-            min_weight=0.01,
-            ngram="{}-Gram".format(1),
-            prefix="question-simple",
-            reset_db=False
-        )
-        kwe.set_pipe([
-            Definitions.SIMPLETOKENIZATION,
-            Definitions.STOPWORDSREMOVING,
-        ])
-        kwe.work()
+            n_cores=cpu_count(),
+            target=("", DB_Definitions.QUESTIONSIMPLETOKENSFIELDNAME))
+        ste.work()
+
+    @staticmethod
+    def normalize_question_token():
+            n = Normalizer(
+                source=(DB_Definitions.PARSSEDEMAILSDBNAME,
+                        DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
+                n_cores=cpu_count(),
+                field_name=DB_Definitions.QUESTIONSIMPLETOKENSFIELDNAME,
+                word=True)
+            n.work()
+
+    @staticmethod
+    def normalize_answer_token():
+            n = Normalizer(
+                source=(DB_Definitions.PARSSEDEMAILSDBNAME,
+                        DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
+                n_cores=cpu_count(),
+                field_name=DB_Definitions.ANSWERSIMPLETOKENSFIELDNAME,
+                word=True)
+            n.work()
 
     @staticmethod
     def extract_answer_simple_tokens():
-        kwe = KeyWordExtractors(
+        ste = SimpleTokensExtractor(
             source=(DB_Definitions.PARSSEDEMAILSDBNAME,
                     DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
-            cpu_count=cpu_count(),
             field_name=DB_Definitions.ANSWERFIELDNAME,
-            min_weight=0.01,
-            ngram="{}-Gram".format(1),
-            prefix="answer-simple",
-            reset_db=False
-        )
-        kwe.set_pipe([
-            Definitions.SIMPLETOKENIZATION,
-            Definitions.STOPWORDSREMOVING,
-        ])
-        kwe.work()
+            n_cores=cpu_count(),
+            target=("", DB_Definitions.ANSWERSIMPLETOKENSFIELDNAME))
+        ste.work()
 
     @staticmethod
     def extract_sentiment_from_questions():
@@ -454,15 +476,23 @@ class FeaturesExtraction(Workflow):
         swr.work()
 
     @staticmethod
+    def extract_morphological_features():
+        mfe = MorphologicalFeaturesExtractor(source=(DB_Definitions.PARSSEDEMAILSDBNAME,
+                                                     DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
+                                             n_cores=cpu_count(),
+                                             field_name=DB_Definitions.ANSWERSIMPLETOKENSFIELDNAME)
+        mfe.work()
+
+    @staticmethod
     def extract_morphological_patterns():
         pe = PatternExtractor(source=(DB_Definitions.PARSSEDEMAILSDBNAME,
                                       DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
                               target=(DB_Definitions.PATTERNSDBNAME,
                                       DB_Definitions.PATTERNSCOLLECTIONNAME),
-                              threshold=0.3,
-                              n_gram=3,
+                              threshold=0.0,
+                              n_gram=1,
                               n_cores=cpu_count(),
-                              field_name=DB_Definitions.SIMPLETOKENSFIELDNAME)
+                              field_name=DB_Definitions.ANSWERSIMPLETOKENSFIELDNAME)
         pe.work()
 
         col = get_collection(DB_Definitions.PATTERNSDBNAME,
@@ -484,10 +514,22 @@ class FeaturesExtraction(Workflow):
 
     @staticmethod
     def extract_short_question():
+        df = pd.read_csv(join(get_project_root(), 'assets', 'questions_words.csv'), names=['qw'])
+        question_words = df["qw"].tolist()
+
         def __doo(fld, itm, col):
-            ptrn = "هل [\w* ]*؟?"
-            itm["questions"] =re.findall(ptrn,itm[fld] )
-            col.replace_one({"_id":itm["_id"]}, itm)
+            res = []
+            word_ptrn = '\w+'
+            ques_mark = '?'
+            dot_mark = '.'
+            for qw in question_words:
+                ptrn= f'^{qw} [\w+ *]+ ?[.؟]?|\W{qw} [\w+ *]+ ?[.؟]?'
+
+                # ptrn = qw + " [\w* ]*؟?.?"
+                tmp = re.sub('\n', ' ', itm[fld])
+                res += re.findall(ptrn, tmp)
+            itm["questions"] = res
+            col.replace_one({"_id": itm["_id"]}, itm)
 
         sw = SimpleWorker(
             source=(DB_Definitions.PARSSEDEMAILSDBNAME,

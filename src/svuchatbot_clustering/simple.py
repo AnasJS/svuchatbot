@@ -104,7 +104,7 @@ def add_tag(source=("chatbot", "PatternsFrequency"), mails=("chatbot", "Mails-3"
     m_col = get_collection(mails[0], mails[1])
     # t_col = get_collection(target[0], target[1])
     for item in m_col.find():
-        item.update({"tag": None})
+        item.update({"pattern_based_tag": None})
         m_col.replace_one({"_id": item["_id"]}, item)
         try:
             email_id = item["_id"]

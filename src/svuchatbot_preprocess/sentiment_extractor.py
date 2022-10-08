@@ -10,7 +10,7 @@ class SentimentExtractor(Extractor):
         # print(sa.predict(sent))
         return sa.predict(sent)[0]
 
-    def _do(self, ids):
+    def do(self, ids):
         # sa = copy(self.sa)
         sa = deepcopy(SentimentAnalyzer.pretrained())
         col = get_collection(self.db_name, self.col_name)
@@ -19,8 +19,8 @@ class SentimentExtractor(Extractor):
         # print(id(sa))
         for item in cursor:
             try:
-                item.update({self.field_name+"_sentiments": SentimentExtractor.camel_based_sentiment_analyser_for_sentence(
-                    item[self.field_name], sa)})
+                item[self.field_name+"_sentiments"] = SentimentExtractor.camel_based_sentiment_analyser_for_sentence(
+                    item[self.field_name], sa)
                 cursor.collection.replace_one({"_id": item["_id"]}, item)
             except Exception as e:
                 print("item : {} \n exception: {}".format(item, e))

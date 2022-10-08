@@ -11,7 +11,7 @@ class SpecialWordsReplacement(Extractor):
         self.from_field_pattern_index = from_field_pattern_index
         self.from_field_replacement_index = from_field_replacement_index
 
-    def _do(self, ids):
+    def do(self, ids):
         col = get_collection(self.db_name, self.col_name)
         filter = {
             "_id": {"$in": ids},

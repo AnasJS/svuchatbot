@@ -3,6 +3,7 @@ from src.svuchatbot_preprocess.extractor import Extractor
 from multiprocessing import Manager
 from collections import Counter
 from copy import deepcopy
+import multiprocessing as mp
 
 
 class BagOfWordsExtractor(Extractor):
@@ -22,7 +23,7 @@ class BagOfWordsExtractor(Extractor):
         self.bag += words
         self.bag_dict[item_id] = Counter(words)
 
-    def _do(self, ids):
+    def do(self, ids):
         col = get_collection(self.db_name, self.col_name)
         cursor = col.find({"_id": {"$in": ids}}, ["_id", self.field_name])
         if self.n_gram == 1:

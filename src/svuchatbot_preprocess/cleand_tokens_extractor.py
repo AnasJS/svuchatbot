@@ -23,7 +23,7 @@ class Elector(Extractor):
     def filter_stopwords_for_sentence(sent, ostp):
         return [w for w in sent if w not in ostp]
 
-    def _do(self, ids):
+    def do(self, ids):
         col = get_collection(self.db_name, self.col_name)
         cursor = col.find({"_id": {"$in": ids}})
         path1 = join(get_project_root(), "assets", "our_stop_words_v2.txt")
