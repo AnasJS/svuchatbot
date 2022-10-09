@@ -7,7 +7,7 @@ from src.svuchatbot_features_managment.key_words_extractor import KeyWordExtract
 def main():
     pp = PreProcess()
     pp.transform([
-        Steps.READPSTFILE,
+        # Steps.READPSTFILE,
         Steps.PARSEEMAILS,
         Steps.SHORTENINIGSPACES,
         Steps.REMOVENONARABICANSWERS,
@@ -17,7 +17,7 @@ def main():
         Steps.REMOVEEMAILSCONTAINSQUESTIONINREPLAY,
         Steps.DROPEMOJIS,
         Steps.CORRECTWORDS,
-        # # todo replace more than space with one space
+        # todo replace more than space with one space
         Steps.DROPSENTENCES,
         Steps.REMOVEFORWARDEDEMAILS,
         Steps.REMOVEEMAILSRELATEDTOCORONA,
@@ -32,7 +32,7 @@ def main():
     pp.run()
 
 
-    for i in range(1, 2):
+    for i in range(1, 3):
         kwe = KeyWordExtractors(
             source=(DB_Definitions.PARSSEDEMAILSDBNAME,
                     DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
@@ -58,7 +58,7 @@ def main():
                 Definitions.SPECIALWORDSEXTRACTION
 
             ])
-        elif 1 < i <= 5:
+        elif 1 < i <= 3:
             kwe.set_pipe([
                 Definitions.BAGOFWORDSEXTRACION,
                 Definitions.FEATURESSETUP,
