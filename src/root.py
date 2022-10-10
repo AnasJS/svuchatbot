@@ -264,7 +264,7 @@ class PreProcess(Workflow):
         fpath = join(get_project_root(), "assets", "sentence_to_remove.txt")
         file = open(fpath, "rt")
         sents = [sent.strip() for sent in file.readlines()]
-        reps = ["" for i in sents]
+        reps = [" " for i in sents]
 
         # def __do(field, item, col):
         #         text = item[field]
@@ -300,8 +300,8 @@ class PreProcess(Workflow):
                            DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME))
         fpath = join(get_project_root(), "assets", "Correct_Words.csv")
         df = pd.read_csv(fpath, header=None)
-        sents = " " + df[0].apply(strip)
-        reps = df[1]
+        sents = " " + df[0].apply(strip)+" "
+        reps = " "+df[1]+" "
         f.correct_sentences(DB_Definitions.QUESTIONFIELDNAME, sents, reps). \
             correct_sentences(DB_Definitions.ANSWERFIELDNAME, sents, reps)
 

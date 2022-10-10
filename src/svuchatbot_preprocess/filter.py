@@ -106,11 +106,11 @@ class Filter:
 
     def correct_sentences(self, field, sents, replacements):
         for sent, rep in zip(sents, replacements):
-            print(f"*****{sent.strip()}******")
+            # print(f"*****{sent.strip()}******")
 
             def __do(fld, itm, col):
                 # print(itm[fld])
-                itm[fld] = re.sub(sent, rep, itm[fld])
+                itm[fld] = re.sub(sent, rep, " "+itm[fld]+" ")
                 # itm[fld] = re.sub(sent.strip(), rep, itm[fld])
                 # print(itm[fld])
                 # print("*******************************")
