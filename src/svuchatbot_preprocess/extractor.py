@@ -96,7 +96,8 @@ class Extractor(ABC):
         # field = "body"
         if do is None:
             do = self.do
-        self.__workflow(f_col, do)
+        # self.__workflow(f_col, do)
+        do(self.__ids(f_col))
         endTime = time.time()
         workTime = endTime - startTime
         print("The job took " + str(workTime) + " seconds to complete")

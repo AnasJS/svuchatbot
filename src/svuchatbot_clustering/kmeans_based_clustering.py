@@ -235,5 +235,5 @@ class MyKmeans:
         name = f'result_rasa_{datetime.now()}'.replace(':',"_").replace('.',"_").replace('-','_').replace(' ','__')
         name = join("result", name)
         os.mkdir(name)
-        yaml.dump(intent_dict, open(join(name, self.intent_file_name), "wt"), allow_unicode=True)
-        yaml.dump(utter_dict, open(join(name, self.utter_file_name), "wt"), allow_unicode=True)
+        yaml.dump(intent_dict, open(join(name, self.intent_file_name), "wt"))
+        yaml.dump(utter_dict, open(join(name, self.utter_file_name), "wt"))

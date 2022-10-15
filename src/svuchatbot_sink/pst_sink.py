@@ -53,14 +53,17 @@ class PST:
     def __work(self, parent, folder_index, folder_name, folder):
         # folder = parent.get_sub_folder(folder_index)
         messages_count = folder.get_number_of_sub_messages()
-        processes = []
-        for i in range(self.n_cores):
-            s, e = self._range(i, messages_count)
-            p = Process(target=self.do, args=(s, e, folder_index, folder_name, folder))
-            p.start()
-            processes.append(p)
-        for p in processes:
-            p.join()
+
+        # processes = []
+        # for i in range(self.n_cores):
+        #     s, e = self._range(i, messages_count)
+        #     p = Process(target=self.do, args=(s, e, folder_index, folder_name, folder))
+        #     p.start()
+        #     processes.append(p)
+        # for p in processes:
+        #     p.join()
+        s, e = 0, messages_count
+        self.do(s, e, folder_index, folder_name, folder)
 
 
     # @staticmethod

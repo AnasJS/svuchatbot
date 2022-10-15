@@ -141,8 +141,8 @@ class PreProcess(Workflow):
 
     @staticmethod
     def read_pst_file():
-        # p = join(get_project_root(), 'data', 'info@svuonline.org.pst')
-        p = join(get_project_root(), 'assets', 'bait_coor@svuonline.org.pst')
+        p = join(get_project_root(), 'data', 'info@svuonline.org.pst')
+        # p = join(get_project_root(), 'assets', 'bait_coor@svuonline.org.pst')
         pst_sink = PST(p, DB_Definitions.PSTDBNAME, 1)
         pst_sink.sink()
 
@@ -594,8 +594,8 @@ class EmailsClustering(Workflow):
                  DB_Definitions.BAGOFWORDSCOLLECTIONNAME1GRAM)),
             field_name=DB_Definitions.ANSWERFIELDNAME,
             n_clusters=30,
-            utter_file_name=f"utter__{datetime.now().strftime('%m_%d_%Y__%H_%M_%S')}.yml",
-            intent_file_name=f"intent__{datetime.now().strftime('%m_%d_%Y__%H_%M_%S')}.yml",
+            utter_file_name="utter.yml",
+            intent_file_name="intent.yml",
             n_gram=1,
             # specializations_from_answers=False,
             specializations_from_questions=False
