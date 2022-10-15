@@ -8,6 +8,7 @@ from os import cpu_count
 
 from src.svuchatbot_helper.cleaner import StringCleaner
 from src.svuchatbot_preprocess.simple_worker import SimpleWorker
+from datetime import datetime
 
 
 class Filter:
@@ -16,28 +17,41 @@ class Filter:
         self.t_db_name, self.t_col_name = target
         self.s_col = get_collection(self.s_db_name, self.s_col_name)
         self.t_col = get_collection(self.t_db_name, self.t_col_name)
+        self.a_col = get_collection(DB_Definitions.ANALYSIS, DB_Definitions.AnalysisCollection)
         if source != target:
             self.t_col.delete_many({})
             self.t_col.insert_many(self.s_col.find({}))
 
-    def exclude_emails_containing_word(self, field, word):
+    def find_count(self, name, fltr):
+        count = self.t_col.find(fltr)
+        count = [d for d in count]
+        count = len(count)
+        self.a_col.insert_one({"filter name": name, "count": count, "data": datetime.now()})
+
+    def exclude_emails_containing_word(self, field, word, name="emails_containing_word"):
+        self.find_count(name=name, fltr={field: {"$regex": word}})
         self.t_col.delete_many({field: {"$regex": word}})
         return self
 
     def exclude_empty_emails(self, field):
+        self.find_count(name="empty_emails", fltr={field: ""})
         self.t_col.delete_many({field: ""})
         return self
 
     def exclude_emails_writen_in_foreign_language(self, field):
         cursor = self.t_col.find()
         # mails = []
+        count = 0
         for item in cursor:
             try:
                 if detect(item[field]) != 'ar':
                     self.t_col.delete_one({"_id": item["_id"]})
+                    count += 1
                     # mails.append(item)
             except:
                 print("item: ", item[field])
+        self.a_col.insert_one({"filter name": "emails_writen_in_foreign_language",
+                               "count": count, "data": datetime.now()})
         return self
 
     def finding_incomprehensible_words(self):
@@ -68,10 +82,14 @@ class Filter:
     def exclude_duplicated(self, field):
         cursor = self.t_col.find()
         df = pd.DataFrame([d for d in cursor])
+        count = df.shape[0]
         df_target = df[field]
         df.drop(df[df_target.duplicated()].index, inplace=True)
+        count -= df.shape[0]
         self.t_col.delete_many({})
         self.t_col.insert_many([d.to_dict() for d in df.iloc])
+        self.a_col.insert_one({"filter name": "duplicated_emails",
+                               "count": count, "data": datetime.now()})
         return self
 
     def correct_sentences_old(self, field, sents, replacements):

@@ -12,7 +12,7 @@ from src.svuchatbot_preprocess.simple_worker import SimpleWorker
 from src.svuchatbot_preprocess.special_words_extractor import SpecialWordExtraction
 from src.svuchatbot_preprocess.special_words_replacment import SpecialWordsReplacement
 from src.svuchatbot_sink.pst_sink import PST
-from os import cpu_count, curdir, pardir
+from os import cpu_count, curdir, pardir, mkdir, system
 from src.svuchatbot_parsing.parse_pst import PSTParser
 from src.svuchatbot_mogodb.client import get_collection
 from datetime import datetime
@@ -26,10 +26,17 @@ from src.svuchatbot_features_managment.key_words_extractor import KeyWordExtract
 from src.svuchatbot_helper.utils import get_project_root
 from emoji import emoji_list
 import pandas as pd
+from src.svuchatbot_const.db.definitions import Definitions
+from src.svuchatbot_mogodb.client import get_collection
+import pandas as pd
+from datetime import datetime
+from camel_tools.utils.dediac import dediac_ar
+
 
 
 def strip(word):
     return word.strip()
+
 
 class Steps:
     READPSTFILE = "read_pst_file"
@@ -67,9 +74,11 @@ class Steps:
     SHORTENINIGSPACES = "shortening_spaces"
     DROPEMOJIS = "drop_emojis"
     ExtractShortQuestion = "extract_short_question"
-    NORMALIZEANSWERTOKEN= "normalize_answer_token"
-    NORMALIZEQUESTIONTOKEN= "normalize_question_token"
-
+    NORMALIZEANSWERTOKEN = "normalize_answer_token"
+    NORMALIZEQUESTIONTOKEN = "normalize_question_token"
+    Export_Questions_To_File = "Export_Questions_To_File"
+    Export_Collections = "export_collections"
+    Delete_Diac = "delete_diac"
 
     #
 
@@ -106,6 +115,7 @@ class PreProcess(Workflow):
     def set_available_methods(self):
         self.steps_dict = {
             Steps.READPSTFILE: self.read_pst_file,
+            Steps.Delete_Diac: self.delete_diac,
             Steps.PARSEEMAILS: self.parse_emails,
             Steps.PARSEFROMFIELD: self.parse_from,
             Steps.PARSETOFIELD: self.parse_to,
@@ -126,13 +136,29 @@ class PreProcess(Workflow):
             Steps.SHORTENINIGSPACES: self.shortening_spaces,
             Steps.DROPEMOJIS: self.drop_emojis,
 
+
         }
 
     @staticmethod
     def read_pst_file():
-        p = join(get_project_root(), 'data', 'info@svuonline.org.pst')
+        # p = join(get_project_root(), 'data', 'info@svuonline.org.pst')
+        p = join(get_project_root(), 'assets', 'bait_coor@svuonline.org.pst')
         pst_sink = PST(p, DB_Definitions.PSTDBNAME, 1)
         pst_sink.sink()
+
+    @staticmethod
+    def delete_diac():
+        def __do(field_name, item, col):
+            item[field_name] = dediac_ar(item[field_name])
+            col.replace_one({"_id": item["_id"]}, item)
+
+        sw = SimpleWorker(source=(DB_Definitions.PSTDBNAME,
+                                  DB_Definitions.SENTCOLLECTIONNAME),
+                          field_name=DB_Definitions.content_field_name,
+                          n_cores=cpu_count(),
+                          do=__do)
+        sw.work()
+
 
     @staticmethod
     def parse_emails():
@@ -142,6 +168,14 @@ class PreProcess(Workflow):
                          to_db=DB_Definitions.PARSSEDEMAILSDBNAME,
                          update=True)
         pstp.parse()
+        a_col = get_collection(DB_Definitions.ANALYSIS, DB_Definitions.AnalysisCollection)
+        a_col.delete_many({})
+        col = get_collection(DB_Definitions.PARSSEDEMAILSDBNAME, DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME)
+
+        count = col.find({})
+        count = [d for d in count]
+        count = len(count)
+        a_col.insert_one({"filter name": "Parsed Emails", "count": count, "data": datetime.now()})
 
     @staticmethod
     def __template_parser(key, do=None, cpus=cpu_count()):
@@ -240,16 +274,18 @@ class PreProcess(Workflow):
                            DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
                    target=(DB_Definitions.PARSSEDEMAILSDBNAME,
                            DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME))
-        f.exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "الزملاء"). \
-            exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "الزميل"). \
-            exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "الزميلة"). \
-            exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "يرجى الاطلاع وشكرا"). \
-            exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "يرجى الرد و شكرا"). \
-            exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "الزملاء"). \
-            exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "الزميل"). \
-            exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "الزميلة"). \
-            exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "يرجى الاطلاع وشكرا"). \
-            exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "يرجى الرد و شكرا")
+        f.exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "الزملاء", name="forwarded_emails"). \
+            exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "الزميل", name="forwarded_emails"). \
+            exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "الزميلة", name="forwarded_emails"). \
+            exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "يرجى الاطلاع", name="forwarded_emails"). \
+            exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "يرجى الاطلاع و شكرا", name="forwarded_emails"). \
+            exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "يرجى الرد و شكرا", name="forwarded_emails"). \
+            exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "الزملاء", name="forwarded_emails"). \
+            exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "الزميل", name="forwarded_emails"). \
+            exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "الزميلة", name="forwarded_emails"). \
+            exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "يرجى الاطلاع", name="forwarded_emails"). \
+            exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "يرجى الاطلاع و شكرا", name="forwarded_emails"). \
+            exclude_emails_containing_word(DB_Definitions.QUESTIONFIELDNAME, "يرجى الرد و شكرا", name="forwarded_emails")
 
     @staticmethod
     def remove_duplicated_questions():
@@ -263,7 +299,7 @@ class PreProcess(Workflow):
     def drop_sentences():
         fpath = join(get_project_root(), "assets", "sentence_to_remove.txt")
         file = open(fpath, "rt")
-        sents = [sent.strip() for sent in file.readlines()]
+        sents = [f"^{sent.strip()}|\W{sent.strip()}\W" for sent in file.readlines()]
         reps = [" " for i in sents]
 
         # def __do(field, item, col):
@@ -291,7 +327,6 @@ class PreProcess(Workflow):
         f.correct_sentences(DB_Definitions.QUESTIONFIELDNAME, sents, reps). \
             correct_sentences(DB_Definitions.ANSWERFIELDNAME, sents, reps)
 
-
     @staticmethod
     def correct_words():
         f = Filter(source=(DB_Definitions.PARSSEDEMAILSDBNAME,
@@ -300,8 +335,10 @@ class PreProcess(Workflow):
                            DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME))
         fpath = join(get_project_root(), "assets", "Correct_Words.csv")
         df = pd.read_csv(fpath, header=None)
-        sents = " " + df[0].apply(strip)+" "
-        reps = " "+df[1]+" "
+        # sents = " " + df[0].apply(strip) + " "
+        tmp = df[0].apply(strip)
+        sents = "^"+tmp+"|\W+"+tmp+"\W+"
+        reps = " " + df[1] + " "
         f.correct_sentences(DB_Definitions.QUESTIONFIELDNAME, sents, reps). \
             correct_sentences(DB_Definitions.ANSWERFIELDNAME, sents, reps)
 
@@ -311,7 +348,8 @@ class PreProcess(Workflow):
                            DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
                    target=(DB_Definitions.PARSSEDEMAILSDBNAME,
                            DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME))
-        f.exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "؟")  # .\
+        f.exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "؟", name="emails_contain_question_in_replay"). \
+            exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "يرجى توضيح المطلوب", name="emails_contain_question_in_replay")
         # exclude_emails_containing_word(DB_Definitions.ANSWERFIELDNAME, "?")
 
     @staticmethod
@@ -388,23 +426,23 @@ class FeaturesExtraction(Workflow):
 
     @staticmethod
     def normalize_question_token():
-            n = Normalizer(
-                source=(DB_Definitions.PARSSEDEMAILSDBNAME,
-                        DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
-                n_cores=cpu_count(),
-                field_name=DB_Definitions.QUESTIONSIMPLETOKENSFIELDNAME,
-                word=True)
-            n.work()
+        n = Normalizer(
+            source=(DB_Definitions.PARSSEDEMAILSDBNAME,
+                    DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
+            n_cores=cpu_count(),
+            field_name=DB_Definitions.QUESTIONSIMPLETOKENSFIELDNAME,
+            word=True)
+        n.work()
 
     @staticmethod
     def normalize_answer_token():
-            n = Normalizer(
-                source=(DB_Definitions.PARSSEDEMAILSDBNAME,
-                        DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
-                n_cores=cpu_count(),
-                field_name=DB_Definitions.ANSWERSIMPLETOKENSFIELDNAME,
-                word=True)
-            n.work()
+        n = Normalizer(
+            source=(DB_Definitions.PARSSEDEMAILSDBNAME,
+                    DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
+            n_cores=cpu_count(),
+            field_name=DB_Definitions.ANSWERSIMPLETOKENSFIELDNAME,
+            word=True)
+        n.work()
 
     @staticmethod
     def extract_answer_simple_tokens():
@@ -523,7 +561,7 @@ class FeaturesExtraction(Workflow):
             ques_mark = '?'
             dot_mark = '.'
             for qw in question_words:
-                ptrn= f'^{qw} [\w+ *]+ ?[.؟]?|\W{qw} [\w+ *]+ ?[.؟]?'
+                ptrn = f'^{qw} [\w+ *]+ ?[.؟]?|\W{qw} [\w+ *]+ ?[.؟]?'
 
                 # ptrn = qw + " [\w* ]*؟?.?"
                 tmp = re.sub('\n', ' ', itm[fld])
@@ -569,3 +607,71 @@ class EmailsClustering(Workflow):
         # k.fit()
         k.to_yaml()
         k.update_db()
+
+
+class Exporter(Workflow):
+    def set_available_methods(self):
+        self.steps_dict = {
+            Steps.Export_Questions_To_File: self.export_questions_to_file,
+            Steps.Export_Collections: self.export_collections
+        }
+
+
+    @staticmethod
+    def export_questions_to_file():
+        col = get_collection(Definitions.PARSSEDEMAILSDBNAME,
+                             Definitions.PARSSEDEMAILSCOLLECTIONNAME)
+        res = []
+        name = f'result_questions_{datetime.now()}'.replace(':', "_").replace('.', "_").replace('-', '_').replace(' ', '__')
+        name = join("result", name)
+        mkdir(name)
+        for item in col.find({"questions": {"$ne": []}}):
+
+            for q in item["questions"]:
+                res.append({
+                    "id": item["_id"],
+                    "intent": item["tag"],
+                    "answer": item["replay-message"],
+                    "question": q,
+                    "email": item["body"]
+
+                })
+        # df = pd.DataFrame(res, columns=["id", "intent", "answer", "question", "email"])
+        df = pd.DataFrame(res)
+        df.to_csv(join(name, "q$a.csv"))
+
+        res = []
+        for item in col.find({"questions": []}):
+            res.append({
+                "id": item["_id"],
+                "intent": item["tag"],
+                "answer": item["replay-message"],
+                "question": "",
+                "email": item["body"]
+
+            })
+        # df = pd.DataFrame(res, columns=["id", "intent", "answer", "question", "email"])
+        df = pd.DataFrame(res)
+        df.to_csv(join(name, "empty_q&a.csv"))
+
+    @staticmethod
+    def export_collections():
+        collections = [
+            (DB_Definitions.ANALYSIS, DB_Definitions.AnalysisCollection),
+            (DB_Definitions.BAGOFWORDSDBNAME, DB_Definitions.BAGOFWORDSCOLLECTIONNAME1GRAM),
+            (DB_Definitions.BAGOFWORDSDBNAME, DB_Definitions.BAGOFWORDSCOLLECTIONNAME2GRAM),
+            (DB_Definitions.PARSSEDEMAILSDBNAME, DB_Definitions.PARSSEDEMAILSCOLLECTIONNAME),
+            (DB_Definitions.PSTDBNAME, DB_Definitions.SENTCOLLECTIONNAME),
+            (DB_Definitions.TFIDFDBNAME, DB_Definitions.BAGOFWORDSCOLLECTIONNAME1GRAM),
+            (DB_Definitions.WEIGHTSDBNAME, DB_Definitions.BAGOFWORDSCOLLECTIONNAME1GRAM),
+            (DB_Definitions.FAILEDPARSSEDEMAILSDBNAME, DB_Definitions.FAILEDPARSSEDEMAILSCOLLECTIONNAME)
+        ]
+        name = f'result_Database_{datetime.now()}'.replace(':',"_").replace('.',"_").replace('-','_').replace(' ','__')
+        name = join("result", name)
+        mkdir(name)
+
+        for db, col in collections:
+            tmp = join(name, f"{db}_{col}")
+            cmd = f"mongoexport --collection={col} --db={db} --out={tmp}.csv"
+            system(cmd)
+

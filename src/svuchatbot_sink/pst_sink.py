@@ -32,6 +32,7 @@ class PST:
         # root.get_number_of_sub_items()
         # top_folder = root.get_sub_folder(1)
         col = get_collection(self.db_name, folder_name)
+        col.delete_many({})
         # folder = top_folder.get_sub_folder(folder_index)
         print(" from {} : Start {}, End {}".format(folder_name, s, e))
         for i in range(s, e):

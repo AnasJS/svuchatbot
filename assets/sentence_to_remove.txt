@@ -423,10 +423,10 @@ Importance: High
 تم الإرسال من البريد 
 <https:  go.microsoft.com fwlink ?LinkId=550986>
 لـ Windows 10
-.....
-....
-...
-..
+\.\.\.\.\.
+\.\.\.\.
+\.\.\.
+\.\.
 :
 -
 \'

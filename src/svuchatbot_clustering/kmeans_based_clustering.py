@@ -1,3 +1,6 @@
+from datetime import datetime
+from os.path import join
+
 import yaml
 import os
 from numpy import unique
@@ -229,6 +232,8 @@ class MyKmeans:
             print(k)
             for vv in v:
                 print(f"\t{vv}")
-
-        yaml.dump(intent_dict, open(self.intent_file_name, "wt"), allow_unicode=True)
-        yaml.dump(utter_dict, open(self.utter_file_name, "wt"), allow_unicode=True)
+        name = f'result_rasa_{datetime.now()}'.replace(':',"_").replace('.',"_").replace('-','_').replace(' ','__')
+        name = join("result", name)
+        os.mkdir(name)
+        yaml.dump(intent_dict, open(join(name, self.intent_file_name), "wt"), allow_unicode=True)
+        yaml.dump(utter_dict, open(join(name, self.utter_file_name), "wt"), allow_unicode=True)
