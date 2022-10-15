@@ -1,6 +1,7 @@
 from src.svuchatbot_const.db.definitions import Definitions
 from src.svuchatbot_mogodb.client import get_collection
 import pandas as pd
+from datetime import datetime
 col = get_collection(Definitions.PARSSEDEMAILSDBNAME, Definitions.PARSSEDEMAILSCOLLECTIONNAME)
 res = []
 for item in col.find({"questions":{"$ne":[]}}):
@@ -16,7 +17,7 @@ for item in col.find({"questions":{"$ne":[]}}):
         })
 # df = pd.DataFrame(res, columns=["id", "intent", "answer", "question", "email"])
 df = pd.DataFrame(res)
-df.to_csv("q&a.csv")
+df.to_csv(f"q&a{datetime.now()}.csv")
 
 res=[]
 for item in col.find({"questions": []}):
@@ -30,4 +31,4 @@ for item in col.find({"questions": []}):
     })
 # df = pd.DataFrame(res, columns=["id", "intent", "answer", "question", "email"])
 df = pd.DataFrame(res)
-df.to_csv("empty_q&a.csv")
+df.to_csv(f"empty_q&a{datetime.now()}.csv")

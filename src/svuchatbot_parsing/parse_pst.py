@@ -1,7 +1,9 @@
 import re
 
 from src.svuchatbot_mogodb import SingletonClient
+from src.svuchatbot_mogodb.client import get_collection
 from nltk import RegexpParser, line_tokenize, RegexpTagger
+from src.svuchatbot_const.db.definitions import Definitions as DB_Definitions
 from nltk.tree.tree import Tree
 
 
@@ -89,6 +91,7 @@ class PSTParser:
             (r'\t*(> ?)* * ?.*مرسل من','AR_SENTFROM'),
             (r'\t*(> ?)* * ?.*مُرسل من','AR_SENTFROM'),
             (r'\t*(> ?)* * ?.*أُرسلت من','AR_SENTFROM'),
+            (r'\t*(> ?)* * ?.*تم الإرسال من','AR_SENTFROM'),
             (r'\t*(> ?)* * ?.*[sS]ent [Ff]rom.*','SENTUSING'),
             (r'.+', 'Content'),
         ]
@@ -160,9 +163,13 @@ class PSTParser:
         client = SingletonClient()
         db = client[self.from_db]
         col = db[self.from_col]
+        f_col = get_collection(DB_Definitions.FAILEDPARSSEDEMAILSDBNAME,
+                               DB_Definitions.FAILEDPARSSEDEMAILSCOLLECTIONNAME)
+        f_col.delete_many({})
         db_to = client[self.to_db]
         col_to = db_to[self.to_col]
         db_to.drop_collection(col_to)
+        # col_to.delete_many({})
 
         regexp_tagger = RegexpTagger(self.patterns)
         cp = RegexpParser(self.grammar)
@@ -182,6 +189,7 @@ class PSTParser:
                     # print("document['content']")
                     # print(document["content"])
                     # # print("Message : ", regexp_tags, line_number, e)
+                    f_col.insert_one({**document, **{"error": e.__str__()}})
 
                     print(e)
         else:
@@ -192,6 +200,7 @@ class PSTParser:
                     regexp_tags = regexp_tagger.tag(line_tokens)
                     col_to.insert_one(self.parse_message(regexp_tags, cp))
                 except Exception as e:
+                    f_col.insert_one({**document, **{"error": e.__str__()}})
                     print(e)
 
 

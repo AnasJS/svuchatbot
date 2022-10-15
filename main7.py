@@ -1,13 +1,14 @@
 from os import cpu_count
 from src.svuchatbot_const.db.definitions import Definitions as DB_Definitions
-from src.root import PreProcess, Steps, FeaturesExtraction, EmailsClustering
+from src.root import PreProcess, Steps, FeaturesExtraction, EmailsClustering, Exporter
 from src.svuchatbot_features_managment.key_words_extractor import KeyWordExtractors, Definitions
 
 
 def main():
     pp = PreProcess()
     pp.transform([
-        # Steps.READPSTFILE,
+        Steps.READPSTFILE,
+        Steps.Delete_Diac,
         Steps.PARSEEMAILS,
         Steps.SHORTENINIGSPACES,
         Steps.REMOVENONARABICANSWERS,
@@ -17,9 +18,10 @@ def main():
         Steps.REMOVEEMAILSCONTAINSQUESTIONINREPLAY,
         Steps.DROPEMOJIS,
         Steps.CORRECTWORDS,
+        Steps.REMOVEFORWARDEDEMAILS,
         # todo replace more than space with one space
         Steps.DROPSENTENCES,
-        Steps.REMOVEFORWARDEDEMAILS,
+        # Steps.REMOVEFORWARDEDEMAILS,
         Steps.REMOVEEMAILSRELATEDTOCORONA,
         Steps.PARSEFROMFIELD,
         Steps.PARSETOFIELD,
@@ -72,8 +74,8 @@ def main():
         Steps.EXTRACTSIMPLETOKENSFROMQUESTION,
         # Steps.EXTRACTSENTIMENTFROMQUESTIONS,
         # Steps.EXTRACTENTITIESFROMANSWERS,
-
-
+        #
+        #
         Steps.EXTRACTSPECIALWORDSFROMQUESTION,
         Steps.REPLACESPECIALWORDSFROMQUESTION,
         Steps.EXTRACTSPECIALWORDSFROMANSWER,
@@ -93,6 +95,17 @@ def main():
         ]
     )
     ec.run()
+
+    e = Exporter()
+    e.transform(
+        [
+            Steps.Export_Questions_To_File,
+            Steps.Export_Collections
+        ]
+    )
+    e.run()
+
+
 
 
 if __name__ == '__main__':

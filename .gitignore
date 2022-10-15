@@ -137,3 +137,8 @@ data/*
 
 #*.csv
 *.png
+assets/bl_coor@svuonline.org.pst
+assets/bait_ac@svuonline.org.pst
+assets/bait_coor@svuonline.org.pst
+result/*
+results/*

@@ -29,6 +29,8 @@ def get_weights_tokens(source, n):
     # f.writelines(dfm.sort_values(ascending=False).__str__())
     # f.close()
     return dff
+
+
 def get_weight_from_RTF(source):
     n_col, n_db = source
     col = get_collection(n_col, n_db)
